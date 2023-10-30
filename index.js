@@ -4,8 +4,9 @@ const port = 8000;
 const TronWeb = require('tronweb');
 const ABI = require('./ABI.json');
 const HttpProvider = TronWeb.providers.HttpProvider;
+const router = require('./routes/routers');
+app.use(router);
 
-// Initialize TronWeb with appropriate configurations
 const fullNode = new HttpProvider("https://api.nileex.io");
 const solidityNode = new HttpProvider("https://api.nileex.io");
 const eventServer = new HttpProvider("https://api.nileex.io");
@@ -23,13 +24,10 @@ async function initializeContract() {
     } catch (error) {
       console.error("Error while interacting with the contract:", error);
     }
-  }
-  
-app.get('/', (req, res) => {
-  res.send('<h1>Apna Kaam Karo Idhar Kya Kar Rahe Ho</h1>');
-});
+}
+
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);
-  initializeContract(); // Initialize the contract after the server starts
+  initializeContract(); 
 });
