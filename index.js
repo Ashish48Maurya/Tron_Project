@@ -31,6 +31,28 @@ app.use(express.json());
 app.post('/send', async (req, res) => {
   const amount = req.body.amount;
   console.log(amount);
+  // try {
+  //   if (!amount || isNaN(amount)) {
+  //     return res.status(400).json({ error: 'Invalid amount' });
+  //   }
+
+  //   const transaction = await tronWeb.transactionBuilder.sendTrx(
+  //     contractAddress,
+  //     amount * 1e6,
+  //     SendersAdd
+  //   );
+
+  //   const signedTransaction = await tronWeb.trx.sign(transaction, privateKey);
+  //   const receipt = await tronWeb.trx.sendRawTransaction(signedTransaction);
+
+  //   if (receipt.result) {
+  //     return res.status(200).json({ message: 'Funds Added Successfully' });
+  //   } else {
+  //     return res.status(400).json({ error: 'Transaction failed', result: receipt.result });
+  //   }
+  // }
+
+
   try {
     if (!amount || isNaN(amount)) {
       return res.status(400).json({ error: 'Invalid amount' });
@@ -41,16 +63,28 @@ app.post('/send', async (req, res) => {
       amount * 1e6,
       SendersAdd
     );
-
+    
     const signedTransaction = await tronWeb.trx.sign(transaction, privateKey);
     const receipt = await tronWeb.trx.sendRawTransaction(signedTransaction);
-
+    
     if (receipt.result) {
-      return res.status(200).json({ message: 'Funds Added Successfully' });
-    } else {
-      return res.status(400).json({ error: 'Transaction failed', result: receipt.result });
+      // Wait for the transaction to be confirmed
+      const confirmed = await tronWeb.trx.isConfirmed(receipt.txid);
+      if (confirmed) {
+        // Retrieve the updated balance
+        const balance = await contract.methods.getBalance().call();
+        console.log('Updated balance:', balance);
+    
+        return res.status(200).json({ message: 'Funds Added Successfully' });
+      } else {
+        // Transaction is not confirmed yet
+        console.log('Transaction is not confirmed yet');
+      }
     }
-  } catch (error) {
+  }
+
+
+  catch (error) {
     console.error("Error sending TRX to the contract:", error);
     return res.status(500).json({ error: 'Error sending TRX to the contract' });
   }
