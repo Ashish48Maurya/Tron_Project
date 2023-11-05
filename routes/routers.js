@@ -5,4 +5,3 @@ const service = require('../controllers/service');
 router.get('/',service.home);
 
 module.exports = router;
-

@@ -17,8 +17,8 @@ const privateKey = "cf6a4dcb7a1637885669f0437cfa498eb018a4c2f1ef97028a5bac54b1ce
 const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
 
 // Define your contract address and instantiate the contract
-const contractAddress = "TPqRzJ19nKVJz9FkzYKcx2dTEYvhpqHWHb";
-const contract = tronWeb.contract(ABI, contractAddress);
+// const contractAddress = "TJzdvz7Jz6L9AAwdfXRJhfiTqq8SEKbwc2";
+const contractAddress = "TEkKw9cSCpWzK4NuYZYUu7hWYqwdtfmacz";
 
 // Define addresses (receiver, service provider, and sender)
 const ReceiverAdd = "TLTA47Dqn1LnsK7UENMGpimFmxc8Gay7JW";
@@ -78,12 +78,38 @@ app.get('/balance', async (req, res) => {
 });
 
 
+// app.get('/sendTRX', async (req, res) => {
+//     try {
+//       const totalAmount = 10;
+//           const firstAddress = ReceiverAdd;
+//           const secondAddress = ServiceProviderAdd;
+//           const ownerAddress = await contract.getOwner().call();
+//           const firstAmount = totalAmount * 0.01;
+  
+//           const secondAmount = totalAmount - firstAmount;
+  
+//           const firstTransfer = await tronWeb.transactionBuilder.sendTrx(firstAddress, firstAmount * 1e6,ownerAddress);
+  
+//           console.log('1% transfer:', firstTransfer);
+//           const secondTransfer = await tronWeb.transactionBuilder.sendTrx(secondAddress, secondAmount,ownerAddress);
+  
+//           console.log('Rest transfer:', secondTransfer);
+//     } catch (error) {
+//       console.error('Error:', error);
+//     }
+//   });
+
+
 app.get('/sendTRX', async (req, res) => {
   try {
     const contract = await tronWeb.contract().at(contractAddress);
     const ownerAddress = await contract.getOwner().call();
 
-    const result = await contract.sendEther(ReceiverAdd, ServiceProviderAdd).send({
+    const amountInTRX = 5;
+    const amountInSUN = amountInTRX * 1e6;
+
+    // Call the sendEther function in the contract to send the specified amount in SUN
+    const result = await contract.sendEther(amountInSUN ,ReceiverAdd, ServiceProviderAdd).send({
       shouldPollResponse: true,
       feeLimit: 1e8, // Adjust the fee limit as needed
       from: ownerAddress,
@@ -97,6 +123,7 @@ app.get('/sendTRX', async (req, res) => {
     return res.status(500).json({ "Error": error });
   }
 });
+
 
 
 // Start the Express server
