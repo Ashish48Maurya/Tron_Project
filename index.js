@@ -30,6 +30,7 @@ app.use(express.json());
 // Send TRX to the contract address
 app.post('/send', async (req, res) => {
   const amount = req.body.amount;
+
   try {
     if (!amount || isNaN(amount)) {
       return res.status(400).json({ error: 'Invalid amount' });
@@ -45,24 +46,20 @@ app.post('/send', async (req, res) => {
     const receipt = await tronWeb.trx.sendRawTransaction(signedTransaction);
     
     if (receipt.result) {
-      // Wait for the transaction to be confirmed
-      const confirmed = await tronWeb.trx.isConfirmed(receipt.txid);
-      if (confirmed) {
-        // Retrieve the updated balance
-        const balance = await contract.methods.getBalance().call();
-        console.log('Updated balance:', balance);
-    
-        return res.status(200).json({ message: 'Funds Added Successfully' });
-      } else {
-        // Transaction is not confirmed yet
-        console.log('Transaction is not confirmed yet');
-      }
+            const confirmed = await tronWeb.trx.getTransaction(receipt.transaction.txID);
+            if (confirmed.ret[0].contractRet == "SUCCESS") {
+              return res.status(200).json({ message: 'Funds Added Successfully' });
+            } else {
+              return res.status(400).json({ error: 'Transaction failed' });
+            }
     }
-  }
-
+    else{
+      return res.status(400).json({ error: 'Transaction failed' });
+    }
+  } 
   catch (error) {
-    console.error("Error sending TRX to the contract:", error);
-    return res.status(500).json({ error: 'Error sending TRX to the contract' });
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -70,10 +67,9 @@ app.post('/send', async (req, res) => {
 // Get the balance of the contract
 app.get('/balance', async (req, res) => {
   try {
-    const result = await contract.methods.getBalance().call();
+    const result = await  tronWeb.trx.getBalance(contractAddress);
     const BNumber = result / 1e6;
     const nNumber = Number(BNumber);
-    // console.log(nNumber);
     return res.status(200).json({ balance: nNumber });
   } catch (error) {
     console.error("Error while interacting with the contract:", error);
