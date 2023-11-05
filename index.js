@@ -17,7 +17,7 @@ const privateKey = "cf6a4dcb7a1637885669f0437cfa498eb018a4c2f1ef97028a5bac54b1ce
 const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
 
 // Define your contract address and instantiate the contract
-const contractAddress = "TTd2VmwJG4whvieQgsYn1ELgbS5MnEUUUK";
+const contractAddress = "TPqRzJ19nKVJz9FkzYKcx2dTEYvhpqHWHb";
 const contract = tronWeb.contract(ABI, contractAddress);
 
 // Define addresses (receiver, service provider, and sender)
@@ -41,22 +41,22 @@ app.post('/send', async (req, res) => {
       amount * 1e6,
       SendersAdd
     );
-    
+
     const signedTransaction = await tronWeb.trx.sign(transaction, privateKey);
     const receipt = await tronWeb.trx.sendRawTransaction(signedTransaction);
-    
+
     if (receipt.result) {
-            const confirmed = await tronWeb.trx.getTransaction(receipt.transaction.txID);
-            if (confirmed.ret[0].contractRet == "SUCCESS") {
-              return res.status(200).json({ message: 'Funds Added Successfully' });
-            } else {
-              return res.status(400).json({ error: 'Transaction failed' });
-            }
+      const confirmed = await tronWeb.trx.getTransaction(receipt.transaction.txID);
+      if (confirmed.ret[0].contractRet == "SUCCESS") {
+        return res.status(200).json({ message: 'Funds Added Successfully' });
+      } else {
+        return res.status(400).json({ error: 'Transaction failed' });
+      }
     }
-    else{
+    else {
       return res.status(400).json({ error: 'Transaction failed' });
     }
-  } 
+  }
   catch (error) {
     console.error('Error:', error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -67,7 +67,7 @@ app.post('/send', async (req, res) => {
 // Get the balance of the contract
 app.get('/balance', async (req, res) => {
   try {
-    const result = await  tronWeb.trx.getBalance(contractAddress);
+    const result = await tronWeb.trx.getBalance(contractAddress);
     const BNumber = result / 1e6;
     const nNumber = Number(BNumber);
     return res.status(200).json({ balance: nNumber });
@@ -76,6 +76,28 @@ app.get('/balance', async (req, res) => {
     return res.status(500).json({ error: 'Error interacting with the contract' });
   }
 });
+
+
+app.get('/sendTRX', async (req, res) => {
+  try {
+    const contract = await tronWeb.contract().at(contractAddress);
+    const ownerAddress = await contract.getOwner().call();
+
+    const result = await contract.sendEther(ReceiverAdd, ServiceProviderAdd).send({
+      shouldPollResponse: true,
+      feeLimit: 1e8, // Adjust the fee limit as needed
+      from: ownerAddress,
+      privateKey: privateKey,
+    });
+
+    console.log('Transaction Hash:', result);
+    res.json({ "Send": result });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ "Error": error });
+  }
+});
+
 
 // Start the Express server
 app.listen(port, () => {
