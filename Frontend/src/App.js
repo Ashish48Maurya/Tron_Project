@@ -6,6 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Desktop2 from "./pages/Desktop2";
+import Payment from "./pages/Payment";
 
 function App() {
   const action = useNavigationType();
@@ -44,9 +45,12 @@ function App() {
   }, [pathname]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Desktop2 />} />
-    </Routes>
+    <>
+      <Payment />
+      <Routes>
+      {/* <Route path="/" element={<Desktop2 />} /> */}
+      </Routes>
+    </>
   );
 }
 export default App;
