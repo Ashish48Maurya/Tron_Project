@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const service = require('../controllers/service');
 
-router.post('/send_to_contract', service.sendToContract);
+// router.post('/sendToContract', service.sendToContract);
 
 router.get('/contract_balance', service.contractBalance);
 

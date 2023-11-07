@@ -12,41 +12,41 @@ const contractAddress = "TEkKw9cSCpWzK4NuYZYUu7hWYqwdtfmacz";
 const SendersAdd = "THQCJsoeRmNEohr7pAYzmXt196jfpHhiXQ";
 
 
-exports.sendToContract = async (req, res) => {
-    const amount = req.body.amount;
+// exports.sendToContract = async (req, res) => {
+//     const amount = req.body.iAmt;
+//     console.log(amount);
+//     try {
+//       if (!amount || isNaN(amount)) {
+//         return res.status(400).json({ error: 'Invalid amount' });
+//       }
   
-    try {
-      if (!amount || isNaN(amount)) {
-        return res.status(400).json({ error: 'Invalid amount' });
-      }
+//       const transaction = await tronWeb.transactionBuilder.sendTrx(
+//         contractAddress,
+//         amount * 1e6,
+//         SendersAdd
+//       );
   
-      const transaction = await tronWeb.transactionBuilder.sendTrx(
-        contractAddress,
-        amount * 1e6,
-        SendersAdd
-      );
+//       const signedTransaction = await tronWeb.trx.sign(transaction, privateKey);
+//       const receipt = await tronWeb.trx.sendRawTransaction(signedTransaction);
   
-      const signedTransaction = await tronWeb.trx.sign(transaction, privateKey);
-      const receipt = await tronWeb.trx.sendRawTransaction(signedTransaction);
-  
-      if (receipt.result) {
-        const confirmed = await tronWeb.trx.getTransaction(receipt.transaction.txID);
-        if (confirmed.ret[0].contractRet == "SUCCESS") {
+//       if (receipt.result) {
+//         const confirmed = await tronWeb.trx.getTransaction(receipt.transaction.txID);
+//         if (confirmed.ret[0].contractRet == "SUCCESS") {
 
-          return res.status(200).json({ message: 'Funds Added Successfully' });
-        } else {
-          return res.status(400).json({ error: 'Transaction failed' });
-        }
-      }
-      else {
-        return res.status(400).json({ error: 'Transaction failed' });
-      }
-    }
-    catch (error) {
-      console.error('Error:', error);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-  }
+//           return res.status(200).json({ message: 'Funds Added Successfully' });
+//         } else {
+//           return res.status(400).json({ error: 'Transaction failed' });
+//         }
+//       }
+//       else {
+//         return res.status(400).json({ error: 'Transaction failed' });
+//       }
+//     }
+//     catch (error) {
+//       console.error('Error:', error);
+//       return res.status(500).json({ error: 'Internal server error' });
+//     }
+//   }
 
 
 exports.contractBalance = async (req, res) => {
