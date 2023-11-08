@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import {useNavigate} from "react-router-dom"
 
 export default function Payment() {
 
   const [iAmt, setAmt] = useState('');
   const [iAdd, setAdd] = useState('');
-
+  const navigate = useNavigate();
 
   const generateQRCode = async () => {
     const data = {
@@ -21,28 +22,12 @@ export default function Payment() {
     });
 
     if (res.status === 500) {
-      window.alert("QR Code Not Generated");
+      
     }
     else {
-      window.alert("QR Code Generated and Saved");
+      navigate('/qrCode');
     }
   }
-
-  // const openTronLinkWallet = async () => {
-  //   if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
-  //     const toAddress = iAdd; 
-  //     const amount = iAmt*1e6;
-
-  //     try {
-  //       await window.tronWeb.trx.sendTransaction(toAddress, amount);
-  //       window.alert("Funds Added Successfully!!!")
-  //     } catch (error) {
-  //       console.error('Error sending transaction:', error);
-  //     }
-  //   } else {
-  //     alert('Please install and log in to TronLink wallet to initiate the transaction.');
-  //   }
-  // };
 
   return (
     <>
@@ -70,7 +55,7 @@ export default function Payment() {
               onChange={(e) => setAdd(e.target.value)}
             />
           </div>
-          <button onClick={generateQRCode}>Generate</button>
+          <button onClick={generateQRCode}>Continue</button>
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
 import Payment from "./Components/Payment";
 import QrCode from "./Components/QrCode";
-// import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -8,10 +8,11 @@ function App() {
 
   return (
     <>
-      <Payment />
-      {/* <Routes>
+      
+      <Routes>
         <Route path='/qrCode' element={<QrCode />} />
-      </Routes> */}
+        <Route path='/' element={<Payment />} />
+      </Routes>
       {/* <ToastContainer
         position="bottom-center"
       /> */}
