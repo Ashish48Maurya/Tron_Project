@@ -2,29 +2,56 @@ import React, { useEffect, useState } from 'react';
 
 
 function Payment() {
+const [iAmt, setAmt] = useState("");
+const [iAdd, setAdd] = useState("");
 
-  useEffect(()=>{
-    window.alert("Logged In To The Wallet before Doing Any Transaction");
-  },[])
+const QRCode = require('qrcode');
+const toAddress = iAdd; 
+const amount = iAmt * 1e6;
 
-  const [iAmt, setAmt] = useState("");
-  const [iAdd, setAdd] = useState("");
-
-  const openTronLinkWallet = async () => {
-    if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
-      const toAddress = iAdd; 
-      const amount = iAmt*1e6;
-
-      try {
-        await window.tronWeb.trx.sendTransaction(toAddress, amount);
-        window.alert("Funds Added Successfully!!!")
-      } catch (error) {
-        console.error('Error sending transaction:', error);
-      }
-    } else {
-      alert('Please install and log in to TronLink wallet to initiate the transaction.');
+const generateQRCode = async () => {
+  if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+    const tronWeb = window.tronWeb;
+    
+    try {
+      const data = {
+        toAddress,
+        amount
+      };
+      
+      const qrCodeText = JSON.stringify(data);
+      
+      QRCode.toDataURL(qrCodeText, (err, url) => {
+        if (err) {
+          console.error('Error generating QR code:', err);
+        } else {
+          console.log(url);
+        }
+      });
+    } catch (error) {
+      console.error('Error sending transaction:', error);
     }
-  };
+  } else {
+    alert('Please install and log in to TronLink wallet to initiate the transaction.');
+  }
+};
+
+
+  // const openTronLinkWallet = async () => {
+  //   if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+  //     const toAddress = iAdd; 
+  //     const amount = iAmt*1e6;
+
+  //     try {
+  //       await window.tronWeb.trx.sendTransaction(toAddress, amount);
+  //       window.alert("Funds Added Successfully!!!")
+  //     } catch (error) {
+  //       console.error('Error sending transaction:', error);
+  //     }
+  //   } else {
+  //     alert('Please install and log in to TronLink wallet to initiate the transaction.');
+  //   }
+  // };
 
   return (
     <>
@@ -45,7 +72,7 @@ function Payment() {
             <input id="address" placeholder="wallet address" onChange={(e) => { setAdd(e.target.value) }} value={iAdd} />
           </div>
 
-          <button onClick={openTronLinkWallet}>Generate</button>
+          <button onClick={generateQRCode()}>Generate</button>
         </div>
       </div>
     </>
