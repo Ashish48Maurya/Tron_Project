@@ -1,8 +1,8 @@
 import Payment from "./Components/Payment";
 import QrCode from "./Components/QrCode";
 // import { Route, Routes } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -12,9 +12,9 @@ function App() {
       {/* <Routes>
         <Route path='/qrCode' element={<QrCode />} />
       </Routes> */}
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-center"
-      />
+      /> */}
     </>
   );
 }
