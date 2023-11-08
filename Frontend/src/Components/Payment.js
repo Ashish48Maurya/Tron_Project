@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 function Payment() {
 
     useEffect(() => {
-        window.alert("Logged In To The Wallet before Doing Any Transaction");
+        notify("Logged In To The Wallet before Doing Any Transaction");
     }, [])
 
     const [iAmt, setAmt] = useState("");
     const [iAdd, setAdd] = useState("");
+
+    const notify = (msg) => toast.info(msg);
 
     const openTronLinkWallet = async () => {
         if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -16,7 +19,7 @@ function Payment() {
 
             try {
                 await window.tronWeb.trx.sendTransaction(toAddress, amount);
-                window.alert("Funds Added Successfully!!!")
+                notify("Funds Added Successfully!!!")
             } catch (error) {
                 console.error('Error sending transaction:', error);
             }
