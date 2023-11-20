@@ -6,6 +6,6 @@ const service = require('../controllers/service');
 
 router.get('/contract_balance', service.contractBalance);
 
-router.get('/send_to_wallets', service.sendTRXfromContractToWallets);
+router.post('/send_to_wallets', service.sendTRXfromContractToWallets);
 
 module.exports = router;

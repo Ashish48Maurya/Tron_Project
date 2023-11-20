@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 export default function Payment() {
-
-  const [iAmt, setAmt] = useState('');
-  const [iAdd, setAdd] = useState('');
   const navigate = useNavigate();
+  const [amt, setAmt] = useState('');
+  const [add, setAdd] = useState('');
 
   const generateQRCode = async () => {
+
     const data = {
-      toAddress: iAdd,
-      amount: iAmt
-    }
+      toAddress: add,
+      amount: amt
+    };
 
     const res = await fetch("http://localhost:8000/generate-qr", {
       method: 'POST',
@@ -22,9 +22,9 @@ export default function Payment() {
     });
 
     if (res.status === 500) {
-      
-    }
-    else {
+      window.alert("Server Error");
+      return;
+    } else {
       navigate('/qrCode');
     }
   }
@@ -42,16 +42,16 @@ export default function Payment() {
             <input
               id="amount"
               placeholder="amount"
-              value={iAmt}
+              value={amt}
               onChange={(e) => setAmt(e.target.value)}
             />
           </div>
           <div className="address">
-            <label htmlFor="address">Enter Wallet Address:</label>
+            <label htmlFor="address">Enter Receiver's Wallet address: </label>
             <input
               id="address"
               placeholder="wallet address"
-              value={iAdd}
+              value={add}
               onChange={(e) => setAdd(e.target.value)}
             />
           </div>
@@ -61,4 +61,3 @@ export default function Payment() {
     </>
   );
 }
-

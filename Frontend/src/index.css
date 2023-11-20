@@ -64,3 +64,14 @@ button {
   border: 2px solid rgb(0, 115, 255);
   cursor: pointer;
 }
+
+h1{
+  color: orange;
+  font-size: 30px;
+  font-weight: bolder;
+}
+span{
+  color: black;
+  font-weight: bolder;
+  font-size: 45px;
+}

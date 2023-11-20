@@ -9,7 +9,6 @@ const privateKey = "cf6a4dcb7a1637885669f0437cfa498eb018a4c2f1ef97028a5bac54b1ce
 const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
 
 const contractAddress = "TEkKw9cSCpWzK4NuYZYUu7hWYqwdtfmacz";
-const SendersAdd = "THQCJsoeRmNEohr7pAYzmXt196jfpHhiXQ";
 
 
 // exports.sendToContract = async (req, res) => {
@@ -59,19 +58,19 @@ exports.contractBalance = async (req, res) => {
       console.error("Error while interacting with the contract:", error);
       return res.status(500).json({ error: 'Error interacting with the contract' });
     }
-  }
+}
 
 
 
 exports.sendTRXfromContractToWallets = async (req, res) => {
+  const {Address1 , Address2 , amount} = req.body;
     try {
       const contract = await tronWeb.contract().at(contractAddress);
       const ownerAddress = await contract.getOwner().call();
   
-      const amountInTRX = 4;
-      const amountInSUN = amountInTRX * 1e6;
-      const ReceiverAdd = "TLTA47Dqn1LnsK7UENMGpimFmxc8Gay7JW";
-      const ServiceProviderAdd = "TPhjcXiHnF4oc7cdPmC5VyFqi99gDTCU4z";
+      const amountInSUN = amount * 1e6;
+      const ReceiverAdd = Address2;
+      const ServiceProviderAdd = Address1;
   
       const result = await contract.sendEther(amountInSUN ,ReceiverAdd, ServiceProviderAdd).send({
         shouldPollResponse: true,
@@ -81,7 +80,7 @@ exports.sendTRXfromContractToWallets = async (req, res) => {
       });
   
       console.log('Transaction Hash:', result);
-      res.json({ "Send": result });
+      res.status(200).json({ "Send": result });
     } catch (error) {
       console.error('Error:', error);
       return res.status(500).json({ "Error": error });
