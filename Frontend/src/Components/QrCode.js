@@ -7,6 +7,7 @@ export default function QrCode() {
   // const ReceiversAdd = props.Add;
   const ReceiversAdd = "";
 
+  windows.alert('lund');
   // useEffect(()=>{
   //   window.alert("Add: ",props.Add);
   // },[])
