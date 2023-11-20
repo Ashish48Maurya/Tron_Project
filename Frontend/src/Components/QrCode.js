@@ -7,7 +7,6 @@ export default function QrCode() {
   // const ReceiversAdd = props.Add;
   const ReceiversAdd = "";
 
-  windows.alert('Masti Nahi');
   // useEffect(()=>{
   //   window.alert("Add: ",props.Add);
   // },[])
