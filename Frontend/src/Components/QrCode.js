@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react'
-import '../index.css'
-export default function QrCode() {
+import React , {useEffect} from 'react';
+import { useLocation } from 'react-router-dom';
 
+export default function QrCode() {
+  const location = useLocation();
+  const { amt, add } = location.state || {};
 
   const serviceProviderWalletAddress = "TPhjcXiHnF4oc7cdPmC5VyFqi99gDTCU4z";
-  // const ReceiversAdd = props.Add;
-  const ReceiversAdd = "";
-
-  // useEffect(()=>{
-  //   window.alert("Add: ",props.Add);
-  // },[])
+  
+  const ReceiversAdd = add;
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
-      const toAddress = "";
-      const amount = "";
+      const toAddress = ReceiversAdd;
+      const amount = amt;
 
       try {
         const Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
@@ -59,6 +57,9 @@ export default function QrCode() {
       <div><img src="images/qrcode.png" alt="" /></div>
       <strong>OR</strong>
       <br />
+      <p>Data from Payment component:</p>
+      <p>{`Input 1: ${amt}`}</p>
+      <p>{`Input 2: ${add}`}</p>
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
     </>
   )

@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
+const DataContext = React.createContext({
+  amt: "",
+  add: "",
+});
 
 export default function Payment() {
   const navigate = useNavigate();
@@ -7,13 +12,12 @@ export default function Payment() {
   const [add, setAdd] = useState('');
 
   const generateQRCode = async () => {
-
     const data = {
       toAddress: add,
       amount: amt
     };
 
-    const res = await fetch("http://localhost:8000/generate-qr", {
+    const res = await fetch('http://localhost:8000/generate-qr', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,12 +26,12 @@ export default function Payment() {
     });
 
     if (res.status === 500) {
-      window.alert("Server Error");
+      window.alert('Server Error');
       return;
     } else {
-      navigate('/qrCode');
+      navigate('/qrCode', { state: { amt, add } });
     }
-  }
+  };
 
   return (
     <>
