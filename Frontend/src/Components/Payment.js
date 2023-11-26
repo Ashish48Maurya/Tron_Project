@@ -5,7 +5,7 @@ const DataContext = React.createContext({
   amt: "",
   add: "",
 });
-
+//pata nahi kya hora bhai yaha
 export default function Payment() {
   const navigate = useNavigate();
   const [amt, setAmt] = useState('');
