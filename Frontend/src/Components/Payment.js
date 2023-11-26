@@ -25,12 +25,12 @@ export default function Payment() {
       body: JSON.stringify(data),
     });
 
-    if (res.status === 500) {
-      window.alert('Server Error');
-      return;
-    } else {
-      navigate('/qrCode', { state: { amt, add } });
-    }
+      if (res.status === 500) {
+        window.alert('Server Error');
+        return;
+      } else {
+        navigate('/qrCode', { state: { amt, add } });
+      }
   };
 
   return (

@@ -8,8 +8,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Payment/>} />
-        <Route path='/qrCode' element={<QrCode />} />
+        <Route path="/" exact element={<Payment/>} />
+        <Route path="/qrcode" element={<QrCode/>} />
       </Routes>
     </>
   );

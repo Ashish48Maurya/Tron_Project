@@ -8,6 +8,7 @@ export default function QrCode() {
   const serviceProviderWalletAddress = "TPhjcXiHnF4oc7cdPmC5VyFqi99gDTCU4z";
   
   const ReceiversAdd = add;
+  const SenderAmount = amt;
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -58,8 +59,8 @@ export default function QrCode() {
       <strong>OR</strong>
       <br />
       <p>Data from Payment component:</p>
-      <p>{`Input 1: ${amt}`}</p>
-      <p>{`Input 2: ${add}`}</p>
+      <p>Amount to be sent : {amt}</p>
+      <p>Account to be send : {add}</p>
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
     </>
   )
