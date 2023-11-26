@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+<<<<<<< HEAD
+=======
+const DataContext = React.createContext({
+  amt: "",
+  add: "",
+});
+//pata nahi kya hora bhai yaha
+>>>>>>> d031aff6ce6270d524562d1dbd8fc436eb014a34
 export default function Payment() {
   const navigate = useNavigate();
   const [amt, setAmt] = useState('');
@@ -20,12 +28,12 @@ export default function Payment() {
       body: JSON.stringify(data),
     });
 
-    if (res.status === 500) {
-      window.alert('Server Error');
-      return;
-    } else {
-      navigate('/qrCode', { state: { amt, add } });
-    }
+      if (res.status === 500) {
+        window.alert('Server Error');
+        return;
+      } else {
+        navigate('/qrCode', { state: { amt, add } });
+      }
   };
 
   return (

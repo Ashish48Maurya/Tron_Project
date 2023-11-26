@@ -1,4 +1,3 @@
-import React , {useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 
 export default function QrCode() {
@@ -8,6 +7,7 @@ export default function QrCode() {
   const serviceProviderWalletAddress = "TPhjcXiHnF4oc7cdPmC5VyFqi99gDTCU4z";
   
   const ReceiversAdd = add;
+  const SenderAmount = amt;
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -57,8 +57,14 @@ export default function QrCode() {
       <div><img src="images/qrcode.png" alt="" /></div>
       <strong>OR</strong>
       <br />
+<<<<<<< HEAD
       <p>{`Input 1: ${amt}`}</p>
       <p>{`Input 2: ${add}`}</p>
+=======
+      <p>Data from Payment component:</p>
+      <p>Amount to be sent : {amt}</p>
+      <p>Account to be send : {add}</p>
+>>>>>>> d031aff6ce6270d524562d1dbd8fc436eb014a34
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
     </>
   )
