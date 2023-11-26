@@ -57,7 +57,6 @@ export default function QrCode() {
       <div><img src="images/qrcode.png" alt="" /></div>
       <strong>OR</strong>
       <br />
-      <p>Data from Payment component:</p>
       <p>{`Input 1: ${amt}`}</p>
       <p>{`Input 2: ${add}`}</p>
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
