@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const DataContext = React.createContext({
-  amt: "",
-  add: "",
-});
+
 
 export default function Payment() {
   const navigate = useNavigate();
