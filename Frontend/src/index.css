@@ -75,3 +75,9 @@ span{
   font-weight: bolder;
   font-size: 45px;
 }
+
+.container{
+  width: 90%;
+  margin-inline: auto;
+  text-align: center;
+}
