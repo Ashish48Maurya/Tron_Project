@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import { useLocation , Link } from 'react-router-dom';
 
 export default function QrCode() {
   const location = useLocation();
   const { amt, add } = location.state;
 
-  const serviceProviderWalletAddress = "TPhjcXiHnF4oc7cdPmC5VyFqi99gDTCU4z";
+  const serviceProviderWalletAddress = "TUo8aox2FS2EygQ25cVdq5tEZQVr9eGXJo"
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -55,12 +54,11 @@ export default function QrCode() {
           }
         }
         else {
-          console.error('Error sending transaction:', Res.result.message);
-          window.alert("Transaction Fail");
+          window.alert("Transaction Fail: ",Res.result.message);
         }
       }
       catch (error) {
-        console.error('Error sending transaction:', error);
+        window.alert(`Error sending transaction: ${error}`);
       }
     } else {
       alert('Please install and log in to TronLink wallet to initiate the transaction.');
@@ -70,13 +68,12 @@ export default function QrCode() {
 
   return (
     <>
+      <p>Amount to be sent : {amt}TRX</p>
+      <p>Sender's Account : {add}</p>
       <h1><span>S</span>can and <span>P</span>ay</h1>
       <div><img src={`images/${add}qrcode.png`} alt="qrcode" /></div>
       <strong>OR</strong>
       <br />
-      <p>Data from Payment component:</p>
-      <p>Amount to be sent : {amt}TRX</p>
-      <p>Account to be send : {add}</p>
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
       <Link to='/payment'>Home</Link>
     </>

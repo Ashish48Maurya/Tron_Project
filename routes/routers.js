@@ -10,5 +10,6 @@ const service = require('../controllers/service');
 router.post('/sender_to_serviceProvider', service.sendFunds);
 router.get('/payment_history_serviceProvider', service.getHistory);
 router.put('/update_payment_serviceProvider/:id',service.updatePayment)
-
+router.post('/signup',service.signIn)
+router.post('/signin',service.logIn)
 module.exports = router;

@@ -83,3 +83,7 @@ span{
   margin-inline: auto;
   text-align: center;
 }
+
+td{
+  text-align: center;
+}

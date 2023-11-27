@@ -9,7 +9,7 @@ export default function Admin() {
                 Accept: "application/json",
             },
         });
-    
+
         if (response.status === 200) {
             const data = await response.json();
             console.log(data)
@@ -25,27 +25,27 @@ export default function Admin() {
             const response = await fetch(`http://localhost:8000/update_payment_serviceProvider/${id}`, {
                 method: "PUT",
                 headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ status: "completed" }),
-              })
-              console.log("Res: ",response)
-          if (response.status === 200) {
-            const updatedPayment = await response.json();
-            console.log(updatedPayment);
-            
-          } else {
-            console.error('Failed to update payment:', response.status);
-            window.alert("Update Payment Failed");
-          }
+            })
+            console.log("Res: ", response)
+            if (response.status === 200) {
+                const updatedPayment = await response.json();
+                console.log(updatedPayment);
+
+            } else {
+                console.error('Failed to update payment:', response.status);
+                window.alert("Update Payment Failed");
+            }
         } catch (error) {
-          console.error('Error updating payment:', error);
-          window.alert("Update Payment Error");
+            console.error('Error updating payment:', error);
+            window.alert("Update Payment Error");
         }
-      };
-      
-    
+    };
+
+
 
     const [list, setList] = useState([]);
     const [selectedButton, setSelectedButton] = useState(null);
@@ -55,18 +55,18 @@ export default function Admin() {
         getPaymentsDetails();
     }, []);
 
-    
+
     const pay = async (id) => {
         setSelectedButton(id);
         const element = list.find((elem) => elem._id === id);
         if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
             const toAddress = element.to;
-            const amount = (element.amount - element.amount * 0.01)*1e6;
-            console.log("Amount: ",amount)
-    
+            const amount = (element.amount - element.amount * 0.01) * 1e6;
+            console.log("Amount: ", amount)
+
             try {
                 const Res = await window.tronWeb.trx.sendTransaction(toAddress, amount);
-    
+
                 if (Res.result) {
                     window.alert("Payment Successful");
                     const changedElement = list.filter((ele) => ele._id !== id);
@@ -87,30 +87,45 @@ export default function Admin() {
         } else {
             alert('Please install and log in to TronLink wallet to initiate the transaction.');
         }
-        
+
     };
-    
-    
+
+
     return (
         <>
-            <div className='container'>
-                <ul className="list-group">
-                    {list.map((ele) => (
-                        <div className='d-flex justify-content-evenly gap-3 text-center mb-2' key={ele._id}>
-                            <li className="list-group-item">From: {ele.from}</li>
-                            <li className="list-group-item">To: {ele.to}</li>
-                            <li className="list-group-item">{ele.timestamps}</li>
-                            <li className="list-group-item">{ele.amount}TRX</li>
-                            <button
-                                type="button"
-                                className={`btn btn-primary text-center ${selectedButton === ele._id ? 'btn-success' : ''}`}
-                                onClick={() => pay(ele._id)}
-                            >
-                               {selectedButton === ele._id ? 'Processing' : 'Pay'}
-                            </button>
-                        </div>
-                    ))}
-                </ul>
+            <h2 className='text-center mt-2'>Admin Panel</h2>
+            <div class="table-responsive mt-5">
+                <table class="table table-bordered border-warning">
+
+                    <thead>
+                        <tr>
+                            <th scope="col" className=' text-center'>From</th>
+                            <th scope="col" className=' text-center'>To</th>
+                            <th scope="col" className=' text-center'>Date & Time</th>
+                            <th scope="col" className=' text-center'>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {list.map((ele) => (
+                            <tr>
+                                <td>{ele.from}</td>
+                                <td>{ele.to}</td>
+                                <td>{ele.timestamps}</td>
+                                <td>{ele.amount}TRX</td>
+                                <td><button
+                                    type="button"
+                                    className={`btn btn-primary text-center ${selectedButton === ele._id ? 'btn-success' : ''}`}
+                                    onClick={() => pay(ele._id)}
+                                >
+                                    {selectedButton === ele._id ? 'Processing' : 'Pay'}
+                                </button></td>
+
+                            </tr>
+                        ))}
+
+                    </tbody>
+                </table>
+
             </div>
         </>
     );
