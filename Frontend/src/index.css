@@ -53,7 +53,7 @@ h3 {
   margin: 20px 0;
 }
 
-button {
+button , a {
   margin: 10px 0 0 0;
   padding: 10px;
   font-size: 15px;
@@ -63,6 +63,8 @@ button {
   border-radius: 5px;
   border: 2px solid rgb(0, 115, 255);
   cursor: pointer;
+  text-decoration: none;
+  margin: 0 10px;
 }
 
 h1{
