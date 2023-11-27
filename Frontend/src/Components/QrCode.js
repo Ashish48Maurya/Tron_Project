@@ -1,4 +1,5 @@
-import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation , Link } from 'react-router-dom';
 
 export default function QrCode() {
   const location = useLocation();
@@ -54,18 +55,14 @@ export default function QrCode() {
   return (
     <>
       <h1><span>S</span>can and <span>P</span>ay</h1>
-      <div><img src="images/qrcode.png" alt="" /></div>
+      <div><img src={`images/${add}${amt}qrcode.png`} alt="" /></div>
       <strong>OR</strong>
       <br />
-<<<<<<< HEAD
-      <p>{`Input 1: ${amt}`}</p>
-      <p>{`Input 2: ${add}`}</p>
-=======
       <p>Data from Payment component:</p>
-      <p>Amount to be sent : {amt}</p>
+      <p>Amount to be sent : {amt}TRX</p>
       <p>Account to be send : {add}</p>
->>>>>>> d031aff6ce6270d524562d1dbd8fc436eb014a34
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
+      <Link to='/payment'>Home</Link>
     </>
   )
 }

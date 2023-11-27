@@ -12,13 +12,15 @@ app.use(express.json());
 app.use(cors())
 app.use(routes);
 
+const count = 1;
+
 app.post('/generate-qr', (req, res) => {
   const toAddress = req.body.toAddress;
   const amount = req.body.amount;
   const qrCodeData = `bitcoin:${toAddress}?amount=${amount}`;
 
   qrcode.toFile(
-    path.join(__dirname, '/Frontend' , '/public', '/images', 'qrcode.png'),
+    path.join(__dirname, '/Frontend', '/public', '/images', `${toAddress}${amount}qrcode.png`),
     qrCodeData,
     (err) => {
       if (err) {
