@@ -34,80 +34,9 @@ app.post('/generate-qr', (req, res) => {
   );
 });
 
-<<<<<<< HEAD
 
 mongoConnect("mongodb+srv://Ashish:Ashishmaurya102938@cluster1.f21bdyh.mongodb.net/TronProject").then(() => {
-=======
-routes.post('/signup', (req, res) => {
-  const { name, username, email, password } = req.body;
 
-  if (!name || !username || !email || !password) {
-    console.log('Please add all the fields');
-    return res.status(422).json({ error: "Please add all the fields" });
-  }
-
-  USER.findOne({ $or: [{ email: email }, { username: username }] })
-    .then((savedUser) => {
-      if (savedUser) {
-        console.log('User already exists! with that username or email');
-        return res.status(422).json({ error: "User already exists! with that username or email" });
-      }
-
-      bcrypt.hash(password, 12).then((hashedPassword) => {
-        const user = new USER({
-          name,
-          username,
-          email,
-          password: hashedPassword,
-        });
-
-        user.save()
-          .then(user => {
-            res.json({ message: "Registered Successfully" });
-          })
-          .catch(err => {
-            console.log(err);
-            res.status(500).json({ error: "Internal server error" });
-          })
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ error: "Internal server error" });
-    });
-});
-
-app.post("/signin", (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(422).json({ error: "Please provide a valid email and password" });
-  }
-
-  USER.findOne({ email: email }).then((savedUser) => {
-    if (!savedUser) {
-      return res.status(422).json({ error: "Invalid email or password" });
-    }
-
-    bcrypt.compare(password, savedUser.password).then((isMatch) => {
-      if (isMatch) {
-        res.json({ message: "Login successful" });
-      } else {
-        res.status(422).json({ error: "Invalid email or password" });
-      }
-    }).catch(err => {
-      console.log(err);
-      res.status(500).json({ error: "Internal server error" });
-    });
-  }).catch(err => {
-    console.log(err);
-    res.status(500).json({ error: "Internal server error" });
-  });
-});
-
-
-mongoConnect("mongodb://127.0.0.1:27017/Tron_Project").then(() => {
->>>>>>> cdd2d83108c72ee50affe6beed4fada18c283fdb
   app.listen(port, () => {
     console.log(`Server is listening at http://localhost:${port}`);
   });
