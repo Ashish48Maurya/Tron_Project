@@ -1,8 +1,14 @@
+// db.js
 const mongoose = require('mongoose');
-function mongoConnect(url){
-    return mongoose.connect( url )
-    .then(()=>console.log("Connection Successful..."))
-    .catch((err)=>console.log(err)); 
+
+async function mongoConnect(url) {
+    try {
+        await mongoose.connect(url);
+        console.log("Connection Successful...");
+    } catch (err) {
+        console.error(err);
+        throw new Error("MongoDB connection error");
+    }
 }
 
 module.exports = mongoConnect;
