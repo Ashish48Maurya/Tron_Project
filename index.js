@@ -1,16 +1,16 @@
 const express = require('express');
 const app = express();
 const port = 8000;
-const fs = require('fs');
 const qrcode = require('qrcode');
-const ABI = require('./ABI.json');
-const cors = require('cors');
-const routes = require('./routes/routers')
 const path = require('path');
+const cors = require('cors');
+const routes = require('./routes/routers');
 const mongoConnect = require('./db');
+const UserModel = require('./model');
+const bcrypt = require('bcrypt');
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 app.use(routes);
 
 const count = 1;
@@ -34,7 +34,7 @@ app.post('/generate-qr', (req, res) => {
   );
 });
 
-app.post('/signup', (req, res) => {
+routes.post('/signup', (req, res) => {
   const { name, username, email, password } = req.body;
 
   if (!name || !username || !email || !password) {
@@ -106,4 +106,7 @@ mongoConnect("mongodb://localhost:27017/Tron_Project").then(() => {
   app.listen(port, () => {
     console.log(`Server is listening at http://localhost:${port}`);
   });
-}).catch("Server Error");
+}).catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
