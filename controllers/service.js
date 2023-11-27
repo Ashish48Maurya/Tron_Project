@@ -4,11 +4,12 @@ const fullNode = new HttpProvider("https://api.nileex.io");
 const solidityNode = new HttpProvider("https://api.nileex.io");
 const eventServer = new HttpProvider("https://api.nileex.io");
 
-const privateKey = "cf6a4dcb7a1637885669f0437cfa498eb018a4c2f1ef97028a5bac54b1ce5f35";
+// const privateKey = "cf6a4dcb7a1637885669f0437cfa498eb018a4c2f1ef97028a5bac54b1ce5f35";
 
-const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
-
-const contractAddress = "TEkKw9cSCpWzK4NuYZYUu7hWYqwdtfmacz";
+// const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
+const tronWeb = new TronWeb(fullNode, solidityNode, eventServer);
+const payment = require('../models/Payment')
+// const contractAddress = "TEkKw9cSCpWzK4NuYZYUu7hWYqwdtfmacz";
 
 
 // exports.sendToContract = async (req, res) => {
@@ -48,41 +49,64 @@ const contractAddress = "TEkKw9cSCpWzK4NuYZYUu7hWYqwdtfmacz";
 //   }
 
 
-exports.contractBalance = async (req, res) => {
-    try {
-      const result = await tronWeb.trx.getBalance(contractAddress);
-      const BNumber = result / 1e6;
-      const nNumber = Number(BNumber);
-      return res.status(200).json({ balance: nNumber });
-    } catch (error) {
-      console.error("Error while interacting with the contract:", error);
-      return res.status(500).json({ error: 'Error interacting with the contract' });
-    }
-}
+// exports.contractBalance = async (req, res) => {
+//     try {
+//       const result = await tronWeb.trx.getBalance(contractAddress);
+//       const BNumber = result / 1e6;
+//       const nNumber = Number(BNumber);
+//       return res.status(200).json({ balance: nNumber });
+//     } catch (error) {
+//       console.error("Error while interacting with the contract:", error);
+//       return res.status(500).json({ error: 'Error interacting with the contract' });
+//     }
+// }
 
 
 
-exports.sendTRXfromContractToWallets = async (req, res) => {
-  const {Address1 , Address2 , amount} = req.body;
-    try {
-      const contract = await tronWeb.contract().at(contractAddress);
-      const ownerAddress = await contract.getOwner().call();
+// exports.sendTRXfromContractToWallets = async (req, res) => {
+//   const {Address1 , Address2 , amount} = req.body;
+//     try {
+//       const contract = await tronWeb.contract().at(contractAddress);
+//       const ownerAddress = await contract.getOwner().call();
   
-      const amountInSUN = amount * 1e6;
-      const ReceiverAdd = Address2;
-      const ServiceProviderAdd = Address1;
+//       const amountInSUN = amount * 1e6;
+//       const ReceiverAdd = Address2;
+//       const ServiceProviderAdd = Address1;
   
-      const result = await contract.sendEther(amountInSUN ,ReceiverAdd, ServiceProviderAdd).send({
-        shouldPollResponse: true,
-        feeLimit: 1e8, // Adjust the fee limit as needed
-        from: ownerAddress,
-        privateKey: privateKey,
-      });
+//       const result = await contract.sendEther(amountInSUN ,ReceiverAdd, ServiceProviderAdd).send({
+//         shouldPollResponse: true,
+//         feeLimit: 1e8, // Adjust the fee limit as needed
+//         from: ownerAddress,
+//         privateKey: privateKey,
+//       });
   
-      console.log('Transaction Hash:', result);
-      res.status(200).json({ "Send": result });
-    } catch (error) {
-      console.error('Error:', error);
-      return res.status(500).json({ "Error": error });
-    }
+//       console.log('Transaction Hash:', result);
+//       res.status(200).json({ "Send": result });
+//     } catch (error) {
+//       console.error('Error:', error);
+//       return res.status(500).json({ "Error": error });
+//     }
+//   }
+
+
+
+
+
+exports.sendFunds = async(req,res)=>{
+  const {senderAddress,recipientAddress,amount} = req.body;
+  if(!senderAddress || !recipientAddress || !amount){
+    return res.status(400).json({"error":"please Fill All the Fielsd!!!"})
   }
+  try{
+    const Payment = new payment({
+      from:senderAddress,
+      to:recipientAddress,
+      amount:amount
+    })
+    await Payment.save();
+    return res.status(200).json({"msg":"Payment Successfull"})
+  }
+  catch(err){
+    return res.status(500).json({"msg":`Internal Server Error ${err}`})
+  }
+}
