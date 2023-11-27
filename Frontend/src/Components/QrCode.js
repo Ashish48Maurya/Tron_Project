@@ -9,8 +9,8 @@ export default function QrCode() {
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
-      const toAddress = add*1e6;
-      const amount = amt;
+      const toAddress = add;
+      const amount = amt * 1e6;
 
       try {
         const Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
@@ -19,23 +19,23 @@ export default function QrCode() {
           // const transactionId = Res.result.transactionId;
 
           // const transactionReceipt = await window.tronWeb.trx.getTransactionInfo(transactionId);
-          // console.log(transactionReceipt);
+          // console.log("Trans: ",transactionReceipt);
+
           // const blockHash = transactionReceipt.blockHash;
           // const fee = transactionReceipt.fee;
 
-          
+
           const transactionDetails = {
             timestamp: new Date(),
             senderAddress: window.tronWeb.defaultAddress.base58,
             recipientAddress: toAddress,
-            amount,
+            amount: amt
             // blockHash,
             // fee
           };
-          // console.log(transactionDetails);
-
-          const {senderAddress , recipientAddress , amount} = transactionDetails;
-          const res = await fetch("http:localhost:8000/sender_to_serviceProvider",{
+          console.log(transactionDetails);
+          const {senderAddress , recipientAddress, amount} = transactionDetails;
+          const res = await fetch("http://localhost:8000/sender_to_serviceProvider",{
             method : "POST",
             headers:{
               "Content-Type":"application/json"
@@ -46,19 +46,19 @@ export default function QrCode() {
           })
 
           const data = await res.json();
-          
-          if(res.status === 404 || !data){
+
+          if(res.status === 404 || res.status === 400 || !data){
             window.alert("Invalid Entry");
           }
           else{
           window.alert("Funds Added Successfully!!!");
           }
-          } 
+        }
         else {
           console.error('Error sending transaction:', Res.result.message);
           window.alert("Transaction Fail");
-        }    
-      } 
+        }
+      }
       catch (error) {
         console.error('Error sending transaction:', error);
       }
@@ -71,7 +71,7 @@ export default function QrCode() {
   return (
     <>
       <h1><span>S</span>can and <span>P</span>ay</h1>
-      <div><img src={`images/${add}${amt}qrcode.png`} alt="qrcode" /></div>
+      <div><img src={`images/${add}qrcode.png`} alt="qrcode" /></div>
       <strong>OR</strong>
       <br />
       <p>Data from Payment component:</p>
