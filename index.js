@@ -19,7 +19,7 @@ app.post('/generate-qr', (req, res) => {
   const qrCodeData = `bitcoin:${toAddress}?amount=${amount}`;
 
   qrcode.toFile(
-    path.join(__dirname, '/Frontend' , '/public', '/images', `${toAddress}${amount}qrcode.png`),
+    path.join(__dirname, '/Frontend' , '/public', '/images', `${toAddress}qrcode.png`),
     // path.join(__dirname, '/Frontend', '/public', '/images', `qrcode.png`),
     qrCodeData,
     (err) => {

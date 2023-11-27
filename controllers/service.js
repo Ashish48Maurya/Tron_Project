@@ -110,3 +110,39 @@ exports.sendFunds = async(req,res)=>{
     return res.status(500).json({"msg":`Internal Server Error ${err}`})
   }
 }
+
+exports.getHistory=async(req,res)=>{
+  try{
+    const history = await payment.find({ status: 'pending' });
+    if(!history){
+    return res.status(408).json({"error":"Server Error"})
+    }
+    else{
+    return res.status(200).json({"Payments":history})
+    }
+  }
+  catch(err){
+    return res.status(500).json({"error":`Internal Server Error -> ${err}`})
+  }
+  
+}
+
+
+exports.updatePayment = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedPayment = await payment.findOneAndUpdate(
+      { _id: id },
+      { $set: { status: req.body.status } },
+      { useFindAndModify: false, new: true }
+    );
+
+    if (!updatedPayment) {
+      return res.status(404).json({ "error": "Payment not found" });
+    }
+
+    return res.status(200).json({ "Updated_Payment": updatedPayment });
+  } catch (err) {
+    return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+  }
+};
