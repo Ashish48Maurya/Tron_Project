@@ -1,14 +1,14 @@
-const TronWeb = require('tronweb');
-const HttpProvider = TronWeb.providers.HttpProvider;
-const fullNode = new HttpProvider("https://api.nileex.io");
-const solidityNode = new HttpProvider("https://api.nileex.io");
-const eventServer = new HttpProvider("https://api.nileex.io");
+// const TronWeb = require('tronweb');
+// const HttpProvider = TronWeb.providers.HttpProvider;
+// const fullNode = new HttpProvider("https://api.nileex.io");
+// const solidityNode = new HttpProvider("https://api.nileex.io");
+// const eventServer = new HttpProvider("https://api.nileex.io");
 
 // const privateKey = "cf6a4dcb7a1637885669f0437cfa498eb018a4c2f1ef97028a5bac54b1ce5f35";
 
 // const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
-const tronWeb = new TronWeb(fullNode, solidityNode, eventServer);
-const payment = require('../models/Payment')
+// const tronWeb = new TronWeb(fullNode, solidityNode, eventServer);
+
 // const contractAddress = "TEkKw9cSCpWzK4NuYZYUu7hWYqwdtfmacz";
 
 
@@ -92,6 +92,11 @@ const payment = require('../models/Payment')
 
 
 
+
+const payment = require('../models/Payment')
+const User = require('../models/User')
+const bcrypt = require('bcrypt');
+
 exports.sendFunds = async(req,res)=>{
   const {senderAddress,recipientAddress,amount} = req.body;
   if(!senderAddress || !recipientAddress || !amount){
@@ -147,14 +152,14 @@ exports.updatePayment = async (req, res) => {
   }
 };
 
-exports.logIn = (req, res) => {
+exports.signin = (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(422).json({ error: "Please provide a valid email and password" });
   }
 
-  USER.findOne({ email: email }).then((savedUser) => {
+  User.findOne({ email: email }).then((savedUser) => {
     if (!savedUser) {
       return res.status(422).json({ error: "Invalid email or password" });
     }
@@ -176,7 +181,7 @@ exports.logIn = (req, res) => {
 }
 
 
-exports.signIn =  (req, res) => {
+exports.signup =  (req, res) => {
   const { name, username, email, password } = req.body;
 
   if (!name || !username || !email || !password) {
@@ -184,7 +189,7 @@ exports.signIn =  (req, res) => {
     return res.status(422).json({ error: "Please add all the fields" });
   }
 
-  USER.findOne({ $or: [{ email: email }, { username: username }] })
+  Uint8Arrayser.findOne({ $or: [{ email: email }, { username: username }] })
     .then((savedUser) => {
       if (savedUser) {
         console.log('User already exists! with that username or email');
@@ -192,7 +197,7 @@ exports.signIn =  (req, res) => {
       }
 
       bcrypt.hash(password, 12).then((hashedPassword) => {
-        const user = new USER({
+        const user = new User({
           name,
           username,
           email,

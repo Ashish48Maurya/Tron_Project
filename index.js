@@ -6,8 +6,6 @@ const path = require('path');
 const cors = require('cors');
 const routes = require('./routes/routers');
 const mongoConnect = require('./db');
-const UserModel = require('./model');
-const bcrypt = require('bcrypt');
 
 app.use(express.json());
 app.use(cors());
@@ -33,7 +31,6 @@ app.post('/generate-qr', (req, res) => {
     }
   );
 });
-
 
 mongoConnect("mongodb+srv://Ashish:Ashishmaurya102938@cluster1.f21bdyh.mongodb.net/TronProject").then(() => {
 
