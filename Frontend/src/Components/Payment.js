@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
-
 export default function Payment() {
   const navigate = useNavigate();
   const [amt, setAmt] = useState('');
@@ -26,10 +24,11 @@ export default function Payment() {
         window.alert('Server Error');
         return;
       } else {
+        
         navigate('/qrCode', { state: { amt, add } });
+        
       }
   };
-
   return (
     <>
       <div className="box">
