@@ -102,7 +102,7 @@ app.post("/signin", (req, res) => {
 });
 
 
-mongoConnect("mongodb://localhost:27017/Tron_Project").then(() => {
+mongoConnect("mongodb://127.0.0.1:27017/Tron_Project").then(() => {
   app.listen(port, () => {
     console.log(`Server is listening at http://localhost:${port}`);
   });
