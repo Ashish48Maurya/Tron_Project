@@ -5,7 +5,6 @@ export default function Payment() {
   const navigate = useNavigate();
   const [amt, setAmt] = useState('');
   const [add, setAdd] = useState('');
-  const [Src , setSrc] = useState('');
   const generateQRCode = async () => {
 
     // const data = {
@@ -29,9 +28,6 @@ export default function Payment() {
     // }
 
     const url = await qrCode.toDataURL(`bitcoin:${add}?amount=${amt}`);
-    // console.log("url: ",url)
-    
-    // setSrc(url);
     navigate('/qrCode', { state: { amt, add, src:url } });
   };
   return (
