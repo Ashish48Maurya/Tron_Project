@@ -94,8 +94,8 @@ export default function Admin() {
     return (
         <>
             <h2 className='text-center mt-2'>Admin Panel</h2>
-            <div class="table-responsive mt-5">
-                <table class="table table-bordered border-warning">
+            <div className="table-responsive mt-5">
+                <table className="table table-bordered border-warning">
 
                     <thead>
                         <tr>

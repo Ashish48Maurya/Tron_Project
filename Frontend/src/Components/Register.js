@@ -41,7 +41,7 @@ const Register = () => {
                         notifyA(data.error);
                     } else {
                         notifyB(data.message);
-                        navigate('/signin')
+                        navigate('/')
                     }
                     console.log(data)
                 })

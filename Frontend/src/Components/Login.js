@@ -1,50 +1,77 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate , Link } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const notifyA = (msg) => toast.error(msg);
+    const notifyB = (msg) => toast.success(msg);
+
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    const postData = async () => {
+
+        if (!emailRegex.test(email)) {
+            notifyA("Invalid Email");
+            return;
+        }
+
+        try {
+            fetch("http://localhost:8000/signin", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            }).then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        notifyA(data.error);
+                    } else {
+                        notifyB(data.message);
+                        navigate('/admin')
+                    }
+                    console.log(data)
+                })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
             <div className="box">
-                <div className="styling">
-                    <div className="design one"></div>
-                    <div className="design two"></div>
-                    <div className="design three"></div>
-                    <div className="design four"></div>
-                    <div className="design five"></div>
-                    <div className="design six"></div>
-                    <div className="design seven"></div>
-                    <div className="design eight"></div>
-                    <div className="design nine"></div>
-                </div>
-                <form className="login-form">
+                <div className="login-form">
                     <h3 className="header">LOGIN</h3>
                     <input
-                        className="username"
                         type="text"
-                        placeholder="Enter your username"
+                        placeholder="Enter Email"
+                        name="email"
                         required=""
+                        onChange={(e) => { setEmail(e.target.value) }}
+                        value={email}
                     />
                     <input
-                        className="password"
                         type="password"
-                        placeholder="Enter your password"
+                        placeholder="Enter Password"
+                        name="password"
                         required=""
+                        onChange={(e) => { setPassword(e.target.value) }}
+                        value={password}
                     />
-                    <div className="opts">
-                        <div className="Remember">
-                            <input type="checkbox" name="Remember" id="" />
-                            <label htmlFor="Remember">Remember me</label>
-                        </div>
-                        <a href="#" id="myInput" className="passreset">
-                            Forgot Password ?
-                        </a>
-                    </div>
-                    <button id="submit" href="#">
+                    <button type="submit" id="login-btn" onClick={() => { postData() }} value="Sign In">
                         Login
                     </button>
-                    <a href="register.html" className="reglink">
+                    <Link to="/register" className="reglink">
                         New User ? Register Here
-                    </a>
-                </form>
+                    </Link>
+                </div>
             </div>
 
         </>
