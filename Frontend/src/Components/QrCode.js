@@ -2,7 +2,8 @@ import { useLocation , Link } from 'react-router-dom';
 
 export default function QrCode() {
   const location = useLocation();
-  const { amt, add } = location.state;
+  const { amt, add, src } = location.state;
+  console.log(location.state)
 
   const serviceProviderWalletAddress = "TUo8aox2FS2EygQ25cVdq5tEZQVr9eGXJo"
 
@@ -71,7 +72,7 @@ export default function QrCode() {
       <p>Amount to be sent : {amt}TRX</p>
       <p>Sender's Account : {add}</p>
       <h1><span>S</span>can and <span>P</span>ay</h1>
-      <div><img src={`images/${add}qrcode.png`} alt="qrcode" /></div>
+      <div><img src={src} alt="qrcode" /></div>
       <strong>OR</strong>
       <br />
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
