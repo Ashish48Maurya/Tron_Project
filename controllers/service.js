@@ -189,7 +189,7 @@ exports.signup =  (req, res) => {
     return res.status(422).json({ error: "Please add all the fields" });
   }
 
-  Uint8Arrayser.findOne({ $or: [{ email: email }, { username: username }] })
+  User.findOne({ $or: [{ email: email }, { username: username }] })
     .then((savedUser) => {
       if (savedUser) {
         console.log('User already exists! with that username or email');

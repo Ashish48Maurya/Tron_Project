@@ -6,7 +6,6 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-    //Toast functions
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
 
