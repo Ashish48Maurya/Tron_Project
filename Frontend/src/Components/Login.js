@@ -1,24 +1,18 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate , Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
+
 
 const Login = () => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
+    const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
 
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
     const postData = async () => {
-
-        if (!emailRegex.test(email)) {
-            notifyA("Invalid Email");
-            return;
-        }
-
         try {
             fetch("http://localhost:8000/signin", {
                 method: "post",
@@ -26,7 +20,7 @@ const Login = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    email: email,
+                    username: username,
                     password: password
                 })
             }).then(res => res.json())
@@ -45,37 +39,52 @@ const Login = () => {
     }
 
     return (
-        <>
-            <div className="box">
-                <div className="login-form">
-                    <h3 className="header">LOGIN</h3>
-                    <input
-                        type="text"
-                        placeholder="Enter Email"
-                        name="email"
-                        required=""
-                        onChange={(e) => { setEmail(e.target.value) }}
-                        value={email}
-                    />
-                    <input
-                        type="password"
-                        placeholder="Enter Password"
-                        name="password"
-                        required=""
-                        onChange={(e) => { setPassword(e.target.value) }}
-                        value={password}
-                    />
-                    <button type="submit" id="login-btn" onClick={() => { postData() }} value="Sign In">
-                        Login
-                    </button>
-                    <Link to="/register" className="reglink">
-                        New User ? Register Here
-                    </Link>
+
+        <div className="container">
+            <div className="row d-flex">
+                <div className="col-lg-6 col-md-8 col-sm-12">
+                    <div className="left">
+                        <img
+                            src="images/login.png"
+                            alt="login"
+                            className="img-fluid"
+                        />
+                    </div>
+                </div>
+                <div className="col-lg-6 col-md-8 col-sm-12">
+                    <div className="right" >
+                        <div className="login-form">
+                            <h3 className="header">LOGIN</h3>
+                            <input
+                                type="text"
+                                placeholder="Enter Username"
+                                name="username"
+                                required=""
+                                onChange={(e) => { setUserName(e.target.value) }}
+                                value={username}
+                            />
+                            <input
+                                type="password"
+                                placeholder="Enter Password"
+                                name="password"
+                                required=""
+                                onChange={(e) => { setPassword(e.target.value) }}
+                                value={password}
+                            />
+                            <Button variant="contained" color="primary" onClick={postData}>
+                                Log In
+                            </Button>
+                            <Link to="/register" className="reglink">
+                                Sign Up
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-        </>
     )
 }
 
 export default Login;
+

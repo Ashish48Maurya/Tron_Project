@@ -12,4 +12,7 @@ router.get('/payment_history_serviceProvider', service.getHistory);
 router.put('/update_payment_serviceProvider/:id', service.updatePayment)
 router.post('/register', service.signup)
 router.post('/signin', service.signin)
+// router.get('/username', service.username)
+// router.get('/phrase', service.phrase)
+
 module.exports = router;

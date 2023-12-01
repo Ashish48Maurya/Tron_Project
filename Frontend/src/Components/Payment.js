@@ -7,28 +7,8 @@ export default function Payment() {
   const [add, setAdd] = useState('');
   const generateQRCode = async () => {
 
-    // const data = {
-    //   toAddress: add,
-    //   amount: amt
-    // };
-
-    // const res = await fetch('http://localhost:8000/generate-qr', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // });
-
-    // if (res.status === 500) {
-    //   window.alert('Server Error');
-    //   return;
-    // } else {
-    //     navigate('/qrCode', { state: { amt, add } });
-    // }
-
-    const url = await qrCode.toDataURL(`bitcoin:${add}?amount=${amt}`);
-    navigate('/qrCode', { state: { amt, add, src:url } });
+    const url = await qrCode.toDataURL(`tronlink://send?amount=${amt}&address=${add}`);
+    navigate('/qrCode', { state: { amt, add, src: url } });
   };
   return (
     <>
