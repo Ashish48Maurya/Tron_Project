@@ -69,9 +69,9 @@ export default function QrCode() {
 
   return (
     <>
+      <h1><span>S</span>can and <span>P</span>ay</h1>
       <p>Amount to be sent : {amt}TRX</p>
       <p>Sender's Account : {add}</p>
-      <h1><span>S</span>can and <span>P</span>ay</h1>
       <div><img src={src} alt="qrcode" /></div>
       <strong>OR</strong>
       <br />
