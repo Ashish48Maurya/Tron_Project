@@ -6,29 +6,19 @@ const path = require('path');
 const cors = require('cors');
 const routes = require('./routes/routers');
 const mongoConnect = require('./db');
+const { generateUsername } = require("unique-username-generator");
+
+
 
 app.use(express.json());
 app.use(cors());
 app.use(routes);
 
-// app.post('/generate-qr', (req, res) => {
-//   const toAddress = req.body.toAddress;
-//   const amount = (req.body.amount) * 1e6;
-//   const qrCodeData = `bitcoin:${toAddress}?amount=${amount}`;
 
-//   qrcode.toFile(
-//     path.join(__dirname, '/Frontend', '/public', '/images', `${toAddress}qrcode.png`),
-//     // path.join(__dirname, '/Frontend', '/public', '/images', `qrcode.png`),
-//     qrCodeData,
-//     (err) => {
-//       if (err) {
-//         res.status(500).send('Error generating QR code');
-//       } else {
-//         res.status(200).send('QR code generated and saved in the public directory');
-//       }
-//     }
-//   );
-// });
+app.get('/username', (req, res) => {
+  const username = generateUsername();
+  return res.status(200).json({username});
+})
 
 mongoConnect("mongodb+srv://Ashish:Ashishmaurya102938@cluster1.f21bdyh.mongodb.net/TronProject").then(() => {
 

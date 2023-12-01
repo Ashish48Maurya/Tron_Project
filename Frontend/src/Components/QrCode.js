@@ -1,11 +1,11 @@
 import { useLocation , Link } from 'react-router-dom';
-
+import {Web3} from 'web3'
 export default function QrCode() {
   const location = useLocation();
   const { amt, add, src } = location.state;
   console.log(location.state)
 
-  const serviceProviderWalletAddress = "TUo8aox2FS2EygQ25cVdq5tEZQVr9eGXJo"
+  const serviceProviderWalletAddress = "TPhjcXiHnF4oc7cdPmC5VyFqi99gDTCU4z"
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -16,10 +16,10 @@ export default function QrCode() {
         const Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
 
         if (Res.result) {
-          // const transactionId = Res.result.transactionId;
+          const transactionId = await Res.transaction.txID;
 
-          // const transactionReceipt = await window.tronWeb.trx.getTransactionInfo(transactionId);
-          // console.log("Trans: ",transactionReceipt);
+              const transactionReceipt = await window.tronWeb.trx.getTransactionInfo(transactionId);
+              console.log("Trans: ",transactionReceipt);
 
           // const blockHash = transactionReceipt.blockHash;
           // const fee = transactionReceipt.fee;
@@ -30,8 +30,6 @@ export default function QrCode() {
             senderAddress: window.tronWeb.defaultAddress.base58,
             recipientAddress: toAddress,
             amount: amt
-            // blockHash,
-            // fee
           };
           console.log(transactionDetails);
           const {senderAddress , recipientAddress, amount} = transactionDetails;
@@ -67,6 +65,36 @@ export default function QrCode() {
   };
 
 
+  const openMetamaskWallet = async () => {
+    try {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts"
+        });
+  
+        const fromAddress = accounts[0];
+        const transaction = {
+          from: fromAddress,
+          to: '0x6f1DF96865D09d21e8f3f9a7fbA3b17A11c7C53C',
+          value: '0x1'
+        };
+  
+        const receipt = await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [transaction]
+        });
+  
+        console.log("Transaction Receipt:", receipt);
+  
+      } else {
+        alert('Please install and log in to MetaMask wallet to initiate the transaction.');
+      }
+    } catch (error) {
+      window.alert(`Error sending transaction: ${error.message}`);
+    }
+  };
+  
+
   return (
     <>
       <h1><span>S</span>can and <span>P</span>ay</h1>
@@ -76,7 +104,7 @@ export default function QrCode() {
       <strong>OR</strong>
       <br />
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
-      <Link to='/payment'>Home</Link>
+      <button onClick={openMetamaskWallet}>Pay Using Tronlink</button>
     </>
   )
 }
