@@ -71,12 +71,15 @@ const Login = () => {
                                 onChange={(e) => { setPassword(e.target.value) }}
                                 value={password}
                             />
+                            <div className='btn-login-grp'>
                             <Button variant="contained" color="primary" onClick={postData}>
                                 Log In
-                            </Button>
+                                </Button>
+
                             <Link to="/register" className="reglink">
                                 Sign Up
                             </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,4 +90,3 @@ const Login = () => {
 }
 
 export default Login;
-

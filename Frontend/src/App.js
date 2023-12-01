@@ -11,14 +11,14 @@ function App() {
 
   return (
     <>
-      <Routes>
-        <Route exact path='/admin' element={<Admin />} />
-        <Route exact path='/payment' element={<Payment />} />
-        <Route exact path='/qrCode' element={<QrCode />} />
-        <Route exact path='/register' element={<Register />} />
-        <Route exact path='/' element={<Login />} />
-      </Routes>
-      <ToastContainer />
+        <Routes>
+          <Route exact path='/admin' element={<Admin />} />
+          <Route exact path='/payment' element={<Payment />} />
+          <Route exact path='/qrCode' element={<QrCode />} />
+          <Route exact path='/register' element={<Register />} />
+          <Route exact path='/' element={<Login />} />
+        </Routes>
+        <ToastContainer />
     </>
   );
 }

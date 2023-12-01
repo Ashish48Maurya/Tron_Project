@@ -133,3 +133,21 @@ hr {
   border: 1px solid #f1f1f1;
   margin-bottom: 25px;
 }
+
+.login-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-form a , .login-form button {
+  margin: 20px;
+  width: 200px;
+}
+
+.btn-login-grp{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
