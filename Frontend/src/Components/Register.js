@@ -182,14 +182,15 @@ export default function Register() {
                                 />
                             </Grid>
                         </Grid>
-                        <Button
+                        <Link
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            a='/'
                         >
                             Sign Up
-                        </Button>
+                        </Link>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link href="#" variant="body2">

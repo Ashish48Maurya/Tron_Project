@@ -37,17 +37,11 @@ export default function Login() {
 
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
-
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
     const postData = async () => {
-
-        if (!emailRegex.test(email)) {
-            notifyA("Invalid Email");
-            return;
-        }
-        else if (!passRege.test(password)) {
+        
+        if (!passRege.test(password)) {
             notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
         }
@@ -59,8 +53,6 @@ export default function Login() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    name: name,
-                    email: email,
                     username: username,
                     password: password
                 })
@@ -70,7 +62,7 @@ export default function Login() {
                         notifyA(data.error);
                     } else {
                         notifyB(data.message);
-                        navigate('/')
+                        navigate('/admin');
                     }
                     console.log(data)
                 })
@@ -79,8 +71,6 @@ export default function Login() {
         }
     }
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -107,11 +97,11 @@ export default function Login() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
                             autoFocus
+                            onChange={(e) => { setUserName(e.target.value) }}
+                            value={username}
                         />
                         <TextField
                             margin="normal"
@@ -122,6 +112,8 @@ export default function Login() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={(e) => { setPassword(e.target.value) }}
+                            value={password}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
@@ -142,7 +134,7 @@ export default function Login() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="/register" variant="body2">
+                                <Link href="/" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
