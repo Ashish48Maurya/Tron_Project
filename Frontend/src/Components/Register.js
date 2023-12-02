@@ -182,6 +182,7 @@ export default function Register() {
                                 />
                             </Grid> */}
                             </Grid>
+<<<<<<< HEAD
                             <Button
                                 type="submit"
                                 fullWidth
@@ -200,6 +201,23 @@ export default function Register() {
                                         Already have an account? Sign in
                                     </NavLink>
                                 </Grid>
+=======
+                        </Grid>
+                        <Link
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            a='/'
+                        >
+                            Sign Up
+                        </Link>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item>
+                                <Link href="#" variant="body2">
+                                    Already have an account? Sign in
+                                </Link>
+>>>>>>> 12d7052c689bc7a3879b4ab5cc2a1395d59d7496
                             </Grid>
                         </Box>
                     </Box>

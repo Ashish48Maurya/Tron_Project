@@ -123,3 +123,25 @@ exports.signup =  (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     });
 }
+
+exports.forgotpassword = async (req, res) => {
+  const { phrase } = req.body;
+
+  if (!phrase) {
+    return res.status(422).json({ error: "Please provide a valid phrase" });
+  }
+
+  try {
+    const user = await User.findOne({ phrase });
+
+    if (!user) {
+      return res.status(422).json({ error: "Invalid phrase" });
+    }
+    
+    res.json({message: "Phrase verification successful"});
+  } catch (error) {
+    
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

@@ -6,6 +6,7 @@ import Login from "./Components/Login";
 import Register from "./Components/Register";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Forgotpassword from "./Components/Forgotpassword";
 
 function App() {
 
@@ -16,7 +17,8 @@ function App() {
           <Route exact path='/payment' element={<Payment />} />
           <Route exact path='/qrCode' element={<QrCode />} />
           <Route exact path='/register' element={<Register />} />
-          <Route exact path='/' element={<Login />} />
+        <Route exact path='/' element={<Login />} />
+        <Route exact path='/forgotpassword' element={<Forgotpassword />} />
         </Routes>
         <ToastContainer />
     </>
