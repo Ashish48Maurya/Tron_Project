@@ -30,7 +30,6 @@ export default function Admin() {
                 },
                 body: JSON.stringify({ status: "completed" }),
             })
-            console.log("Res: ", response)
             if (response.status === 200) {
                 const updatedPayment = await response.json();
                 console.log(updatedPayment);

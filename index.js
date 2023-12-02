@@ -17,7 +17,7 @@ app.use(routes);
 
 app.get('/username', (req, res) => {
   const username = generateUsername();
-  return res.status(200).json({username});
+  return res.status(200).json({ username });
 })
 
 mongoConnect("mongodb+srv://Ashish:Ashishmaurya102938@cluster1.f21bdyh.mongodb.net/TronProject").then(() => {
