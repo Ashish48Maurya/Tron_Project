@@ -1,18 +1,57 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import { useNavigate, Link } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
+function Copyright(props) {
+    return (
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+            {'Copyright © '}
+            <Link color="inherit" href="https://mui.com/">
+                Your Website
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
 
-const Login = () => {
+// TODO remove, this demo shouldn't need to reset the theme.
+
+const defaultTheme = createTheme();
+
+export default function Login() {
     const navigate = useNavigate();
-    const [username, setUserName] = useState("");
-    const [password, setPassword] = useState("");
 
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
 
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+
     const postData = async () => {
+
+        if (!emailRegex.test(email)) {
+            notifyA("Invalid Email");
+            return;
+        }
+        else if (!passRege.test(password)) {
+            notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+            return;
+        }
+
         try {
             fetch("http://localhost:8000/signin", {
                 method: "post",
@@ -20,6 +59,8 @@ const Login = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    name: name,
+                    email: email,
                     username: username,
                     password: password
                 })
@@ -29,7 +70,7 @@ const Login = () => {
                         notifyA(data.error);
                     } else {
                         notifyB(data.message);
-                        navigate('/admin')
+                        navigate('/')
                     }
                     console.log(data)
                 })
@@ -38,55 +79,78 @@ const Login = () => {
         }
     }
 
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [username, setUserName] = useState("");
+    const [password, setPassword] = useState("");
+
     return (
-
-        <div className="container">
-            <div className="row d-flex">
-                <div className="col-lg-6 col-md-8 col-sm-12">
-                    <div className="left">
-                        <img
-                            src="images/login.png"
-                            alt="login"
-                            className="img-fluid"
+        <ThemeProvider theme={defaultTheme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <Box component="form" onSubmit={postData} sx={{ mt: 1 }}>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
                         />
-                    </div>
-                </div>
-                <div className="col-lg-6 col-md-8 col-sm-12">
-                    <div className="right" >
-                        <div className="login-form">
-                            <h3 className="header">LOGIN</h3>
-                            <input
-                                type="text"
-                                placeholder="Enter Username"
-                                name="username"
-                                required=""
-                                onChange={(e) => { setUserName(e.target.value) }}
-                                value={username}
-                            />
-                            <input
-                                type="password"
-                                placeholder="Enter Password"
-                                name="password"
-                                required=""
-                                onChange={(e) => { setPassword(e.target.value) }}
-                                value={password}
-                            />
-                            <div className='btn-login-grp'>
-                            <Button variant="contained" color="primary" onClick={postData}>
-                                Log In
-                                </Button>
-
-                            <Link to="/register" className="reglink">
-                                Sign Up
-                            </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    )
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary" />}
+                            label="Remember me"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign In
+                        </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="#" variant="body2">
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link href="/register" variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
+                <Copyright sx={{ mt: 8, mb: 4 }} />
+            </Container>
+        </ThemeProvider>
+    );
 }
-
-export default Login;
