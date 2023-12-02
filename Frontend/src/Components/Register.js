@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { generate, count } from "random-words";
+import { generate } from "random-words";
 
 function Copyright(props) {
     return (
@@ -30,7 +30,6 @@ function Copyright(props) {
     );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
@@ -48,6 +47,7 @@ export default function Register() {
         if (!username || !password || !phrase) {
             return notifyA("All Fields Are Required!!!");
         }
+
         else if (!passRege.test(password)) {
             notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
@@ -72,10 +72,11 @@ export default function Register() {
                     console.log(response);
                     notifyA("Registration Successfull !!!");
                     navigate("/");
+                    navigate("/");
                 } else {
                     return notifyB("Server Error");
                 }
-            } 
+            }
             catch (error) {
                 notifyB(error);
             }
@@ -180,12 +181,6 @@ export default function Register() {
                                         value={password}
                                     />
                                 </Grid>
-                                {/* <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="I want to receive inspiration, marketing promotions and updates via email."
-                                />
-                            </Grid> */}
                             </Grid>
                             <Button
                                 type="submit"
