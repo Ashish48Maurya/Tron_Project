@@ -110,7 +110,7 @@ exports.signup =  (req, res) => {
 
         user.save()
           .then(user => {
-            res.json({ message: "Registered Successfully" });
+            res.status(200).json({ message: "Registered Successfully" });
           })
           .catch(err => {
             console.log(err);
