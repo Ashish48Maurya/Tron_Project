@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -36,7 +34,6 @@ export default function Login() {
 
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
-<<<<<<< HEAD
 
     const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
@@ -46,13 +43,6 @@ export default function Login() {
             return notifyA("All Fields Are Required");
         }
         else if (!passRege.test(password)) {
-=======
-    const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-
-    const postData = async () => {
-        
-        if (!passRege.test(password)) {
->>>>>>> 12d7052c689bc7a3879b4ab5cc2a1395d59d7496
             notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
         }
@@ -108,14 +98,9 @@ export default function Login() {
                             margin="normal"
                             required
                             fullWidth
-<<<<<<< HEAD
                             id="email"
                             label="Username"
                             name="username"
-=======
-                            id="username"
-                            label="Username"
->>>>>>> 12d7052c689bc7a3879b4ab5cc2a1395d59d7496
                             autoFocus
                             onChange={(e) => { setUserName(e.target.value) }}
                             value={username}
@@ -143,20 +128,12 @@ export default function Login() {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-<<<<<<< HEAD
                                 <NavLink to="#" variant="body2">
-=======
-                                <Link href="/forgotpassword" variant="body2">
->>>>>>> 12d7052c689bc7a3879b4ab5cc2a1395d59d7496
                                     Forgot password?
                                 </NavLink>
                             </Grid>
                             <Grid item>
-<<<<<<< HEAD
                                 <NavLink to="/register" variant="body2">
-=======
-                                <Link href="/" variant="body2">
->>>>>>> 12d7052c689bc7a3879b4ab5cc2a1395d59d7496
                                     {"Don't have an account? Sign Up"}
                                 </NavLink>
                             </Grid>

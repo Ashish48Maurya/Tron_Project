@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -12,7 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { generate, count } from "random-words";
+import { generate } from "random-words";
 
 function Copyright(props) {
     return (
@@ -27,7 +26,6 @@ function Copyright(props) {
     );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
@@ -43,6 +41,7 @@ export default function Register() {
         if (!username || !password || !phrase) {
             return notifyA("All Fields Are Required!!!");
         }
+
         else if (!passRege.test(password)) {
             notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
@@ -64,13 +63,12 @@ export default function Register() {
                 });
 
                 if (response.status === 200) {
-                    console.log(response);
-                    navigate("/");
                     notifyA("Registration Successfull !!!");
+                    navigate("/");
                 } else {
                     return notifyB("Server Error");
                 }
-            } 
+            }
             catch (error) {
                 notifyB(error);
             }
@@ -175,14 +173,7 @@ export default function Register() {
                                         value={password}
                                     />
                                 </Grid>
-                                {/* <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="I want to receive inspiration, marketing promotions and updates via email."
-                                />
-                            </Grid> */}
                             </Grid>
-<<<<<<< HEAD
                             <Button
                                 type="submit"
                                 fullWidth
@@ -201,23 +192,6 @@ export default function Register() {
                                         Already have an account? Sign in
                                     </NavLink>
                                 </Grid>
-=======
-                        </Grid>
-                        <Link
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            a='/'
-                        >
-                            Sign Up
-                        </Link>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
->>>>>>> 12d7052c689bc7a3879b4ab5cc2a1395d59d7496
                             </Grid>
                         </Box>
                     </Box>
