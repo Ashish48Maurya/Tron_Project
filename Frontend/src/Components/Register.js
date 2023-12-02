@@ -35,7 +35,9 @@ const defaultTheme = createTheme();
 
 export default function Register() {
     const navigate = useNavigate();
-
+    const [username, setUserName] = useState("");
+    const [password, setPassword] = useState("");
+    const [phrase, setPhrase] = useState("");
     //Toast functions
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
@@ -101,9 +103,7 @@ export default function Register() {
             setPhrase(phrase);
         }
 
-        const [username, setUserName] = useState("");
-        const [password, setPassword] = useState("");
-        const [phrase, setPhrase] = useState("");
+        
 
         return (
             <ThemeProvider theme={defaultTheme}>
