@@ -73,19 +73,18 @@ exports.signin = (req, res) => {
     bcrypt.compare(password, savedUser.password).then((isMatch) => {
       if (isMatch) {
         // Generate JWT token
-        const token = jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET);
-        res.json({ message: "Login successful", token: token });
-      } else {
-        res.status(422).json({ error: "Invalid username or password" });
+        // const token = jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET);
+        // res.json({ message: "Login successful", token: token });
+        res.status(200).json({ message: "Login successful"});
+      }
+      else{
+        res.status(404).json({ error: "Invalid Credentials!!!"});
       }
     }).catch(err => {
       console.log(err);
       res.status(500).json({ error: "Internal server error" });
     });
-  }).catch(err => {
-    console.log(err);
-    res.status(500).json({ error: "Internal server error" });
-  });
+})
 };
 
 
@@ -112,8 +111,9 @@ exports.signup = (req, res) => {
         });
         user.save().then(user => {
           // Generate JWT token
-          const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-          res.json({ message: "Registered Successfully", token: token });
+          // const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+          // res.json({ message: "Registered Successfully", token: token });
+          res.json({ message: "Registered Successfully"});
         })
           .catch(err => {
             console.log(err);
@@ -160,7 +160,8 @@ try{
   const id = req.params.id;
   
   //Logic For Hashing
-    const makeUpdate = await User.findByIdAndUpdate(id, {password: hashedPassword}, { useFindAndModify: false, new: true });
+    // const makeUpdate = await User.findByIdAndUpdate(id, {password: hashedPassword}, { useFindAndModify: false, new: true });
+    const makeUpdate = await User.findByIdAndUpdate(id, req.body, { useFindAndModify: false, new: true });
 
   if (!makeUpdate) {
       return res.status(404).send("User Not Found");

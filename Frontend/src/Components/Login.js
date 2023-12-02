@@ -35,7 +35,6 @@ export default function Login() {
 
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
-    const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -43,13 +42,12 @@ export default function Login() {
     const postData = async (event) => {
         event.preventDefault();
 
-        if (!passRege.test(password)) {
-            notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
-            return;
+        if(!password || !username){
+            return notifyA("All Fields are Required!!!")
         }
 
         try {
-            fetch("http://localhost:8000/signin", {
+            const response = await fetch("http://localhost:8000/signin", {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
@@ -58,16 +56,14 @@ export default function Login() {
                     username: username,
                     password: password
                 })
-            }).then(res => res.json())
-                .then(data => {
-                    if (data.error) {
-                        notifyA(data.error);
-                    } else {
-                        notifyB(data.message);
-                        navigate('/payment');
-                    }
-                    console.log(data)
-                })
+            })
+            if(response.status===200){
+                notifyB("Login Successfull");
+                navigate('/payment');
+            }    
+            else{
+                return notifyA("Invalid Credentials!!!")
+            }
         } catch (error) {
             console.log(error);
         }
@@ -131,6 +127,11 @@ export default function Login() {
                                     Forgot password?
                                 </NavLink>
                             </Grid>
+                        </Grid>
+                        <Grid item>
+                                <NavLink to="/register" variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </NavLink>
                         </Grid>
                     </Box>
                 </Box>

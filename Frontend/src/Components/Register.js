@@ -69,14 +69,14 @@ export default function Register() {
 
                 if (response.status === 200) {
                     console.log(response);
-                    notifyA("Registration Successfull !!!");
+                    notifyB("Registration Successfull !!!");
                     navigate("/");
                 } else {
-                    return notifyB("Server Error");
+                    return notifyA("Username Already Exist!!!");
                 }
             }
             catch (error) {
-                notifyB(error);
+                notifyA(error);
             }
         }
 
