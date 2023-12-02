@@ -37,7 +37,8 @@ export default function Register() {
     const notifyB = (msg) => toast.success(msg);
     const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
-    const postData = async () => {
+    const postData = async (e) => {
+        e.preventDefault();
         if (!username || !password || !phrase) {
             return notifyA("All Fields Are Required!!!");
         }

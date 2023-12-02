@@ -35,16 +35,10 @@ export default function Login() {
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
 
-    const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-
-    const postData = async () => {
-
+    const postData = async (e) => {
+        e.preventDefault();
         if(!username || !password){
             return notifyA("All Fields Are Required");
-        }
-        else if (!passRege.test(password)) {
-            notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
-            return;
         }
 
         try {
@@ -63,7 +57,7 @@ export default function Login() {
                         notifyA(data.error);
                     } else {
                         notifyB(data.message);
-                        navigate('/admin');
+                        navigate('/payment')
                     }
                     console.log(data)
                 })
@@ -93,7 +87,7 @@ export default function Login() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={postData} sx={{ mt: 1 }}>
+                    <Box component="form" sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
@@ -122,13 +116,13 @@ export default function Login() {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
-                            onClick={() => navigate('/payment')}
+                            onClick={postData}
                         >
                             Sign In
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <NavLink to="#" variant="body2">
+                                <NavLink to="/forgotpassword" variant="body2">
                                     Forgot password?
                                 </NavLink>
                             </Grid>

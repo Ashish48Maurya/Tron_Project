@@ -41,6 +41,13 @@ body {
   text-align: left;
 }
 
+.d-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 h3 {
   font-size: 25px;
 }
@@ -65,4 +72,10 @@ button {
   cursor: pointer;
   text-decoration: none;
   margin: 0 10px;
+}
+
+
+input{
+  border: 2px solid black;
+  width: 50%;
 }

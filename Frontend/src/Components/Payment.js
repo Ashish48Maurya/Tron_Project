@@ -6,7 +6,9 @@ export default function Payment() {
   const [amt, setAmt] = useState('');
   const [add, setAdd] = useState('');
   const generateQRCode = async () => {
-
+    if(!amt || !add){
+      return window.alert("All Fields Are Required!");
+    }
     const url = await qrCode.toDataURL(`tronlink://send?amount=${amt}&address=${add}`);
     navigate('/qrCode', { state: { amt, add, src: url } });
   };

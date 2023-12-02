@@ -138,10 +138,37 @@ exports.forgotpassword = async (req, res) => {
       return res.status(422).json({ error: "Invalid phrase" });
     }
     
-    res.json({message: "Phrase verification successful"});
+    res.status(200).json({message: "Phrase verification successful" , "_id":user._id});
   } catch (error) {
     
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.verify = async (req,res)=>{
+  if (!req.body) {
+    return res.status(400).send({ "error": "Content cannot be empty!!!" });
+}
+const password = req.body;
+if (!password) {
+  return res.status(422).json({ error: "Provide Password Please" });
+}
+try{
+  const id = req.params.id;
+  
+  //Logic For Hashing
+    const makeUpdate = await User.findByIdAndUpdate(id, {password: hashedPassword}, { useFindAndModify: false, new: true });
+
+  if (!makeUpdate) {
+      return res.status(404).send("User Not Found");
+  }
+  else{
+    return res.status(200).json({message:"Password Changed Successfully!!!" , "user":makeUpdate })
+  }
+}
+catch(err){
+  console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+}
+}

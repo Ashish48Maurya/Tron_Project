@@ -13,6 +13,7 @@ router.put('/update_payment_serviceProvider/:id', service.updatePayment)
 router.post('/register', service.signup)
 router.post('/signin', service.signin)
 router.post('/forgotpassword', service.forgotpassword)
+router.put('/verify/:id', service.verify)
 // router.get('/username', service.username)
 // router.get('/phrase', service.phrase)
 
