@@ -1,6 +1,7 @@
 const payment = require('../models/Payment')
 const User = require('../models/User')
 const bcrypt = require('bcrypt');
+// const jwt = require('jsonwebtoken');
 
 exports.sendFunds = async(req,res)=>{
   const {senderAddress,recipientAddress,amount} = req.body;
@@ -64,16 +65,18 @@ exports.signin = (req, res) => {
     return res.status(422).json({ error: "Please provide a valid username and password" });
   }
 
-  User.findOne({ username }).then((savedUser) => {
+  User.findOne({ username: username }).then((savedUser) => {
     if (!savedUser) {
       return res.status(422).json({ error: "Invalid username or password" });
     }
 
     bcrypt.compare(password, savedUser.password).then((isMatch) => {
       if (isMatch) {
-        res.json({ message: "Login successful" });
+        // Generate JWT token
+        const token = jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET);
+        res.json({ message: "Login successful", token: token });
       } else {
-        res.status(422).json({ error: "Invalid email or password" });
+        res.status(422).json({ error: "Invalid username or password" });
       }
     }).catch(err => {
       console.log(err);
@@ -83,46 +86,46 @@ exports.signin = (req, res) => {
     console.log(err);
     res.status(500).json({ error: "Internal server error" });
   });
-}
+};
 
 
-exports.signup =  (req, res) => {
-  const {username, phrase, password } = req.body;
+exports.signup = (req, res) => {
+  const { username, phrase, password } = req.body;
 
   if (!username || !phrase || !password) {
     console.log('Please add all the fields');
     return res.status(422).json({ error: "Please add all the fields" });
   }
 
-  User.findOne({ username: username })
+  User.findOne({ $or: [{ phrase: phrase }, { username: username }] })
     .then((savedUser) => {
       if (savedUser) {
-        console.log('User already exists! with that username');
-        return res.status(422).json({ error: "User already exists! with that username" });
+        console.log('User already exists! with that username or email');
+        return res.status(422).json({ error: "User already exists! with that username or email" });
       }
 
       bcrypt.hash(password, 12).then((hashedPassword) => {
         const user = new User({
           username,
-          password: hashedPassword,
           phrase,
+          password: hashedPassword
         });
-
-        user.save()
-          .then(user => {
-            res.status(200).json({ message: "Registered Successfully" });
-          })
+        user.save().then(user => {
+          // Generate JWT token
+          const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+          res.json({ message: "Registered Successfully", token: token });
+        })
           .catch(err => {
             console.log(err);
             res.status(500).json({ error: "Internal server error" });
-          })
-      });
+          });
+      }); // <-- Added closing parenthesis here
     })
     .catch(err => {
       console.log(err);
       res.status(500).json({ error: "Internal server error" });
     });
-}
+};
 
 exports.forgotpassword = async (req, res) => {
   const { phrase } = req.body;
@@ -140,7 +143,6 @@ exports.forgotpassword = async (req, res) => {
     
     res.status(200).json({message: "Phrase verification successful" , "_id":user._id});
   } catch (error) {
-    
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }

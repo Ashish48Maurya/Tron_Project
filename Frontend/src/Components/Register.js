@@ -3,6 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -17,6 +18,9 @@ function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
+            <Link color="inherit" href="https://mui.com/">
+                payonweb
+            </Link>{' '}
             <NavLink color="inherit" to="https://mui.com/">
                 Your Website
             </NavLink>{' '}
@@ -37,8 +41,8 @@ export default function Register() {
     const notifyB = (msg) => toast.success(msg);
     const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
-    const postData = async (e) => {
-        e.preventDefault();
+    const postData = async (event) => {
+        event.preventDefault();
         if (!username || !password || !phrase) {
             return notifyA("All Fields Are Required!!!");
         }
@@ -64,6 +68,7 @@ export default function Register() {
                 });
 
                 if (response.status === 200) {
+                    console.log(response);
                     notifyA("Registration Successfull !!!");
                     navigate("/");
                 } else {
@@ -118,7 +123,7 @@ export default function Register() {
                         <Typography component="h1" variant="h5">
                             Sign up
                         </Typography>
-                        <Box component="form" noValidate sx={{ mt: 3 }}>
+                        <Box component="form" onSubmit={postData} noValidate sx={{ mt: 3 }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
@@ -180,24 +185,20 @@ export default function Register() {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
-                                onClick={postData}
                             >
                                 Sign Up
                             </Button>
-
-
-
-                            <Grid container justifyContent="flex-end">
-                                <Grid item>
-                                    <NavLink variant="body2" to="/">
-                                        Already have an account? Sign in
-                                    </NavLink>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </Box>
-                    <Copyright sx={{ mt: 5 }} />
-                </Container>
-            </ThemeProvider>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item>
+                                <NavLink to="/" variant="body2">
+                                    Already have an account? Sign in
+                                </NavLink>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Box>
+            <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
+        </ThemeProvider >
         );
     }

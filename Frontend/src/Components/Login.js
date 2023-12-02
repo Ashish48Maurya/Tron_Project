@@ -3,6 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -16,9 +17,9 @@ function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <NavLink color="inherit" to="https://mui.com/">
-                Your Website
-            </NavLink>{' '}
+            <Link color="inherit" href="https://mui.com/">
+                payonweb
+            </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
@@ -34,11 +35,17 @@ export default function Login() {
 
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
+    const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+    const [username, setUserName] = useState("");
+    const [password, setPassword] = useState("");
 
-    const postData = async (e) => {
-        e.preventDefault();
-        if(!username || !password){
-            return notifyA("All Fields Are Required");
+
+    const postData = async (event) => {
+        event.preventDefault();
+
+        if (!passRege.test(password)) {
+            notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+            return;
         }
 
         try {
@@ -57,7 +64,7 @@ export default function Login() {
                         notifyA(data.error);
                     } else {
                         notifyB(data.message);
-                        navigate('/payment')
+                        navigate('/payment');
                     }
                     console.log(data)
                 })
@@ -66,8 +73,6 @@ export default function Login() {
         }
     }
 
-    const [username, setUserName] = useState("");
-    const [password, setPassword] = useState("");
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -124,11 +129,6 @@ export default function Login() {
                             <Grid item xs>
                                 <NavLink to="/forgotpassword" variant="body2">
                                     Forgot password?
-                                </NavLink>
-                            </Grid>
-                            <Grid item>
-                                <NavLink to="/register" variant="body2">
-                                    {"Don't have an account? Sign Up"}
                                 </NavLink>
                             </Grid>
                         </Grid>
