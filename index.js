@@ -2,18 +2,18 @@ require('dotenv').config()
 const express = require('express');
 const app = express();
 const port = 8000;
-const cors = require('cors');
 const routes = require('./routes/routers');
 const mongoConnect = require('./db');
 const { generateUsername } = require("unique-username-generator");
 const cookieParser = require('cookie-parser');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-app.use(express.json());
 app.use(cors());
-app.use(routes);
+app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(routes);
 
 app.get('/username', (req, res) => {
   const username = generateUsername();
