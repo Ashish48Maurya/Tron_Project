@@ -15,6 +15,7 @@
     "fs": "^0.0.1-security",
     "html2canvas": "^1.4.1",
     "jquery": "^3.7.1",
+    "jsonwebtoken": "^9.0.2",
     "popper.js": "^1.16.1",
     "qrcode": "^1.5.3",
     "qrious": "^4.0.2",

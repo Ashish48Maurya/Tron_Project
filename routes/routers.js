@@ -14,6 +14,9 @@ router.post('/register', service.signup)
 router.post('/signin', service.signin)
 router.post('/forgotpassword', service.forgotpassword)
 router.put('/verify/:id', service.verify)
+// router.get('/createPost', service.requireLogin, (req, res) => {
+//     console.log("hello auth")
+// })
 // router.get('/username', service.username)
 // router.get('/phrase', service.phrase)
 

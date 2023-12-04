@@ -9,29 +9,30 @@ export default function NewPassword() {
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
     const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-    const [Newpassword, setNewpassword] = useState("");
+    const [newpassword, setNewpassword] = useState("");
 
     const verify =async(id)=>{
     
 
-        if(!Newpassword){
+        if (!newpassword){
             return notifyA("Password Required !!!");
         }
-        else if (!passRege.test(Newpassword)) {
+        else if (!passRege.test(newpassword)) {
             notifyA("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
         }
         try{
-            const response = await fetch(`http://localhost:8000/verify/${id}`,{
+            const response = await fetch(`http://localhost:8000/verify/656dee2e95b8122e614aab0b`,{
                 method: "PUT",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ password: NewPassword }),
+                body: JSON.stringify({ password: newpassword }),
             })
             if(response.status===200){
                 // const updatedPassword = await response.json();
+                console.log(response);
                 notifyB("password Updated Successfully!!!")
                 navigate('/');
             }
