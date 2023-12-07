@@ -9,7 +9,7 @@ export default function Payment() {
     if(!amt || !add){
       return window.alert("All Fields Are Required!");
     }
-    const url = await qrCode.toDataURL(`tronlink://send?amount=${amt}&address=${add}`);
+    const url = await qrCode.toDataURL(``);
     navigate('/qrCode', { state: { amt, add, src: url } });
   };
   return (

@@ -1,5 +1,5 @@
 import { useLocation , Link } from 'react-router-dom';
-import {Web3} from 'web3'
+// import {Web3} from 'web3'
 export default function QrCode() {
   const location = useLocation();
   const { amt, add, src } = location.state;
@@ -65,34 +65,36 @@ export default function QrCode() {
   };
 
 
-  const openMetamaskWallet = async () => {
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts"
-        });
+  // const openMetamaskWallet = async () => {
+  //   try {
+  //     if (window.ethereum) {
+  //       const accounts = await window.ethereum.request({
+  //         method: "eth_requestAccounts"
+  //       });
+
+  //       // const valueInWei = web3.utils.toWei('1', 'ether');
+  //       const valueInWei = web3.utils.toWei('0.001', 'ether');
+  //       const fromAddress = accounts[0];
+  //       const transaction = {
+  //         from: fromAddress,
+  //         to: '0x6f1DF96865D09d21e8f3f9a7fbA3b17A11c7C53C',
+  //         value: valueInWei
+  //       };
   
-        const fromAddress = accounts[0];
-        const transaction = {
-          from: fromAddress,
-          to: '0x6f1DF96865D09d21e8f3f9a7fbA3b17A11c7C53C',
-          value: '0x1'
-        };
+  //       const receipt = await window.ethereum.request({
+  //         method: "eth_sendTransaction",
+  //         params: [transaction]
+  //       });
   
-        const receipt = await window.ethereum.request({
-          method: "eth_sendTransaction",
-          params: [transaction]
-        });
+  //       console.log("Transaction Receipt:", receipt);
   
-        console.log("Transaction Receipt:", receipt);
-  
-      } else {
-        alert('Please install and log in to MetaMask wallet to initiate the transaction.');
-      }
-    } catch (error) {
-      window.alert(`Error sending transaction: ${error.message}`);
-    }
-  };
+  //     } else {
+  //       alert('Please install and log in to MetaMask wallet to initiate the transaction.');
+  //     }
+  //   } catch (error) {
+  //     window.alert(`Error sending transaction: ${error.message}`);
+  //   }
+  // };
   
 
   return (
@@ -104,7 +106,7 @@ export default function QrCode() {
       <strong>OR</strong>
       <br />
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
-      <button onClick={openMetamaskWallet}>Pay Using Tronlink</button>
+     
     </>
   )
 }

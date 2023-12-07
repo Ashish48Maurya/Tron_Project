@@ -1,13 +1,9 @@
 const Payment = require('../models/Payment');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 
-// const generateAuthToken = function () {
-//   const token = jwt.sign({ _id: this._id.toString() }, process.env.SECRET_KEY);
-//   this.tokens = this.tokens.concat({ token: token });
-//   return token;
-// };
+
 
 exports.sendFunds = async (req, res) => {
   const { senderAddress, recipientAddress, amount } = req.body;
@@ -80,14 +76,6 @@ exports.signin = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (isMatch) {
-      const token = await user.generateAuthToken;
-      console.log(`Token: ${token}`);
-      res.cookie("jwt", token, {
-        expires: new Date(Date.now() + 5000000),
-        httpOnly: true,
-        // secure: false,
-      });
-  
       return res.status(200).json({ message: "Login successful" });
     } else {
       return res.status(404).json({ error: "Invalid Credentials!!!" });
@@ -119,14 +107,6 @@ exports.signup = async (req, res) => {
       username,
       phrase,
       password: hashedPassword
-    });
-
-    const token = generateAuthToken.call(user);
-
-    res.cookie("jwt", token, {
-      expires: new Date(Date.now() + 500000),
-      httpOnly: true,
-      secure: false 
     });
 
     user.save().then(user => {
@@ -173,7 +153,7 @@ exports.verify = async (req, res) => {
 
 
   try {
-    const makeUpdate = await User.findByIdAndUpdate(id, { password : hashedPassword }, { useFindAndModify: false, new: true });
+    const makeUpdate = await User.findByIdAndUpdate(id, { password: hashedPassword }, { useFindAndModify: false, new: true });
 
     if (!makeUpdate) {
       return res.status(404).send("User Not Found");
