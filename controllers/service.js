@@ -1,14 +1,12 @@
 const Payment = require('../models/Payment');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
-
 
 
 exports.sendFunds = async (req, res) => {
-  const { senderAddress, recipientAddress, amount } = req.body;
+  const { senderAddress, recipientAddress, amount, asset } = req.body;
 
-  if (!senderAddress || !recipientAddress || !amount) {
+  if (!senderAddress || !recipientAddress || !amount || !asset) {
     return res.status(400).json({ "error": "Please Fill All the Fields!!!" });
   }
 
@@ -16,6 +14,7 @@ exports.sendFunds = async (req, res) => {
     const payment = new Payment({
       from: senderAddress,
       to: recipientAddress,
+      asset: asset,
       amount: amount
     });
 
