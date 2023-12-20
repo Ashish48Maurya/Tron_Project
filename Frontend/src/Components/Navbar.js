@@ -14,7 +14,7 @@ export default function Navbar() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-lg-0 fs-5 fw-normal">
                             <li className="nav-item" style={{ "margin-inline": "10px" }}>
-                                <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
+                                <Link className="nav-link active" aria-current="page" to='/home'>Home</Link>
                             </li>
                             <li className="nav-item" style={{ "margin-inline": "10px" }}>
                                 <Link className="nav-link active" aria-current="page" to='/private/about'>About Us</Link>
@@ -30,7 +30,7 @@ export default function Navbar() {
                             </li>
                         </ul>
                         <form className="d-flex fs-6 fw-medium ms-auto">
-                            <button className="btn btn-outline-primary ms-2 fw-semibold" onClick={()=>navigate('/')} type="submit" style={{ maxHeight: "min-content" }}>LogIn</button>
+                            <button className="btn btn-outline-primary ms-2 fw-semibold" onClick={()=>navigate('/login')} type="submit" style={{ maxHeight: "min-content" }}>LogIn</button>
                             <button className="btn btn-outline-success ms-2 fw-semibold" onClick={()=>navigate('/register')} type="submit" style={{ maxHeight: "min-content" }}>SignUp</button>
                         </form>
                     </div>
