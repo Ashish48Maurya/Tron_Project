@@ -17,6 +17,7 @@ import { useState } from "react";
 import Pay from "./Components/Pay";
 import About from "./Components/About";
 import History from "./Components/History";
+import Home from "./Components/Home";
 
 
 function App() {
@@ -25,15 +26,16 @@ function App() {
   return (
     <>
       <Routes>
+        
+        <Route exact path='/' element={<Home/>} />
         <Route exact path='/register' element={<Register />} />
-        <Route exact path='/' element={<Login />} />
-        <Route exact path='/logout' element={<Logout />} />
-        <Route exact path='/forgotpassword' element={<Forgotpassword />} />
-        <Route exact path='/newPass' element={<NewPassword />} />
-        <Route exact path='/home' element={<Navbar />} />
-        <Route exact path='/about' element={<About />} />
+        <Route exact path='/login' element={<Login />} />
 
         <Route exact path="/private" element={<PrivateRoute />} >
+        <Route exact path='logout' element={<Logout />} />
+        <Route exact path='forgotpassword' element={<Forgotpassword />} />
+        <Route exact path='newPass' element={<NewPassword />} />
+        <Route exact path='about' element={<About />} />
           <Route exact path="user" element={<Userdashboard />} />
           <Route exact path='admin' element={<Admin setAdd={setAdd} />} />
           <Route exact path='payment' element={<Payment />} />
