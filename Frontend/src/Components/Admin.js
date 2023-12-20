@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Admin() {
+export default function Admin(props) {
 
     const getPaymentsDetails = async (req, res) => {
         const response = await fetch("http://localhost:8000/payment_history_serviceProvider", {
@@ -89,9 +89,20 @@ export default function Admin() {
 
     };
 
+    const [inp,setInp] = useState('');
+    const submit=async()=>{
+      props.setAdd(inp);
+    }
 
     return (
         <>
+        <div className="container">
+        <div className="input-group m-3">
+        <input type="text" class="form-control" value={inp} placeholder="Change Receiving Address..." onChange={(e)=>{setInp(e.target.value)}} aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+        
+        <button className=" bg-success btn btn-outline-success ms-2 fw-semibold" onClick={submit} type="submit">Change</button>
+        </div>
+        </div>
           <h2 className="text-center mt-2">Admin Panel</h2>
           <div className="table-responsive mt-5">
             <table className="table">

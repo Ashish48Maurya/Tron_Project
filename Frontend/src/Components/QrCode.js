@@ -1,10 +1,11 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function QrCode() {
+export default function QrCode(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const { amt, add, src, ass } = location.state;
   const serviceProviderWalletAddress = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
+  // const serviceProviderWalletAddress = props.Add
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -73,7 +74,8 @@ export default function QrCode() {
     <>
       <h1 style={{"marginTop":"9rem"}}><span>S</span>can and <span>P</span>ay</h1>
       <p>Amount to Receive : {amt} {ass}</p>
-      <p>Receiver's Account : {add}</p>
+      {/* <p>Receiver's Account : {add}</p> */}
+      <p>Receiver's Account : {serviceProviderWalletAddress}</p>
       <div className="qrcode-container">
         <img id="qrcode" src={src} alt="qrcode" />
         <div className="qrcode-overlay"></div>

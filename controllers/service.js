@@ -1,7 +1,7 @@
 const Payment = require('../models/Payment');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-
+const Msg = require('../models/Contact')
 
 exports.sendFunds = async (req, res) => {
   const { senderAddress, recipientAddress, amount, asset } = req.body;
@@ -39,6 +39,35 @@ exports.getHistory = async (req, res) => {
   }
 };
 
+
+exports.sendMsg = async (req, res) => {
+  const { username, address, message } = req.body;
+
+  if (!username || !address || !message) {
+    return res.status(422).json({ error: 'All Fields Are Required!' });
+  }
+
+  try {
+    //const userId = req.user.id; // Assuming you have the user ID from authentication
+    const userId = "6582b17b1d755abb18ccab97";
+    const newMsg = new Msg({
+      username,
+      address,
+      message,
+      user: userId,
+    });
+
+    await newMsg.save();
+    await User.findByIdAndUpdate(userId, { $push: { messages: newMsg._id } });
+    return res.status(200).json({ message: 'Message saved successfully!' });
+
+  } catch (err) {
+    console.error(`Error sending message: ${err}`);
+    return res.status(500).json({ error: `Internal Server Error -> ${err}` });
+  }
+};
+
+
 exports.updatePayment = async (req, res) => {
   const { id } = req.params;
   try {
@@ -57,6 +86,7 @@ exports.updatePayment = async (req, res) => {
     return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
   }
 };
+
 
 exports.signin = async (req, res) => {
   const { username, password } = req.body;
