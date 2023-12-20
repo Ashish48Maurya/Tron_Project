@@ -1,14 +1,16 @@
+require('dotenv').config()
 const Payment = require('../models/Payment');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
+const Msg = require('../models/Contact');
 
 
 exports.sendFunds = async (req, res) => {
-  const { senderAddress, recipientAddress, amount } = req.body;
+  const { senderAddress, recipientAddress, amount, asset } = req.body;
 
-  if (!senderAddress || !recipientAddress || !amount) {
+  if (!senderAddress || !recipientAddress || !amount || !asset) {
     return res.status(400).json({ "error": "Please Fill All the Fields!!!" });
   }
 
@@ -16,6 +18,7 @@ exports.sendFunds = async (req, res) => {
     const payment = new Payment({
       from: senderAddress,
       to: recipientAddress,
+      asset: asset,
       amount: amount
     });
 
@@ -37,6 +40,33 @@ exports.getHistory = async (req, res) => {
     }
   } catch (err) {
     return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+  }
+};
+
+exports.sendMsg = async (req, res) => {
+  const { username, address, message } = req.body;
+
+  if (!username || !address || !message) {
+    return res.status(422).json({ error: 'All Fields Are Required!' });
+  }
+
+  try {
+    //const userId = req.user.id; // Assuming you have the user ID from authentication
+    const userId = "6582b17b1d755abb18ccab97";
+    const newMsg = new Msg({
+      username,
+      address,
+      message,
+      user: userId,
+    });
+
+    await newMsg.save();
+    await User.findByIdAndUpdate(userId, { $push: { messages: newMsg._id } });
+    return res.status(200).json({ message: 'Message saved successfully!' });
+
+  } catch (err) {
+    console.error(`Error sending message: ${err}`);
+    return res.status(500).json({ error: `Internal Server Error -> ${err}` });
   }
 };
 
@@ -76,7 +106,14 @@ exports.signin = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (isMatch) {
-      return res.status(200).json({ message: "Login successful" });
+      const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
+      const token = jwt.sign({ _id: user.id }, secretKey);
+      console.log('Bearer ',token);
+
+      return res.status(200).json({
+        message: "Login successful",
+        token,
+      });
     } else {
       return res.status(404).json({ error: "Invalid Credentials!!!" });
     }
@@ -109,8 +146,12 @@ exports.signup = async (req, res) => {
       password: hashedPassword
     });
 
-    user.save().then(user => {
-      return res.json({ message: "Registered Successfully" });
+    user.save().then(async user => {
+      return res.json({
+        message: "Registered Successfully",
+        token: await user.generateToken(),
+        userId: user._id.toString(),
+      });
     })
       .catch(err => {
         console.log(err);
@@ -165,3 +206,13 @@ exports.verify = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.user = async (req, res) => {
+  try {
+    const userData = req.User; 
+    console.log(userData);
+    res.status(200).json({ msg: userData })
+  } catch (error) {
+    console.log(error)
+  }
+}

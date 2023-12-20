@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Admin() {
 
@@ -94,6 +95,7 @@ export default function Admin() {
         <>
             <h2 className='text-center mt-2'>Admin Panel</h2>
             <div className="table-responsive mt-5">
+                <Link to='/logout'>Logout</Link>
                 <table className="table table-bordered border-warning">
 
                     <thead>

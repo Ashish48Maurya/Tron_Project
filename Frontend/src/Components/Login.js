@@ -12,6 +12,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { useAuth } from '../store/auth';
+import Navbar from './Navbar';
 
 function Copyright(props) {
     return (
@@ -38,11 +40,12 @@ export default function Login() {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
+    const {storeTokenInLS} = useAuth();
 
     const postData = async (event) => {
         event.preventDefault();
 
-        if(!password || !username){
+        if (!password || !username) {
             return notifyA("All Fields are Required!!!")
         }
 
@@ -57,11 +60,14 @@ export default function Login() {
                     password: password
                 })
             })
-            if(response.status===200){
+            if (response.status === 200) {
+                const res_data = await response.json();
+                console.log("response from server ", res_data);
+                storeTokenInLS(res_data.token);
                 notifyB("Login Successfull");
-                navigate('/payment');
-            }    
-            else{
+                navigate('/home');
+            }
+            else {
                 return notifyA("Invalid Credentials!!!")
             }
         } catch (error) {
@@ -71,6 +77,9 @@ export default function Login() {
 
 
     return (
+        <>
+            <Navbar/>
+    
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -129,14 +138,15 @@ export default function Login() {
                             </Grid>
                         </Grid>
                         <Grid item>
-                                <NavLink to="/register" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </NavLink>
+                            <NavLink to="/register" variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </NavLink>
                         </Grid>
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
-        </ThemeProvider>
+            </ThemeProvider>
+            </>
     );
 }

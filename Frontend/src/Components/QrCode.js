@@ -106,7 +106,7 @@ export default function QrCode() {
       <strong>OR</strong>
       <br />
       <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
-     
+      <Link to='/logout'>Logout</Link>
     </>
   )
 }

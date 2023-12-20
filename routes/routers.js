@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const service = require('../controllers/service');
+const authMiddleware = require('../middlewares/authMiddleware')
 
 // router.post('/sendToContract', service.sendToContract);
 
@@ -14,6 +15,7 @@ router.post('/register', service.signup)
 router.post('/signin', service.signin)
 router.post('/forgotpassword', service.forgotpassword)
 router.put('/verify/:id', service.verify)
+router.get('/user',authMiddleware,service.user)
 // router.get('/createPost', service.requireLogin, (req, res) => {
 //     console.log("hello auth")
 // })

@@ -17,5 +17,23 @@ const userSchema = new Schema({
     }
 });
 
+userSchema.methods.generateToken = async function () {
+    console.log("I am token");
+    try {
+        return jwt.sign(
+            {
+                userId: this._id.toString(),
+                username: this.username,
+            },
+            process.env.JWT_SECRET_KEY,
+            {
+                expiresIn: "30d",
+            }
+        );
+    } catch (error) {
+        console.error("Token Error: ", error);
+    }
+};
+
 const User = mongoose.model("user", userSchema);
 module.exports = User;

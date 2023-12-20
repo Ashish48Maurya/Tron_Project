@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 import qrCode from 'qrcode';
+import { useAuth } from '../store/auth';
+
 export default function Payment() {
   const navigate = useNavigate();
   const [amt, setAmt] = useState('');
   const [add, setAdd] = useState('');
+  const { isLoggedIn } = useAuth();
   const generateQRCode = async () => {
     if(!amt || !add){
       return window.alert("All Fields Are Required!");
@@ -39,6 +42,7 @@ export default function Payment() {
             />
           </div>
           <button onClick={generateQRCode}>Continue</button>
+          <Link to='/logout'>Logout</Link>
         </div>
       </div>
     </>
