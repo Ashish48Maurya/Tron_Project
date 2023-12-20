@@ -7,21 +7,18 @@ const jwt = require('jsonwebtoken');
 const Msg = require('../models/Contact');
 
 
+
 exports.sendFunds = async (req, res) => {
   const { senderAddress, recipientAddress, amount, asset } = req.body;
-
   if (!senderAddress || !recipientAddress || !amount || !asset) {
     return res.status(400).json({ "error": "Please Fill All the Fields!!!" });
   }
-
   const userId = req.userID;
-
+  console.log("USERID: ",userId)
   if (!userId) {
     return res.status(401).json({ "error": "User not authenticated" });
   }
-
   console.log("UserId: ", userId);
-
   try {
     const payment = new Payment({
       from: senderAddress,
@@ -29,27 +26,27 @@ exports.sendFunds = async (req, res) => {
       asset: asset,
       amount: amount,
     });
-
     await payment.save();
-
-    // Check if the user exists before updating payments
     const user = await User.findById(userId);
-
-    if (!user) {
+    console.log("User: ",user)
+    if(user){
+      await User.findByIdAndUpdate(
+        userId,
+        { $push: { payments: payment._id } },
+        { new: true }
+      );
+    }
+    else {
+      console.log("User not found")
       return res.status(404).json({ "error": "User not found" });
     }
-
-    await User.findByIdAndUpdate(
-      userId,
-      { $push: { payments: payment._id } },
-      { new: true }
-    );
-
     return res.status(200).json({ "msg": "Payment Successful" });
   } catch (err) {
     return res.status(500).json({ "msg": `Internal Server Error ${err}` });
   }
 };
+
+
 
 
 exports.getHistory = async (req, res) => {
@@ -137,14 +134,12 @@ exports.signin = async (req, res) => {
       return res.status(422).json({ error: "Invalid username or password" });
     }
 
-    const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
-    const token = jwt.sign({ userId: user._id, username: user.username }, secretKey);
-    console.log('Bearer ', token);
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (isMatch) {
       const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
       const token = jwt.sign({ _id: user.id }, secretKey);
-      console.log('Bearer ', token);
+      console.log('Bearer ',token);
 
       return res.status(200).json({
         message: "Login successful",

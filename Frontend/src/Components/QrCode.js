@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAuth } from '../store/auth';
 
 export default function QrCode(props) {
-
+  const {token} = useAuth();
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
   const navigate = useNavigate();
@@ -51,7 +52,8 @@ export default function QrCode(props) {
           const res = await fetch("http://localhost:8000/sender_to_serviceProvider", {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({
               senderAddress, recipientAddress, amount, asset

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 function Contact() {
   const navigate = useNavigate()
-  const {user} = useAuth()
+  const { user, token } = useAuth()
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
 
@@ -28,6 +28,7 @@ function Contact() {
         method: "post",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body:
 
