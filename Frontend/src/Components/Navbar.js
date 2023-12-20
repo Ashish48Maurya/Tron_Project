@@ -5,7 +5,7 @@ export default function Navbar() {
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-body-transparent" style={{ maxHeight:"50px" }}>
-                <div className="container-fluid">
+                <div className="container-fluid" style={{ background: "rgba(0,0,0,0)" }}>
                     <a className="navbar-brand fs-4 fw-bolder text-primary" href="#">PayonWeb</a>
                     <button className="navbar-toggler " style={{ "border": "2px solid black" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon "></span>

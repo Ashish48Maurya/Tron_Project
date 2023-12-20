@@ -4,8 +4,8 @@ import Navbar from './Navbar'
 function Contact() {
   return (
     <>
+      <Navbar />
     <div className="paymentPage">
-    <Navbar/>
       <div className="paymentPageChild" />
       <div className="paymentPageItem" />
       <div className="paymentPageInner" />
