@@ -65,7 +65,7 @@ export default function Login() {
                 console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
                 notifyB("Login Successfull");
-                navigate('/home');
+                navigate('/');
             }
             else {
                 return notifyA("Invalid Credentials!!!")

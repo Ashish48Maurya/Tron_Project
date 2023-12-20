@@ -80,7 +80,7 @@ export default function Register() {
                 console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
                 notifyB("Registration Successfull !!!");
-                navigate("/");
+                navigate("/login");
             } else {
                 return notifyA("Username Already Exist!!!");
             }
