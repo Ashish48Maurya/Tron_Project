@@ -30,13 +30,8 @@ export default function Navbar() {
                             </li>
                         </ul>
                         <form className="d-flex fs-6 fw-medium ms-auto">
-<<<<<<< HEAD
                             <button className="btn btn-outline-primary ms-2 fw-semibold" onClick={()=>navigate('/')} type="submit" style={{ maxHeight: "min-content" }}>LogIn</button>
                             <button className="btn btn-outline-success ms-2 fw-semibold" onClick={()=>navigate('/register')} type="submit" style={{ maxHeight: "min-content" }}>SignUp</button>
-=======
-                            <button className="btn btn-outline-primary ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={()=>{navigate('/login')}}>Login</button>
-                            <button className="btn btn-outline-success ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={()=>{navigate('/register')}}>SignUp</button>
->>>>>>> a758aa3bec8562fc634f0f1c61a4a2b3f1026b0d
                         </form>
                     </div>
                 </div>
