@@ -22,7 +22,7 @@ export default function NewPassword() {
             return;
         }
         try{
-            const response = await fetch(`http://localhost:8000/verify/656dee2e95b8122e614aab0b`,{
+            const response = await fetch(`http://localhost:8000/verify/${id}`,{
                 method: "PUT",
                 headers: {
                     Accept: "application/json",
@@ -34,7 +34,7 @@ export default function NewPassword() {
                 // const updatedPassword = await response.json();
                 console.log(response);
                 notifyB("password Updated Successfully!!!")
-                navigate('/');
+                navigate('/login');
             }
             else{
                 return notifyA("Password Updation Failed");

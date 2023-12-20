@@ -51,17 +51,14 @@ exports.sendMsg = async (req, res) => {
   }
 
   try {
-    //const userId = req.user.id; // Assuming you have the user ID from authentication
-    const userId = "6582b17b1d755abb18ccab97";
+
     const newMsg = new Msg({
       username,
       address,
       message,
-      user: userId,
     });
 
     await newMsg.save();
-    await User.findByIdAndUpdate(userId, { $push: { messages: newMsg._id } });
     return res.status(200).json({ message: 'Message saved successfully!' });
 
   } catch (err) {
@@ -69,6 +66,17 @@ exports.sendMsg = async (req, res) => {
     return res.status(500).json({ error: `Internal Server Error -> ${err}` });
   }
 };
+
+
+exports.user = async (req, res) => {
+  try {
+    const userData = req.User; 
+    console.log(userData);
+    res.status(200).json({ msg: userData })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 exports.updatePayment = async (req, res) => {
   const { id } = req.params;
@@ -208,12 +216,3 @@ exports.verify = async (req, res) => {
   }
 };
 
-exports.user = async (req, res) => {
-  try {
-    const userData = req.User; 
-    console.log(userData);
-    res.status(200).json({ msg: userData })
-  } catch (error) {
-    console.log(error)
-  }
-}

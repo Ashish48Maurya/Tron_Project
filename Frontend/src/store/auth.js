@@ -8,8 +8,9 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState("");
 
     let isLoggedIn = !!token;
-    
+
     const storeTokenInLS = (serverToken) => {
+        setToken(serverToken);
         return localStorage.setItem("token", serverToken);
     };
 
@@ -23,14 +24,14 @@ export const AuthProvider = ({ children }) => {
             const response = await fetch("http://localhost:8000/user", {
                 method: "GET",
                 headers: {
-                    Authorization:`Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("User data: ", data);
-                setUser(data.userData);
+                console.log("User data: ", data.msg);
+                setUser(data.msg);
             }
         } catch (error) {
             console.log(error);
@@ -40,10 +41,10 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         userAuthentication();
     }, [])
-    
+
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn , storeTokenInLS, LogoutUser , user }}>
+        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, user }}>
             {children}
         </AuthContext.Provider>
     );

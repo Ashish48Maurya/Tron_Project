@@ -29,8 +29,10 @@ function App() {
         <Route exact path='/' element={<Home/>} />
         <Route exact path='/register' element={<Register />} />
         <Route exact path='/login' element={<Login />} />
+        <Route exact path='/forgotpassword' element={<Forgotpassword />} />
+        <Route exact path='/newPass' element={<NewPassword />} />
 
-        <Route exact path='logout' element={<Logout />} />
+        <Route exact path='/logout' element={<Logout />} />
         <Route exact path='/forgotpassword' element={<Forgotpassword />} />
         <Route exact path='/newPass' element={<NewPassword />} />
           

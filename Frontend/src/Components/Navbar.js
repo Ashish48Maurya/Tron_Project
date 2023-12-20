@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../store/auth';
 export default function Navbar() {
-    const navigate = useNavigate();
+    const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-body-transparent" style={{ maxHeight:"50px" }}>
@@ -30,8 +31,8 @@ export default function Navbar() {
                             </li>
                         </ul>
                         <form className="d-flex fs-6 fw-medium ms-auto">
-                            <button className="btn btn-outline-primary ms-2 fw-semibold" onClick={()=>navigate('/login')} type="submit" style={{ maxHeight: "min-content" }}>LogIn</button>
-                            <button className="btn btn-outline-success ms-2 fw-semibold" onClick={()=>navigate('/register')} type="submit" style={{ maxHeight: "min-content" }}>SignUp</button>
+                           {isLoggedIn ? <button className="btn btn-outline-danger ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={()=>{navigate('/private/logout')}}>LogOut</button> : <> <button className="btn btn-outline-primary ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={()=>{navigate('/login')}}>Login</button>
+                            <button className="btn btn-outline-success ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={()=>{navigate('/register')}}>SignUp</button></>}
                         </form>
                     </div>
                 </div>

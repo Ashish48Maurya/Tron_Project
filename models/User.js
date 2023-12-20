@@ -15,11 +15,7 @@ const userSchema = new Schema({
     phrase: {
         type: String,
         required: true,
-    },
-    messages: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Msg',
-    }],
+    }
 });
 
 userSchema.methods.generateToken = async function () {
