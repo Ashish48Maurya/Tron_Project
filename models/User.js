@@ -1,5 +1,6 @@
 // user.model.js
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken')
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -14,11 +15,7 @@ const userSchema = new Schema({
     phrase: {
         type: String,
         required: true,
-    },
-    messages: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Msg',
-    }],
+    }
 });
 
 userSchema.methods.generateToken = async function () {
