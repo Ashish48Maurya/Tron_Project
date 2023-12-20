@@ -1,7 +1,4 @@
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import USDT_ABI from './ABI.json'
-
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function QrCode() {
   const navigate = useNavigate();
@@ -9,111 +6,66 @@ export default function QrCode() {
   const { amt, add, src, ass } = location.state;
   const serviceProviderWalletAddress = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
 
-  // const openTronLinkWallet = async () => {
-  //   if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
-  //     const amount = amt * 1e6;
-  //     try {
-  //       const Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
-
-  //       if (Res.result) {
-  //         const transactionDetails = {
-  //           timestamp: new Date(),
-  //           senderAddress: window.tronWeb.defaultAddress.base58,
-  //           recipientAddress: add,
-  //           asset:ass,
-  //           amount: amt
-  //         };
-
-  //         const {senderAddress , recipientAddress, amount , asset} = transactionDetails;
-  //         const res = await fetch("http://localhost:8000/sender_to_serviceProvider",{
-  //           method : "POST",
-  //           headers:{
-  //             "Content-Type":"application/json"
-  //           },
-  //           body: JSON.stringify({
-  //             senderAddress,recipientAddress,amount,asset 
-  //           })
-  //         })
-
-  //         const data = await res.json();
-
-  //         if(res.status === 404 || res.status === 400 || !data){
-  //           window.alert("Invalid Entry");
-  //         }
-  //         else{
-  //         window.alert("Funds Added Successfully!!!");
-  //         }
-  //       }
-  //       else {
-  //         window.alert("Transaction Fail: ",Res.result.message);
-  //       }
-  //     }
-
-  //     catch (error) {
-  //       window.alert(`Error sending transaction: ${error}`);
-  //     }
-  //   } else {
-  //     alert('Please install and log in to TronLink wallet to initiate the transaction.');
-  //   }
-  // };
-
-const openTronLinkWallet = async () => {
-    // const parsedUSDT_ABI = JSON.parse(USDT_ABI);
+  const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+      const from = window.tronWeb.defaultAddress.base58;
+      const amount = amt * 1e6;
       try {
-        // const usdtContractAddress = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
-        // const usdtContract = window.tronWeb.contract(USDT_ABI, usdtContractAddress);
-        // const transferResult = await usdtContract.transfer(add, amt).send();
-        // if (transferResult.result) {
-        //   window.alert('USDT Transfer Successful');
-        // } else {
-        //   window.alert('USDT Transfer Failed');
-        // }
-        const functionSelector = 'transfer(address,uint256)';
-        const parameter = [{type:'address',value:add},{type:'uint256',value:amt}]
-        const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', functionSelector, {}, parameter);
-        const signedTx = await window.tronWeb.trx.sign(tx.transaction);
-        const result = await window.tronWeb.trx.sendRawTransaction(signedTx);
-        console.log(result)
+        let Res;
+        if(ass==='TRX'){
+          Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
+        }
+        else if(ass==='USDT'){
+          // Res = await window.tronWeb.trx.sendToken(serviceProviderWalletAddress , amt, '1000308');
+          Res = await window.tronWeb.transactionBuilder.sendAsset(serviceProviderWalletAddress, amt, "1000308", from);  //USDT
+          // Res = await window.tronWeb.transactionBuilder.sendAsset(serviceProviderWalletAddress, amt, "1004829", from); //BTT
+          console.log(Res)
+        }
+        else{ //if asset type is usdc/usdd
+          Res = await window.tronWeb.trx.sendToken(serviceProviderWalletAddress , amt, '.......');
+        }
+        
+        // if (Res && (Res.result===true || Res.visible === false)) {
+        if (Res && Res.result===true) {
+          const transactionDetails = {
+            timestamp: new Date(),
+            senderAddress: window.tronWeb.defaultAddress.base58,
+            recipientAddress: add,
+            asset:ass,
+            amount: amt
+          };
+
+          const {senderAddress , recipientAddress, amount , asset} = transactionDetails;
+          const res = await fetch("http://localhost:8000/sender_to_serviceProvider",{
+            method : "POST",
+            headers:{
+              "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+              senderAddress,recipientAddress,amount,asset 
+            })
+          })
+
+          const data = await res.json();
+
+          if(res.status === 404 || res.status === 400 || !data){
+            window.alert("Invalid Entry");
+          }
+          else{
+          window.alert("Funds Added Successfully!!!");
+          }
+        }
+        else {
+          window.alert("Transaction Fail: ",Res.result.message);
+        }
       }
+
       catch (error) {
-        window.alert(`Catch Block: ${error}`);
+        window.alert(`Error sending transaction: ${error}`);
       }
-    } 
-    else {
+    } else {
       alert('Please install and log in to TronLink wallet to initiate the transaction.');
     }
-  };
-
-  const copyImage = () => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    const image = document.getElementById('qrcode');
-    canvas.width = image.width;
-    canvas.height = image.height;
-    context.drawImage(image, 0, 0);
-
-    canvas.toBlob((blob) => {
-      navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-        .then(() => {
-          window.alert('QR code image copied to clipboard.');
-        })
-        .catch((error) => {
-          window.alert(`Error copying image: ${error.message}`);
-        });
-    });
-  };
-
-  const copyUrl = () => {
-    const url = src.replace(/^data:image\/png;base64,/, '');
-
-    navigator.clipboard.writeText(url)
-      .then(() => {
-        window.alert('QR code URL copied to clipboard.');
-      })
-      .catch((error) => {
-        window.alert(`Error copying URL: ${error.message}`);
-      });
   };
 
   

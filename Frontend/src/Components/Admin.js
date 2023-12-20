@@ -92,40 +92,93 @@ export default function Admin() {
 
     return (
         <>
-            <h2 className='text-center mt-2'>Admin Panel</h2>
-            <div className="table-responsive mt-5">
-                <table className="table table-bordered border-warning">
-
-                    <thead>
-                        <tr>
-                            <th scope="col" className=' text-center'>From</th>
-                            <th scope="col" className=' text-center'>To</th>
-                            <th scope="col" className=' text-center'>Date & Time</th>
-                            <th scope="col" className=' text-center'>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {list.map((ele) => (
-                            <tr>
-                                <td>{ele.from}</td>
-                                <td>{ele.to}</td>
-                                <td>{ele.timestamps}</td>
-                                <td>{ele.amount}TRX</td>
-                                <td><button
-                                    type="button"
-                                    className={`btn btn-primary text-center ${selectedButton === ele._id ? 'btn-success' : ''}`}
-                                    onClick={() => pay(ele._id)}
-                                >
-                                    {selectedButton === ele._id ? 'Processing' : 'Pay'}
-                                </button></td>
-
-                            </tr>
-                        ))}
-
-                    </tbody>
-                </table>
-
-            </div>
+          <h2 className="text-center mt-2">Admin Panel</h2>
+          <div className="table-responsive mt-5">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col" className="text-center">From</th>
+                  <th scope="col" className="text-center">To</th>
+                  <th scope="col" className="text-center">Date & Time</th>
+                  <th scope="col" className="text-center">Amount</th>
+                  <th scope="col" className="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {list.map((ele) => (
+                  <tr key={ele._id}>
+                    <td>{ele.from}</td>
+                    <td>{ele.to}</td>
+                    <td>{ele.timestamps}</td>
+                    <td>{ele.amount}{ele.asset}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className={`btn ${selectedButton === ele._id ? "btn-success" : "btn-primary"}`}
+                        onClick={() => pay(ele._id)}
+                      >
+                        {selectedButton === ele._id ? <i className="fa fa-check"></i> : "Pay"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <style>
+            {`
+              .table {
+                border-collapse: collapse;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              }
+      
+              .table th, .table td {
+                padding: 10px;
+                border: 1px solid #ddd;
+              }
+      
+              .table thead {
+                background-color: #f0f0f0;
+              }
+      
+              .table tbody tr:nth-child(even) {
+                background-color: #fafafa;
+              }
+      
+              .table tbody tr:hover {
+                background-color: #e0e0e0;
+                cursor: pointer;
+              }
+      
+              .btn {
+                padding: 5px 10px;
+                border: none;
+                border-radius: 5px;
+                color: white;
+              }
+      
+              .btn-primary {
+                background-color: #007bff;
+              }
+      
+              .btn-primary:hover {
+                background-color: #0069d9;
+              }
+      
+              .btn-success {
+                background-color: #28a745;
+              }
+      
+              .btn-success:hover {
+                background-color: #218838;
+              }
+      
+              .fa {
+                margin-right: 5px;
+              }
+            `}
+          </style>
         </>
-    );
+      );
+      
 }

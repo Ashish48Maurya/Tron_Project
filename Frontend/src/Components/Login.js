@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
+import Navbar from './Navbar';
 
 function Copyright(props) {
     return (
@@ -71,6 +72,8 @@ export default function Login() {
 
 
     return (
+        <>
+       <Navbar/>
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -138,5 +141,7 @@ export default function Login() {
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>
+       
+        </>
     );
 }

@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Forgotpassword from "./Components/Forgotpassword";
 import NewPassword from "./Components/NewPassword";
+import Contact from "./Components/Contact";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route exact path='/' element={<Login />} />
         <Route exact path='/forgotpassword' element={<Forgotpassword />} />
         <Route exact path='/newPass' element={<NewPassword />} />
+        <Route exact path='/contact' element={<Contact />} />
       </Routes>
       <ToastContainer />
     </>
