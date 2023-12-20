@@ -1,6 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function QrCode(props) {
+
+  const notifyA = (msg) => toast.error(msg);
+  const notifyB = (msg) => toast.success(msg);
   const navigate = useNavigate();
   const location = useLocation();
   const { amt, add, src, ass } = location.state;
@@ -9,70 +13,77 @@ export default function QrCode(props) {
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
-      const from = window.tronWeb.defaultAddress.base58;
       const amount = amt * 1e6;
       try {
         let Res;
-        if(ass==='TRX'){
+        if (ass === 'TRX') {
           Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
         }
-        else if(ass==='USDT'){
-          // Res = await window.tronWeb.trx.sendToken(serviceProviderWalletAddress , amt, '1000308');
-          Res = await window.tronWeb.transactionBuilder.sendAsset(serviceProviderWalletAddress, amt, "1000308", from);  //USDT
-          // Res = await window.tronWeb.transactionBuilder.sendAsset(serviceProviderWalletAddress, amt, "1004829", from); //BTT
+        else if (ass === 'USDT') {
+          
+          const functionSelector = 'transfer(address,uint256)';
+          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt*1e6 }]
+          const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj', functionSelector, {}, parameter);
+          const signedTx = await window.tronWeb.trx.sign(tx.transaction);
+          Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
           console.log(Res)
         }
-        else{ //if asset type is usdc/usdd
-          Res = await window.tronWeb.trx.sendToken(serviceProviderWalletAddress , amt, '.......');
+        else { //if asset type is usdc/usdd
+          // ERROR At Value Field 
+          const functionSelector = 'transfer(address,uint256)';
+          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt*1e9 }]
+          const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK', functionSelector, {}, parameter);
+          // const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('Contract_Address', functionSelector, {}, parameter);
+          const signedTx = await window.tronWeb.trx.sign(tx.transaction);
+          Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
         }
-        
-        // if (Res && (Res.result===true || Res.visible === false)) {
-        if (Res && Res.result===true) {
+
+        if (Res.result) {
           const transactionDetails = {
             timestamp: new Date(),
             senderAddress: window.tronWeb.defaultAddress.base58,
             recipientAddress: add,
-            asset:ass,
+            asset: ass,
             amount: amt
           };
 
-          const {senderAddress , recipientAddress, amount , asset} = transactionDetails;
-          const res = await fetch("http://localhost:8000/sender_to_serviceProvider",{
-            method : "POST",
-            headers:{
-              "Content-Type":"application/json"
+          const { senderAddress, recipientAddress, amount, asset } = transactionDetails;
+          const res = await fetch("http://localhost:8000/sender_to_serviceProvider", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
             },
             body: JSON.stringify({
-              senderAddress,recipientAddress,amount,asset 
+              senderAddress, recipientAddress, amount, asset
             })
           })
 
           const data = await res.json();
 
-          if(res.status === 404 || res.status === 400 || !data){
-            window.alert("Invalid Entry");
+          if (res.status === 404 || res.status === 400 || !data) {
+            notifyA("Invalid Entry");
           }
-          else{
-          window.alert("Funds Added Successfully!!!");
+          else {
+            notifyB("Funds Added Successfully!!!");
           }
         }
         else {
-          window.alert("Transaction Fail: ",Res.result.message);
+          notifyA("Transaction Fail: ", Res.result.message);
         }
       }
 
       catch (error) {
-        window.alert(`Error sending transaction: ${error}`);
+        notifyA(`Error sending transaction: ${error}`);
       }
     } else {
-      alert('Please install and log in to TronLink wallet to initiate the transaction.');
+      notifyA('Please install and log in to TronLink wallet to initiate the transaction.');
     }
   };
 
-  
+
   return (
     <>
-      <h1 style={{"marginTop":"9rem"}}><span>S</span>can and <span>P</span>ay</h1>
+      <h1 style={{ "marginTop": "9rem" }}><span>S</span>can and <span>P</span>ay</h1>
       <p>Amount to Receive : {amt} {ass}</p>
       {/* <p>Receiver's Account : {add}</p> */}
       <p>Receiver's Account : {serviceProviderWalletAddress}</p>
@@ -82,7 +93,7 @@ export default function QrCode(props) {
       </div>
       <br />
       <div className='text-center'>
-      <button style={{"marginInline":"auto"}} className="metamask-button" onClick={openTronLinkWallet}>Pay Using TronLink</button>
+        <button style={{ "marginInline": "auto" }} className="metamask-button" onClick={openTronLinkWallet}>Pay Using TronLink</button>
       </div>
       <style>
         {`:root {

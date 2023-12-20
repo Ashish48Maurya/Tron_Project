@@ -6,50 +6,51 @@ import { toast } from 'react-toastify';
 
 function Contact() {
   const navigate = useNavigate()
-  const {user} = useAuth();
+  const {user} = useAuth()
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
 
-  const [name,setName] = useState('');
-  const [wallet,setWallet] = useState('')
-  const [msg,setMsg] = useState('')
+  const [name, setName] = useState('');
+  const [wallet, setWallet] = useState('')
+  const [msg, setMsg] = useState('')
 
-  useEffect(()=>{
+  useEffect(() => {
     setName(user.username);
-    console.log(user)
-  },[])
+  }, [])
 
-  const submit=async(e)=>{
+  const submit = async (e) => {
     e.preventDefault();
     if (!name || !wallet || !msg) {
       return notifyA("All Fields Are Required!!!");
-  }
-  try {
+    }
+    try {
       const response = await fetch("http://localhost:8000/contact", {
-          method: "post",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body:
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body:
 
-              JSON.stringify({
-                  username: name,
-                  address: wallet,
-                  message: msg,
-              }),
+          JSON.stringify({
+            username: name,
+            address: wallet,
+            message: msg,
+          }),
       });
 
       if (response.status === 200) {
-          const ans = await response.json();
-          notifyB("Message Sent Successfully !!!");
-          navigate("/private/contact");
+        const ans = await response.json();
+        notifyB("Message Sent Successfully !!!");
+        setWallet('')
+        setMsg('')
+        navigate("/private/contact");
       } else {
-          return notifyA("Server Error!!!");
+        return notifyA("Server Error!!!");
       }
-  }
-  catch (error) {
+    }
+    catch (error) {
       notifyA(error);
-  }
+    }
   }
 
   return (
@@ -63,8 +64,8 @@ function Contact() {
               <form action="#" method="post">
                 <input type="text" name="name" placeholder="Username..." value={name} />
 
-                <input type="email" name="wallet" placeholder="Wallet Address..." value={wallet} onChange={(e)=>{setName(e.target.value)}}/>
-                <textarea name="msg" placeholder="Your Message..." value={msg} onChange={(e)=>{setMsg(e.target.value)}}></textarea>
+                <input type="email" name="wallet" placeholder="Wallet Address..." value={wallet} onChange={(e) => { setWallet(e.target.value) }} />
+                <textarea name="msg" placeholder="Your Message..." value={msg} onChange={(e) => { setMsg(e.target.value) }}></textarea>
                 <button type="submit" class="btn bg-primary" onClick={submit}>Send <i class="fas fa-paper-plane"></i></button>
               </form>
             </div>
@@ -107,7 +108,7 @@ function Contact() {
             outline: none;
             margin-bottom: 15px;
             font-stretch: 16px;
-            color: #999;
+            color: black;
             padding: 14px 20px;
             width: 100%;
             display: inline-block;
@@ -119,6 +120,9 @@ function Contact() {
         .contact-form input:focus{
             background: transparent;
             border: 1px solid #69275c;
+        }
+        input,textarea{
+          font-weight: bolder
         }
         .contact-form button{
             font-size: 18px;

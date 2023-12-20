@@ -71,6 +71,7 @@ const id = data._id;
 
         return (
             <div>
+                <div className="container">
                 <ThemeProvider theme={defaultTheme}>
                     <Container component="main" maxWidth="xs">
                         <CssBaseline />
@@ -103,6 +104,15 @@ const id = data._id;
                         </Box>
                     </Container>
                 </ThemeProvider>
+                </div>
+                <style>{`
+                .container{
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    min-height:100vh
+                }
+                `}</style>
             </div>
         )
     }

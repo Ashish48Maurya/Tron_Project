@@ -46,9 +46,19 @@ export default function NewPassword() {
     }
 
   return (
-    <div className="container d-flex">
+    <>
+    <div className="container">
         <input type="password" name="password" placeholder='Enter New Password' onChange={(e)=>setNewpassword(e.target.value)}/>
         <button type="submit" onClick={()=>{verify(location.state.id)}}>Change Password</button>
     </div>
+    <style>{`
+    .container{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:100vh
+    }
+    `}</style>
+    </>
   )
 }

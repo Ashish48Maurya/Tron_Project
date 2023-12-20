@@ -14,20 +14,43 @@ exports.sendFunds = async (req, res) => {
     return res.status(400).json({ "error": "Please Fill All the Fields!!!" });
   }
 
+  const userId = req.userID;
+
+  if (!userId) {
+    return res.status(401).json({ "error": "User not authenticated" });
+  }
+
+  console.log("UserId: ", userId);
+
   try {
     const payment = new Payment({
       from: senderAddress,
       to: recipientAddress,
       asset: asset,
-      amount: amount
+      amount: amount,
     });
 
     await payment.save();
+
+    // Check if the user exists before updating payments
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ "error": "User not found" });
+    }
+    
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { payments: payment._id } },
+      { new: true }
+    );
+
     return res.status(200).json({ "msg": "Payment Successful" });
   } catch (err) {
     return res.status(500).json({ "msg": `Internal Server Error ${err}` });
   }
 };
+
 
 exports.getHistory = async (req, res) => {
   try {
@@ -49,7 +72,7 @@ exports.sendMsg = async (req, res) => {
   if (!username || !address || !message) {
     return res.status(422).json({ error: 'All Fields Are Required!' });
   }
-
+  const userId = req.userID;
   try {
 
     const newMsg = new Msg({
@@ -59,6 +82,7 @@ exports.sendMsg = async (req, res) => {
     });
 
     await newMsg.save();
+    await User.findByIdAndUpdate(userId, { $push: { messages: newMsg._id } });
     return res.status(200).json({ message: 'Message saved successfully!' });
 
   } catch (err) {
@@ -68,9 +92,10 @@ exports.sendMsg = async (req, res) => {
 };
 
 
+
 exports.user = async (req, res) => {
   try {
-    const userData = req.User; 
+    const userData = req.User;
     console.log(userData);
     res.status(200).json({ msg: userData })
   } catch (error) {
@@ -117,7 +142,7 @@ exports.signin = async (req, res) => {
     if (isMatch) {
       const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
       const token = jwt.sign({ _id: user.id }, secretKey);
-      console.log('Bearer ',token);
+      console.log('Bearer ', token);
 
       return res.status(200).json({
         message: "Login successful",
