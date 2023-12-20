@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
+    const navigate = useNavigate();
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-body-transparent" style={{ maxHeight:"50px" }}>
@@ -30,8 +31,8 @@ export default function Navbar() {
 
                         </ul>
                         <form className="d-flex fs-6 fw-medium ms-auto">
-                            <button className="btn btn-outline-primary ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }}>LogIn</button>
-                            <button className="btn btn-outline-success ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }}>SignUp</button>
+                            <button className="btn btn-outline-primary ms-2 fw-semibold" onClick={()=>navigate('/')} type="submit" style={{ maxHeight: "min-content" }}>LogIn</button>
+                            <button className="btn btn-outline-success ms-2 fw-semibold" onClick={()=>navigate('/register')} type="submit" style={{ maxHeight: "min-content" }}>SignUp</button>
                         </form>
                     </div>
                 </div>

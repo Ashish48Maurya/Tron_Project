@@ -34,6 +34,7 @@ const defaultTheme = createTheme();
 
 export default function Login() {
     const navigate = useNavigate();
+    const { isLoggedIn } = useAuth();
 
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
@@ -64,6 +65,7 @@ export default function Login() {
                 const res_data = await response.json();
                 console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
+                console.log(isLoggedIn);
                 notifyB("Login Successfull");
                 navigate('/home');
             }
