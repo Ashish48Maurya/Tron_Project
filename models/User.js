@@ -19,7 +19,6 @@ const userSchema = new Schema({
 });
 
 userSchema.methods.generateToken = async function () {
-    console.log("I am token");
     try {
         return jwt.sign(
             {

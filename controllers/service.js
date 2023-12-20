@@ -106,26 +106,22 @@ exports.signin = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ username: username });
+    const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(422).json({ error: "Invalid username or password" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
+    const token = jwt.sign({ userId: user._id, username: user.username }, secretKey);
+    console.log('Bearer ', token);
 
-    if (isMatch) {
-      const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
-      const token = jwt.sign({ _id: user.id }, secretKey);
-      console.log('Bearer ',token);
-
-      return res.status(200).json({
-        message: "Login successful",
-        token,
-      });
-    } else {
-      return res.status(404).json({ error: "Invalid Credentials!!!" });
-    }
+    res.status(200).json({
+      message: "Login Successful",
+      token: await user.generateToken(),
+      userId: user._id.toString(),
+    });
+    console.log
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
