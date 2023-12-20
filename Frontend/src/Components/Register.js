@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { generate } from "random-words";
+import Navbar from './Navbar';
 
 function Copyright(props) {
     return (
@@ -106,6 +107,8 @@ export default function Register() {
         
 
         return (
+            <>
+            <Navbar/>
             <ThemeProvider theme={defaultTheme}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
@@ -200,5 +203,6 @@ export default function Register() {
             <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
         </ThemeProvider >
+        </>
         );
     }

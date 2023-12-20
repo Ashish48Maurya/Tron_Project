@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Forgotpassword from "./Components/Forgotpassword";
 import NewPassword from "./Components/NewPassword";
 import Contact from "./Components/Contact";
+import Navbar from "./Components/Navbar";
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route exact path='/forgotpassword' element={<Forgotpassword />} />
         <Route exact path='/newPass' element={<NewPassword />} />
         <Route exact path='/contact' element={<Contact />} />
+        <Route exact path='/nav' element={<Navbar />} />
       </Routes>
       <ToastContainer />
     </>
