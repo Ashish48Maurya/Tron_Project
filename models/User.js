@@ -21,7 +21,6 @@ const userSchema = new Schema({
     }],
 });
 
-<<<<<<< HEAD
 userSchema.methods.generateToken = async function () {
     console.log("I am token");
     try {
@@ -41,7 +40,4 @@ userSchema.methods.generateToken = async function () {
 };
 
 const User = mongoose.model("user", userSchema);
-=======
-const User = mongoose.model('User', userSchema);
->>>>>>> d3ec3f498b8f952f0b9651cb45e543a5b0efc335
 module.exports = User;

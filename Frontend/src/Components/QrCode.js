@@ -81,10 +81,6 @@ export default function QrCode(props) {
         <div className="qrcode-overlay"></div>
       </div>
       <br />
-<<<<<<< HEAD
-      <button onClick={openTronLinkWallet}>Pay Using Tronlink</button>
-      <Link to='/logout'>Logout</Link>
-=======
       <div className='text-center'>
       <button style={{"marginInline":"auto"}} className="metamask-button" onClick={openTronLinkWallet}>Pay Using TronLink</button>
       </div>
@@ -204,7 +200,6 @@ button:focus, button:hover, a:focus, a:hover {
 }
 `}
       </style>
->>>>>>> d3ec3f498b8f952f0b9651cb45e543a5b0efc335
     </>
   )
 }

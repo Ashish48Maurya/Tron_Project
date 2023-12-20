@@ -22,7 +22,7 @@ export default function Navbar() {
                                 <Link className="nav-link active" aria-current="page" to='/private/contact'>Contact Us</Link>
                             </li>
                             <li className="nav-item" style={{ "margin-inline": "10px" }}>
-                                <Link className="nav-link active" aria-current="page" to='/history'>History</Link>
+                                <Link className="nav-link active" aria-current="page" to='/private/history'>History</Link>
                             </li>
                             <li className="nav-item" style={{ "margin-inline": "10px" }}>
                                 <Link className="nav-link active" aria-current="page" to='/private/payment'>Send&Receive</Link>

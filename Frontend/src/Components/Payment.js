@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate , Link } from 'react-router-dom';
 import qrCode from 'qrcode';
 import { useAuth } from '../store/auth';
+import Navbar from './Navbar';
 
 export default function Payment() {
   const navigate = useNavigate();
@@ -37,6 +38,8 @@ export default function Payment() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="form-container">
       <form className='form '>
         <div className="form-group">
@@ -147,6 +150,7 @@ button:focus, button:hover {
 
 `}
       </style>
-    </div>
+      </div>
+    </>
   );
 }

@@ -97,43 +97,6 @@ export default function Admin(props) {
 
     return (
         <>
-<<<<<<< HEAD
-            <h2 className='text-center mt-2'>Admin Panel</h2>
-            <div className="table-responsive mt-5">
-                <Link to='/logout'>Logout</Link>
-                <table className="table table-bordered border-warning">
-
-                    <thead>
-                        <tr>
-                            <th scope="col" className=' text-center'>From</th>
-                            <th scope="col" className=' text-center'>To</th>
-                            <th scope="col" className=' text-center'>Date & Time</th>
-                            <th scope="col" className=' text-center'>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {list.map((ele) => (
-                            <tr>
-                                <td>{ele.from}</td>
-                                <td>{ele.to}</td>
-                                <td>{ele.timestamps}</td>
-                                <td>{ele.amount}TRX</td>
-                                <td><button
-                                    type="button"
-                                    className={`btn btn-primary text-center ${selectedButton === ele._id ? 'btn-success' : ''}`}
-                                    onClick={() => pay(ele._id)}
-                                >
-                                    {selectedButton === ele._id ? 'Processing' : 'Pay'}
-                                </button></td>
-
-                            </tr>
-                        ))}
-
-                    </tbody>
-                </table>
-
-            </div>
-=======
         <div className="container">
         <div className="input-group m-3">
         <input type="text" class="form-control" value={inp} placeholder="Change Receiving Address..." onChange={(e)=>{setInp(e.target.value)}} aria-label="Recipient's username" aria-describedby="basic-addon2"/>
@@ -227,7 +190,6 @@ export default function Admin(props) {
               }
             `}
           </style>
->>>>>>> d3ec3f498b8f952f0b9651cb45e543a5b0efc335
         </>
       );
       
