@@ -38,7 +38,7 @@ exports.sendFunds = async (req, res) => {
     if (!user) {
       return res.status(404).json({ "error": "User not found" });
     }
-    
+
     await User.findByIdAndUpdate(
       userId,
       { $push: { payments: payment._id } },
@@ -131,13 +131,15 @@ exports.signin = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ username: username });
+    const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(422).json({ error: "Invalid username or password" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
+    const token = jwt.sign({ userId: user._id, username: user.username }, secretKey);
+    console.log('Bearer ', token);
 
     if (isMatch) {
       const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';

@@ -14,7 +14,6 @@ import PrivateRoute from "./user-routes/PrivateRoute";
 import Contact from "./Components/Contact";
 import Navbar from "./Components/Navbar";
 import { useState } from "react";
-import Pay from "./Components/Pay";
 import About from "./Components/About";
 import History from "./Components/History";
 import Home from "./Components/Home";
@@ -36,7 +35,6 @@ function App() {
 
 
         <Route exact path="/private" element={<PrivateRoute />} >
-        <Route exact path='logout' element={<Logout />} />
         <Route exact path='about' element={<About />} />
           <Route exact path="user" element={<Userdashboard />} />
           <Route exact path='admin' element={<Admin setAdd={setAdd} />}/>

@@ -31,8 +31,14 @@ export default function Navbar() {
                             </li>
                         </ul>
                         <form className="d-flex fs-6 fw-medium ms-auto">
-                           {isLoggedIn ? <button className="btn btn-outline-danger ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={()=>{navigate('/private/logout')}}>LogOut</button> : <> <button className="btn btn-outline-primary ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={()=>{navigate('/login')}}>Login</button>
-                            <button className="btn btn-outline-success ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={()=>{navigate('/register')}}>SignUp</button></>}
+                            {
+                                isLoggedIn ?
+                                    <button className="btn btn-outline-danger ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={() => { navigate('/logout') }}>LogOut</button> :
+                                    <>
+                                        <button className="btn btn-outline-primary ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={() => { navigate('/login') }}>Login</button>
+                                        <button className="btn btn-outline-success ms-2 fw-semibold" type="submit" style={{ maxHeight: "min-content" }} onClick={() => { navigate('/register') }}>SignUp</button>
+                                    </>
+                            }
                         </form>
                     </div>
                 </div>
