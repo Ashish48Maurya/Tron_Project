@@ -1,6 +1,6 @@
+// user.model.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema({
     username: {
@@ -14,9 +14,14 @@ const userSchema = new Schema({
     phrase: {
         type: String,
         required: true,
-    }
+    },
+    messages: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Msg',
+    }],
 });
 
+<<<<<<< HEAD
 userSchema.methods.generateToken = async function () {
     console.log("I am token");
     try {
@@ -36,4 +41,7 @@ userSchema.methods.generateToken = async function () {
 };
 
 const User = mongoose.model("user", userSchema);
+=======
+const User = mongoose.model('User', userSchema);
+>>>>>>> d3ec3f498b8f952f0b9651cb45e543a5b0efc335
 module.exports = User;

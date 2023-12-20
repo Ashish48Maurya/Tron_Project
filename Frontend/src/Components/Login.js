@@ -78,8 +78,7 @@ export default function Login() {
 
     return (
         <>
-            <Navbar/>
-    
+       <Navbar/>
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -147,6 +146,6 @@ export default function Login() {
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
             </ThemeProvider>
-            </>
+        </>
     );
 }
