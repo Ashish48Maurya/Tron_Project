@@ -23,14 +23,13 @@ export default function QrCode(props) {
         else if (ass === 'USDT') {
           
           const functionSelector = 'transfer(address,uint256)';
-          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt*1e6 }]
+          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt }] //amt*1e18
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
           console.log(Res)
         }
-        else { //if asset type is usdc/usdd
-          // ERROR At Value Field 
+        else { //if asset type is usdc/usdd --> BCT
           const functionSelector = 'transfer(address,uint256)';
           const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt*1e9 }]
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK', functionSelector, {}, parameter);

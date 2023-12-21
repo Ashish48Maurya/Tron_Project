@@ -15,7 +15,7 @@ export default function Navbar() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-lg-0 fs-5 fw-normal">
                             <li className="nav-item" style={{ "margin-inline": "10px" }}>
-                                <Link className="nav-link active" aria-current="page" to='/home'>Home</Link>
+                                <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
                             </li>
                             <li className="nav-item" style={{ "margin-inline": "10px" }}>
                                 <Link className="nav-link active" aria-current="page" to='/private/about'>About Us</Link>
