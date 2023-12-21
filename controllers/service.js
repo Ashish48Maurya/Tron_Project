@@ -14,7 +14,7 @@ exports.sendFunds = async (req, res) => {
     return res.status(400).json({ "error": "Please Fill All the Fields!!!" });
   }
   const userId = req.userID;
-  console.log("USERID: ",userId)
+  console.log("USERID: ", userId)
   if (!userId) {
     return res.status(401).json({ "error": "User not authenticated" });
   }
@@ -86,7 +86,7 @@ exports.sendMsg = async (req, res) => {
     console.error(`Error sending message: ${err}`);
     return res.status(500).json({ error: `Internal Server Error -> ${err}` });
   }
-};
+};  
 
 
 

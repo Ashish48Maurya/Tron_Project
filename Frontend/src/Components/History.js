@@ -1,52 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 
 
 const History = () => {
-  const TransactionHistory = () => {
-    const initialTransactions = [
-      { id: 1, description: 'Purchase Item A', amount: -20.0 },
-      { id: 2, description: 'Deposit', amount: 50.0 },
-      { id: 3, description: 'Withdrawal', amount: -30.0 },
-      // Add more transactions as needed
-    ];
 
-    const [transactions, setTransactions] = useState(initialTransactions);
+  let api = "http://localhost:8000/payment_history_serviceProvider";
 
-    return (
-      <div>
-        <h2>Transaction History</h2>
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Description</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map(transaction => (
-                <tr key={transaction.id}>
-                  <td>{transaction.id}</td>
-                  <td>{transaction.description}</td>
-                  <td>{transaction.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  };
+  const [transactions, setTransactions] = useState([]);
+
+  const getHistory = async (url) => {
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      console.log("API Data:", data.Payments);
+      setTransactions(data.Payments);
+      console.log("Updated State:", transactions); 
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+  useEffect(() => {
+    getHistory(api);
+  }, [api]);
+
+
+
 
   return (
     <>
-    <div>
-      <Navbar />
-      <TransactionHistory />
-    </div>
-    <style>{`/* History.css */
+      <div>
+        <Navbar />
+        <div>
+          <h2>Transaction History</h2>
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Amount</th>
+                  <th>Asset</th>
+                  <th>Status</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Array.isArray(transactions) && transactions.map(transaction => (
+                  <tr key={transaction.id}>
+                    <td>{transaction._id}</td>
+                    <td>{transaction.from}</td>
+                    <td>{transaction.to}</td>
+                    <td>{transaction.amount}</td>
+                    <td>{transaction.asset}</td>
+                    <td>{transaction.status}</td>
+                    <td>{transaction.timestamps}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <style>{`/* History.css */
 
 .table-container {
   overflow-x: auto;

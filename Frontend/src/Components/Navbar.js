@@ -6,8 +6,8 @@ export default function Navbar() {
   const navigate = useNavigate();
     return (
         <>
-            <nav className="navbar navbar-expand-lg bg-body-transparent" style={{ maxHeight:"50px" }}>
-                <div className="container-fluid" style={{ background: "rgba(0,0,0,0)" }}>
+            <nav className="navbar navbar-expand-lg" style={{ maxHeight:"50px" }}>
+                <div className="container-fluid" style={{ background: "rgba(255, 255, 255, 0.8)" }}>
                     <a className="navbar-brand fs-4 fw-bolder text-primary" href="#">PayonWeb</a>
                     <button className="navbar-toggler " style={{ "border": "2px solid black" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon "></span>
@@ -18,7 +18,7 @@ export default function Navbar() {
                                 <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
                             </li>
                             <li className="nav-item" style={{ "margin-inline": "10px" }}>
-                                <Link className="nav-link active" aria-current="page" to='/private/about'>About Us</Link>
+                                <Link className="nav-link active" aria-current="page" to='/about'>About Us</Link>
                             </li>
                             <li className="nav-item" style={{ "margin-inline": "10px" }}>
                                 <Link className="nav-link active" aria-current="page" to='/private/contact'>Contact Us</Link>
