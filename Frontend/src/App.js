@@ -32,7 +32,7 @@ function App() {
         <Route exact path='/forgotpassword' element={<Forgotpassword />} />
         <Route exact path='/newPass' element={<NewPassword />} />
         <Route exact path='/about' element={<About />} />
-
+        <Route exact path='/payment' element={<Payment />}/>
 
 
         <Route exact path="/private" element={<PrivateRoute />} >
