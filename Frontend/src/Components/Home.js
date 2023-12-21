@@ -1,5 +1,13 @@
 import React from "react";
 import Navbar from "./Navbar";
+import ImagemanWorkingOnNftBlockchain1 from "../Images/man-working-on-nft-blockchain--1281x1191@2x.png"
+import ImagenftWallet1280x1067 from "../Images/nft-wallet--1280x1067@2x.png";
+import Imagezaobao1Icon from "../Images/zaobao-1@2x.png";
+import Imagezaobao1Icon2 from "../Images/pitstoptyres-1@2x.png";
+import Imagezaobao1Icon3 from "../Images/mandalaclub-1@2x.png";
+import Imagezaobao1Icon4 from "../Images/forbes-1@2x.png";
+import Imagezaobao1Icon5 from "../Images/thebusinesstimes-1@2x.png";
+
 
 const Home = () => {
   return (
@@ -37,7 +45,7 @@ const Home = () => {
         <img
           className="manWorkingOnNftBlockchain1"
           alt=""
-          src="/man-working-on-nft-blockchain--1281x1191@2x.png"
+          src={ImagemanWorkingOnNftBlockchain1}
         />
         <div className="landingPageChild5" />
         <div className="landingPageChild6" />
@@ -63,7 +71,7 @@ const Home = () => {
           <img
             className="nftWallet1280x1067"
             alt=""
-            src="/nft-wallet--1280x1067@2x.png"
+            src={ImagenftWallet1280x1067}
           />
         </div>
         <div className="trustedByBusinesses">Trusted by Businesses</div>
@@ -91,52 +99,57 @@ const Home = () => {
         </div>
         <div className="asSeenOn">As seen on</div>
         <div className="wrapperZaobao1Parent">
+          <marquee width="60%" direction="right" scrollamount="12">
+            <div className="marquee-container">
           <div className="wrapperZaobao1">
-            <img className="zaobao1Icon" alt="" src="/zaobao-1@2x.png" />
+            <img className="zaobao1Icon" alt="" src={Imagezaobao1Icon} />
           </div>
           <div className="wrapperPitstopTyres1">
-            <img className="zaobao1Icon" alt="" src="/pitstoptyres-1@2x.png" />
+            <img className="zaobao1Icon" alt="" src={Imagezaobao1Icon2} />
           </div>
           <div className="wrapperMandalaClub1">
-            <img className="zaobao1Icon" alt="" src="/mandalaclub-1@2x.png" />
+            <img className="zaobao1Icon" alt="" src={Imagezaobao1Icon3} />
           </div>
           <div className="wrapperForbes1">
-            <img className="zaobao1Icon" alt="" src="/forbes-1@2x.png" />
+            <img className="zaobao1Icon" alt="" src={Imagezaobao1Icon4} />
           </div>
           <div className="wrapperTheBusinessTimes1">
             <img
               className="zaobao1Icon"
               alt=""
-              src="/thebusinesstimes-1@2x.png"
+              src={Imagezaobao1Icon5}
             />
-          </div>
+              </div>
+            </div>
+          </marquee>
+
           <div className="wrapperMoneyFm1">
-            <img className="zaobao1Icon" alt="" src="/money-fm-1@2x.png" />
+            <img className="zaobao1Icon" alt="" src="../Images/money-fm-1@2x.png" />
           </div>
           <div className="wrapperLumin2">
-            <img className="zaobao1Icon" alt="" src="/money-fm-1@2x.png" />
+            <img className="zaobao1Icon" alt="" src="../Images/money-fm-1@2x.png" />
           </div>
           <div className="wrapperFrame221">
-            <img className="zaobao1Icon" alt="" src="/money-fm-1@2x.png" />
+            <img className="zaobao1Icon" alt="" src="../Images/money-fm-1@2x.png" />
           </div>
           <div className="wrapperImgV22c7674ff188b4">
-            <img className="zaobao1Icon" alt="" src="/money-fm-1@2x.png" />
+            <img className="zaobao1Icon" alt="" src="../Images/money-fm-1@2x.png" />
           </div>
         </div>
         <div className="rectangleParent">
           <div className="frameChild" />
           <div className="socialmedia">
             <div className="item">
-              <img className="vectorIcon" alt="" src="/vector@2x.png" />
+              <img className="vectorIcon" alt="" src="../Images/vector@2x.png" />
             </div>
             <div className="item">
-              <img className="vectorIcon" alt="" src="/vector@2x.png" />
+              <img className="vectorIcon" alt="" src="../Images/vector@2x.png" />
             </div>
             <div className="item2">
-              <img className="vectorIcon2" alt="" src="/vector@2x.png" />
+              <img className="vectorIcon2" alt="" src="../Images/vector@2x.png" />
             </div>
             <div className="item3">
-              <img className="itemChild" alt="" src="/group-32933@2x.png" />
+              <img className="itemChild" alt="" src="../Images/group-32933@2x.png" />
             </div>
           </div>
           <div className="frameParent">
@@ -223,7 +236,7 @@ const Home = () => {
               <img
                 className="averagePrice12Icon"
                 alt=""
-                src="/averageprice1-2@2x.png"
+                src="../Images/averageprice1-2@2x.png"
               />
             </div>
             <div className="rectangleGroup">
@@ -242,7 +255,7 @@ const Home = () => {
               <img
                 className="wallet2Icon"
                 alt=""
-                src="/energywindow-1@2x.png"
+                src="../Images/energywindow-1@2x.png"
               />
             </div>
           </div>
@@ -262,7 +275,7 @@ const Home = () => {
         <img
           className="marketPopularityOfNftStar"
           alt=""
-          src="/market-popularity-of-nft-startup--1280x1067@2x.png"
+          src="../Images/market-popularity-of-nft-startup--1280x1067@2x.png"
         />
         <img
           className="dOnlinePaymentWithQrCodeIcon"

@@ -159,3 +159,11 @@ body {
 nav{
   position: fixed;
 }
+
+.marquee-container{
+  width: 100%;
+  height: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

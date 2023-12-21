@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from './Navbar'
+import Image from '../Images/20547381_6280661.jpg';
 
 const About = () => {
   return (
@@ -17,7 +18,7 @@ const About = () => {
               <button class="cta-button">Learn More</button>
             </div>
             <div class="hero-image">
-              <img src="Frontend/public/images/20547381_6280661.jpg"/>
+            <img src={Image} />
             </div>
           </section>
     </div>
