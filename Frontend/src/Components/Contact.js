@@ -65,7 +65,7 @@ function Contact() {
               <form action="#" method="post">
                 <input type="text" name="name" placeholder="Username..." value={name} />
 
-                <input type="email" name="wallet" placeholder="Wallet Address..." value={wallet} onChange={(e) => { setWallet(e.target.value) }} />
+                <input type="email" name="wallet" placeholder="Transaction Id..." value={wallet} onChange={(e) => { setWallet(e.target.value) }} />
                 <textarea name="msg" placeholder="Your Message..." value={msg} onChange={(e) => { setMsg(e.target.value) }}></textarea>
                 <button type="submit" class="btn bg-primary" onClick={submit}>Send <i class="fas fa-paper-plane"></i></button>
               </form>
@@ -77,12 +77,11 @@ function Contact() {
         {`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         *{
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            font-family: 'poppins',sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Poppins', sans-serif;
         }
-        
         body{
           height:100%;
           overflow:hidden

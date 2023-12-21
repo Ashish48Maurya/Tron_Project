@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../store/auth';
 
 export default function Payment() {
-  const {token} = useAuth();
+  const { token } = useAuth();
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
   const serviceProviderWalletAddress = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
@@ -18,7 +18,7 @@ export default function Payment() {
   const [src, setSrc] = useState(null);
   const [ass, setAsset] = useState('USDT');
   const [error, setError] = useState('');
-  const [id,setID] = useState(null)
+  const [id, setID] = useState(null)
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -30,9 +30,9 @@ export default function Payment() {
           setID(Res.txid)
         }
         else if (ass === 'USDT') {
-          
+
           const functionSelector = 'transfer(address,uint256)';
-          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt*1e6 }] 
+          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt * 1e6 }]
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
@@ -40,7 +40,7 @@ export default function Payment() {
         }
         else { //if asset type is usdc/usdd --> BCT
           const functionSelector = 'transfer(address,uint256)';
-          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt*1e9 }]//amt*1e18
+          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt * 1e9 }]//amt*1e18
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK', functionSelector, {}, parameter);
           // const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('Contract_Address', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
@@ -54,10 +54,11 @@ export default function Payment() {
             senderAddress: window.tronWeb.defaultAddress.base58,
             recipientAddress: add,
             asset: ass,
-            amount: amt
+            amount: amt,
+            txId: Res.txid,
           };
 
-          const { senderAddress, recipientAddress, amount, asset } = transactionDetails;
+          const { senderAddress, recipientAddress, amount, asset, txId } = transactionDetails;
           const res = await fetch("http://localhost:8000/sender_to_serviceProvider", {
             method: "POST",
             headers: {
@@ -65,7 +66,7 @@ export default function Payment() {
               'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({
-              senderAddress, recipientAddress, amount, asset
+              senderAddress, recipientAddress, amount, asset, txId
             })
           })
 
@@ -112,9 +113,36 @@ export default function Payment() {
     }
   };
 
+  function myFunction() {
+    var copyText = document.getElementById("myInput");
+
+    // Create a range object and select the text inside the div
+    var range = document.createRange();
+    range.selectNode(copyText);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+
+    // Copy the selected text to the clipboard
+    try {
+      document.execCommand('copy');
+      alert("Copied the text: " + copyText.textContent);
+    } catch (err) {
+      console.error('Unable to copy text');
+    }
+
+    // Clear the selection
+    window.getSelection().removeAllRanges();
+  }
+
+
   return (
     <>
       <Navbar />
+      {id ? <><div className="text-center">
+        <div className='text-center'><div>Transaction Id:</div>       <div id="myInput">{id}</div>
+          <button className=" btn btn-outline-success ms-2 fw-semibold" onClick={myFunction} type="submit">Copy</button>
+        </div></div>
+      </> : ''}
       <main>
         <div className="wrapper">
           <header>
@@ -129,35 +157,35 @@ export default function Payment() {
               min="0"
               step="0.01"
               required />
-            <div>
-              <label htmlFor="asset">Asset</label>
-              <select id="asset" value={ass} onChange={(e) => setAsset(e.target.value)}>
-                <option value="USDT">USDT</option>
-                <option value="USDC">USDC</option>
-                <option value="TRX">TRX</option>
-              </select>
-            </div>
-            <input id="address"
-              placeholder="Wallet Address"
-              value={add}
-              onChange={(e) => setAdd(e.target.value)}
-              required />
-            <button type="button" onClick={generateQRCode}>
-              Continue
-            </button></>}
+              <div>
+                <label htmlFor="asset">Asset</label>
+                <select id="asset" value={ass} onChange={(e) => setAsset(e.target.value)}>
+                  <option value="USDT">USDT</option>
+                  <option value="USDC">USDC</option>
+                  <option value="TRX">TRX</option>
+                </select>
+              </div>
+              <input id="address"
+                placeholder="Wallet Address"
+                value={add}
+                onChange={(e) => setAdd(e.target.value)}
+                required />
+              <button type="button" onClick={generateQRCode}>
+                Continue
+              </button></>}
             {error && <h5 className="error text-center mt-3 text-danger">{error}</h5>}
           </form>
           {src && (
 
             <>
-            {/* <input type="text" value={id}/> */}
+              {/* <input type="text" value={id}/> */}
               <div className="qr-code">
                 <img src={src} alt="qr-code" />
               </div>
               <div className='text-center m-3'>
-              <button type="button"  onClick={openTronLinkWallet}>
-                Pay Using TronLink
-              </button>
+                <button type="button" onClick={openTronLinkWallet}>
+                  Pay Using TronLink
+                </button>
               </div>
             </>
           )}

@@ -9,8 +9,8 @@ const Msg = require('../models/Contact');
 
 
 exports.sendFunds = async (req, res) => {
-  const { senderAddress, recipientAddress, amount, asset } = req.body;
-  if (!senderAddress || !recipientAddress || !amount || !asset) {
+  const { senderAddress, recipientAddress, amount, asset,txId } = req.body;
+  if (!senderAddress || !recipientAddress || !amount || !asset || !txId) {
     return res.status(400).json({ "error": "Please Fill All the Fields!!!" });
   }
   const userId = req.userID;
@@ -25,6 +25,7 @@ exports.sendFunds = async (req, res) => {
       to: recipientAddress,
       asset: asset,
       amount: amount,
+      txID : txId
     });
     await payment.save();
     const user = await User.findById(userId);
