@@ -17,15 +17,15 @@ const authMiddleware = async (req, res, next) => {
         const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY);
         console.log("Decoded Token: ", isVerified);
 
-        const userData = await User.findOne({ username: isVerified.username }).select({
+
+        const userData = await User.findOne({_id: isVerified._id }).select({
             password: 0,
         });
-
-        console.log("Decoded Token: ", isVerified);
-        console.log("User Data: ", userData);
+            
 
         if (!userData) {
-            return res.status(401).json({ message: "Unauthorized, User not found" });
+            console.log( "User not found")
+            return res.status(401).json({ message: "User not found" });      
         }
 
         req.User = userData;
@@ -37,6 +37,5 @@ const authMiddleware = async (req, res, next) => {
         console.log(error);
         return res.status(500).json({ message: "Internal Server Error" });
     }
-};
-
+}
 module.exports = authMiddleware;

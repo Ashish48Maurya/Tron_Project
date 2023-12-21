@@ -21,7 +21,7 @@ export default function Payment() {
     const queryString = `amt=${encodeURIComponent(amt)}&add=${encodeURIComponent(add)}&asset=${encodeURIComponent(ass)}`;
 
     const url = await qrCode.toDataURL(`http://localhost:3000/pay?${queryString}`);
-    navigate('/qrCode', { state: { amt, add, ass, src: url } });
+    navigate('/private/qrCode', { state: { amt, add, ass, src: url } });
   };
 
   const formatAmount = (e) => {
@@ -67,7 +67,6 @@ export default function Payment() {
             <option value="USDT">USDT</option>
             <option value="BTC">USDC</option>
             <option value="TRX">TRX</option>
-            <option value="ETH">ETH</option>
           </select>
         </div>
         <button onClick={generateQRCode}>Continue</button>

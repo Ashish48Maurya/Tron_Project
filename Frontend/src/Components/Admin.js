@@ -128,6 +128,7 @@ export default function Admin(props) {
                         type="button"
                         className={`btn ${selectedButton === ele._id ? "btn-success" : "btn-primary"}`}
                         onClick={() => pay(ele._id)}
+                        
                       >
                         {selectedButton === ele._id ? <i className="fa fa-check"></i> : "Pay"}
                       </button>
@@ -147,6 +148,7 @@ export default function Admin(props) {
               .table th, .table td {
                 padding: 10px;
                 border: 1px solid #ddd;
+                text-align:center
               }
       
               .table thead {

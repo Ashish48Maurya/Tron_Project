@@ -27,16 +27,24 @@ export const AuthProvider = ({ children }) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+    
             if (response.ok) {
                 const data = await response.json();
-                console.log("User data: ", data.msg);
-                setUser(data.msg);
+
+                if (data.msg) {
+                    setUser(data.msg);
+                    
+                } else {
+                    console.error("Unexpected API response format:", data);
+                }
+            } else {
+                console.error("Server returned an error:", response.status, response.statusText);
             }
         } catch (error) {
-            console.log(error);
+            console.error("Error during user authentication:", error);
         }
-    }
+    };
+    
 
     useEffect(() => {
         userAuthentication();
@@ -44,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, user }}>
+        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, user, token}}>
             {children}
         </AuthContext.Provider>
     );

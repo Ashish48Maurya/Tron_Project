@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const Msg = require('../models/Contact');
 
 
+
 exports.sendFunds = async (req, res) => {
   const { senderAddress, recipientAddress, amount, asset } = req.body;
   if (!senderAddress || !recipientAddress || !amount || !asset) {
@@ -27,8 +28,8 @@ exports.sendFunds = async (req, res) => {
     });
     await payment.save();
     const user = await User.findById(userId);
-    console.log("User: ", user)
-    if (user) {
+    console.log("User: ",user)
+    if(user){
       await User.findByIdAndUpdate(
         userId,
         { $push: { payments: payment._id } },
@@ -44,6 +45,9 @@ exports.sendFunds = async (req, res) => {
     return res.status(500).json({ "msg": `Internal Server Error ${err}` });
   }
 };
+
+
+
 
 exports.getHistory = async (req, res) => {
   try {
@@ -85,9 +89,10 @@ exports.sendMsg = async (req, res) => {
 };  
 
 
+
 exports.user = async (req, res) => {
   try {
-    const userData = req.User; 
+    const userData = req.User;
     console.log(userData);
     res.status(200).json({ msg: userData })
   } catch (error) {
@@ -129,16 +134,20 @@ exports.signin = async (req, res) => {
       return res.status(422).json({ error: "Invalid username or password" });
     }
 
-    const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
-    const token = jwt.sign({ userId: user._id, username: user.username }, secretKey);
-    console.log('Bearer ', token);
+    const isMatch = await bcrypt.compare(password, user.password);
 
-    res.status(200).json({
-      message: "Login Successful",
-      token: await user.generateToken(),
-      userId: user._id.toString(),
-    });
-    console.log
+    if (isMatch) {
+      const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
+      const token = jwt.sign({ _id: user.id }, secretKey);
+      console.log('Bearer ',token);
+
+      return res.status(200).json({
+        message: "Login successful",
+        token,
+      });
+    } else {
+      return res.status(404).json({ error: "Invalid Credentials!!!" });
+    }
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
