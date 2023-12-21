@@ -4,7 +4,8 @@ import Navbar from './Navbar'
 const About = () => {
   return (
       <div>
-          <Navbar/>
+      <Navbar />
+      <h1>Heyy This is PayonWeb</h1>
     </div>
   )
 }

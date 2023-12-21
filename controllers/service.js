@@ -9,20 +9,36 @@ const Msg = require('../models/Contact');
 
 exports.sendFunds = async (req, res) => {
   const { senderAddress, recipientAddress, amount, asset } = req.body;
-
   if (!senderAddress || !recipientAddress || !amount || !asset) {
     return res.status(400).json({ "error": "Please Fill All the Fields!!!" });
   }
-
+  const userId = req.userID;
+  console.log("USERID: ", userId)
+  if (!userId) {
+    return res.status(401).json({ "error": "User not authenticated" });
+  }
+  console.log("UserId: ", userId);
   try {
     const payment = new Payment({
       from: senderAddress,
       to: recipientAddress,
       asset: asset,
-      amount: amount
+      amount: amount,
     });
-
     await payment.save();
+    const user = await User.findById(userId);
+    console.log("User: ", user)
+    if (user) {
+      await User.findByIdAndUpdate(
+        userId,
+        { $push: { payments: payment._id } },
+        { new: true }
+      );
+    }
+    else {
+      console.log("User not found")
+      return res.status(404).json({ "error": "User not found" });
+    }
     return res.status(200).json({ "msg": "Payment Successful" });
   } catch (err) {
     return res.status(500).json({ "msg": `Internal Server Error ${err}` });
@@ -49,7 +65,7 @@ exports.sendMsg = async (req, res) => {
   if (!username || !address || !message) {
     return res.status(422).json({ error: 'All Fields Are Required!' });
   }
-
+  const userId = req.userID;
   try {
 
     const newMsg = new Msg({
@@ -59,13 +75,14 @@ exports.sendMsg = async (req, res) => {
     });
 
     await newMsg.save();
+    await User.findByIdAndUpdate(userId, { $push: { messages: newMsg._id } });
     return res.status(200).json({ message: 'Message saved successfully!' });
 
   } catch (err) {
     console.error(`Error sending message: ${err}`);
     return res.status(500).json({ error: `Internal Server Error -> ${err}` });
   }
-};
+};  
 
 
 exports.user = async (req, res) => {
