@@ -43,6 +43,7 @@ const About = () => {
          display: flex;
          justify-content: center;
          align-items:center; 
+         flex-direction:column;
         }
          .hero-content{
           flex:1;
