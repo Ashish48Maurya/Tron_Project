@@ -112,6 +112,11 @@ const About = () => {
             font-size:18px;
             margin-bottom: 20px;
           }
+          .hero-content button{
+            font-size:16px;
+            padding: 8px 16px;
+          }
+          .hero-image
          }
         `}
       </style>
