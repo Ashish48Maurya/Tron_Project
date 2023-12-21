@@ -1,16 +1,96 @@
 import React, { useState } from 'react';
-import { useNavigate , Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import qrCode from 'qrcode';
-import { useAuth } from '../store/auth';
 import Navbar from './Navbar';
+import { toast } from 'react-toastify';
+import { useAuth } from '../store/auth';
 
 export default function Payment() {
+  const {token} = useAuth();
+  const notifyA = (msg) => toast.error(msg);
+  const notifyB = (msg) => toast.success(msg);
+  const serviceProviderWalletAddress = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
+  // const serviceProviderWalletAddress = props.Add
+
   const navigate = useNavigate();
   const [amt, setAmt] = useState('');
   const [add, setAdd] = useState('');
-  const { isLoggedIn } = useAuth();
+  const [src, setSrc] = useState(null);
   const [ass, setAsset] = useState('USDT');
   const [error, setError] = useState('');
+  const [id,setID] = useState(null)
+
+  const openTronLinkWallet = async () => {
+    if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+      try {
+        let Res;
+        if (ass === 'TRX') {
+          const amount = amt * 1e6;
+          Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
+          setID(Res.txid)
+        }
+        else if (ass === 'USDT') {
+          
+          const functionSelector = 'transfer(address,uint256)';
+          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt*1e6 }] 
+          const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj', functionSelector, {}, parameter);
+          const signedTx = await window.tronWeb.trx.sign(tx.transaction);
+          Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
+          setID(Res.txid)
+        }
+        else { //if asset type is usdc/usdd --> BCT
+          const functionSelector = 'transfer(address,uint256)';
+          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt*1e9 }]//amt*1e18
+          const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK', functionSelector, {}, parameter);
+          // const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('Contract_Address', functionSelector, {}, parameter);
+          const signedTx = await window.tronWeb.trx.sign(tx.transaction);
+          Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
+          setID(Res.txid)
+        }
+
+        if (Res.result) {
+          const transactionDetails = {
+            timestamp: new Date(),
+            senderAddress: window.tronWeb.defaultAddress.base58,
+            recipientAddress: add,
+            asset: ass,
+            amount: amt
+          };
+
+          const { senderAddress, recipientAddress, amount, asset } = transactionDetails;
+          const res = await fetch("http://localhost:8000/sender_to_serviceProvider", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              senderAddress, recipientAddress, amount, asset
+            })
+          })
+
+          const data = await res.json();
+
+          if (res.status === 404 || res.status === 400 || !data) {
+            notifyA("Invalid Entry");
+          }
+          else {
+            notifyB("Funds Added Successfully!!!");
+          }
+        }
+        else {
+          notifyA("Transaction Fail: ", Res.result.message);
+        }
+      }
+
+      catch (error) {
+        notifyA(`Error sending transaction: ${error}`);
+      }
+    } else {
+      notifyA('Please install and log in to TronLink wallet to initiate the transaction.');
+    }
+  };
+
 
   const generateQRCode = async () => {
     if (!amt || !add || !ass) {
@@ -19,13 +99,8 @@ export default function Payment() {
     }
 
     const queryString = `amt=${encodeURIComponent(amt)}&add=${encodeURIComponent(add)}&asset=${encodeURIComponent(ass)}`;
-
     const url = await qrCode.toDataURL(`http://localhost:3000/pay?${queryString}`);
-    navigate('/private/qrCode', { state: { amt, add, ass, src: url } });
-  };
-
-  const formatAmount = (e) => {
-    setAmt(e.target.value);
+    setSrc(url);
   };
 
   const validateInput = (e) => {
@@ -39,117 +114,174 @@ export default function Payment() {
 
   return (
     <>
-    <Navbar/>
-    <div className="form-container">
-      <form className='form '>
-        <div className="form-group">
-          <label htmlFor="address">Receiver Address</label>
-          <input id="address"
-            placeholder="Wallet Address"
-            value={add}
-            onChange={(e) => setAdd(e.target.value)}
-            required />
+      <Navbar />
+      <main>
+        <div className="wrapper">
+          <header>
+            <h1>Scan & Pay</h1>
+          </header>
+          <form className="form">
+            {src ? '' : <><input id="amount"
+              placeholder="Amount"
+              value={amt}
+              onInput={validateInput}
+              onChange={(e) => setAmt(e.target.value)}
+              min="0"
+              step="0.01"
+              required />
+            <div>
+              <label htmlFor="asset">Asset</label>
+              <select id="asset" value={ass} onChange={(e) => setAsset(e.target.value)}>
+                <option value="USDT">USDT</option>
+                <option value="USDC">USDC</option>
+                <option value="TRX">TRX</option>
+              </select>
+            </div>
+            <input id="address"
+              placeholder="Wallet Address"
+              value={add}
+              onChange={(e) => setAdd(e.target.value)}
+              required />
+            <button type="button" onClick={generateQRCode}>
+              Continue
+            </button></>}
+            {error && <h5 className="error text-center mt-3 text-danger">{error}</h5>}
+          </form>
+          {src && (
+
+            <>
+            {/* <input type="text" value={id}/> */}
+              <div className="qr-code">
+                <img src={src} alt="qr-code" />
+              </div>
+              <div className='text-center m-3'>
+              <button type="button"  onClick={openTronLinkWallet}>
+                Pay Using TronLink
+              </button>
+              </div>
+            </>
+          )}
         </div>
-        <div className="form-group">
-          <label htmlFor="amount">Amount</label>
-          <input id="amount"
-            placeholder="Amount"
-            value={amt}
-            onChange={formatAmount}
-            onInput={validateInput}
-            min="0"
-            step="0.01"
-            required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="asset">Asset</label>
-          <select id="asset" value={ass} onChange={(e) => setAsset(e.target.value)}>
-            <option value="USDT">USDT</option>
-            <option value="USDC">USDC</option>
-            <option value="TRX">TRX</option>
-          </select>
-        </div>
-        <button onClick={generateQRCode}>Continue</button>
-        {error && <span className="error">{error}</span>}
-      </form>
+      </main>
+
       <style>
-      {`:root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --font-family: Arial, sans-serif;
-  --font-size: 16px;
+        {`
+        *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
-
-.form-container {
+main{
   display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 0 10px;
   min-height: 100vh;
+  align-items: center;
+  background: white;
+  justify-content: center;
 }
-
-.form {
+select{
+  border: 2px solid black;
+  margin-inline: 5px;
+}
+.wrapper{
+  height: auto;
   width: 500px;
-  max-width: 90%;
-  padding: 20px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 7px;
+  padding: 20px 25px 0;
+  transition: height 0.2s ease;
+  border: 2px solid black;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
-
-.form-group {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-gap: 10px;
-  margin-bottom: 20px;
+.wrapper.active{
+  height: 530px;
 }
-
-label {
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  font-weight: bold;
-  color: var(--secondary-color);
-  text-align: right;
+header h1{
+  font-size: 21px;
+  font-weight: 500;
 }
-
-input, select {
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  padding: 10px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 5px;
-  outline: none;
+header p{
+  margin-top: 5px;
+  color: #575757;
+  font-size: 16px;
 }
-
-input:focus, input:hover, select:focus, select:hover {
-  border-color: var(--primary-color);
+.wrapper .form{
+  margin: 20px 0 25px;
 }
-
-button {
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  font-weight: bold;
-  color: white;
-  background-color: var(--primary-color);
-  padding: 10px;
+.form :where(input, button){
+  width: 100%;
+  height: 55px;
   border: none;
+  outline: none;
   border-radius: 5px;
+  transition: 0.1s ease;
+}
+.form input{
+  font-size: 18px;
+  padding: 0px 17px;
+  margin-block: 7px;
+  border: 1px solid #999;
+}
+
+.form input:focus{
+  box-shadow: 0 3px 6px rgba(0,0,0,0.13);
+}
+.form input::placeholder{
+  color: #999;
+}
+.form button{
+  color: #fff;
   cursor: pointer;
+  margin-top: 20px;
+  font-size: 17px;
+  background: #3498DB;
+}
+.qr-code{
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  pointer-events: none;
+  justify-content: center;
+  border: 1px solid #ccc;
 }
 
-button:focus, button:hover {
-  background-color: orange;
+.qr-code img{
+  width: 200px;
+  height: 200px;
+  border: none
 }
 
-.error {
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  color: red;
-  margin-top: 10px;
+@media (max-width: 430px){
+  .wrapper{
+    height: auto;
+    width: auto;
+    padding: 16px 20px;
+  }
+  .wrapper.active{
+    height: 510px;
+  }
+  header p{
+    color: #696969;
+  }
+  .form :where(input, button){
+    height: 52px;
+  }
+  .qr-code img{
+    width: 160px;
+  }  
+  .btn{
+    margin-block: auto;
+  }
 }
 
 `}
       </style>
-      </div>
+
     </>
   );
 }
+
+
+
+

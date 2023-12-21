@@ -99,7 +99,17 @@ export default function Admin(props) {
         <>
         <div className="container">
         <div className="input-group m-3">
-        <input type="text" class="form-control" value={inp} placeholder="Change Receiving Address..." onChange={(e)=>{setInp(e.target.value)}} aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+        <input type="text" class="form-control" value={inp} placeholder="Change Service Provider's Address..." onChange={(e)=>{setInp(e.target.value)}} aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+        
+        <button className=" bg-success btn btn-outline-success ms-2 fw-semibold" onClick={submit} type="submit">Change</button>
+        </div>
+        <div className="input-group m-3">
+        <input type="text" class="form-control" value={inp} placeholder="Change USDT Address..." onChange={(e)=>{setInp(e.target.value)}} aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+        
+        <button className=" bg-success btn btn-outline-success ms-2 fw-semibold" onClick={submit} type="submit">Change</button>
+        </div>
+        <div className="input-group m-3">
+        <input type="text" class="form-control" value={inp} placeholder="Change USDC Address..." onChange={(e)=>{setInp(e.target.value)}} aria-label="Recipient's username" aria-describedby="basic-addon2"/>
         
         <button className=" bg-success btn btn-outline-success ms-2 fw-semibold" onClick={submit} type="submit">Change</button>
         </div>

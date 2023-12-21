@@ -34,7 +34,6 @@ function App() {
         <Route exact path='/about' element={<About />} />
 
 
-
         <Route exact path="/private" element={<PrivateRoute />} >
         <Route exact path='logout' element={<Logout />} />
           <Route exact path="user" element={<Userdashboard />} />
