@@ -43,7 +43,7 @@ export default function Payment() {
     <div className="form-container">
       <form className='form '>
         <div className="form-group">
-          <label htmlFor="address">Your Address</label>
+          <label htmlFor="address">Receiver Address</label>
           <input id="address"
             placeholder="Wallet Address"
             value={add}
@@ -65,7 +65,7 @@ export default function Payment() {
           <label htmlFor="asset">Asset</label>
           <select id="asset" value={ass} onChange={(e) => setAsset(e.target.value)}>
             <option value="USDT">USDT</option>
-            <option value="BTC">USDC</option>
+            <option value="USDC">USDC</option>
             <option value="TRX">TRX</option>
           </select>
         </div>
