@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from './Navbar'
 
 export default function Admin(props) {
   const [serviceProviderAddress, setServiceProviderAddress] = useState('');
@@ -113,7 +114,6 @@ export default function Admin(props) {
 
   useEffect(() => {
     console.log("useEffect is running");
-    window.alert("Make Sure to login into Wallet Before doing any transaction");
     getPaymentsDetails();
   }, []);
 
