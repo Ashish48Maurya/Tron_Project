@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 
 export default function Admin(props) {
 
@@ -97,6 +98,7 @@ export default function Admin(props) {
 
     return (
         <>
+        <Navbar/>
         <div className="container">
         <div className="input-group m-3">
         <input type="text" class="form-control" value={inp} placeholder="Change Service Provider's Address..." onChange={(e)=>{setInp(e.target.value)}} aria-label="Recipient's username" aria-describedby="basic-addon2"/>

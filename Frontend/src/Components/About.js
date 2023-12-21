@@ -24,12 +24,7 @@ const About = () => {
     </div>
     <style>
         {`
-        *{
-          margin:0px;
-          padding:0px;
-          box-sizing: border-box;
-          font-family:"Arial",san-serif; 
-        }
+        
         .hero{
           background-color:f8f8f8;
           overflow: hidden;

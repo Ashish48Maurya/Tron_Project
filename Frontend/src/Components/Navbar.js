@@ -39,7 +39,6 @@ export default function Navbar() {
             </nav>
             <style>{`
             *{
-                // font-weight: 100;
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
