@@ -155,3 +155,7 @@ body {
   --br-281xl: 300px;
   --br-9xs: 4px;
 }
+
+nav{
+  position: fixed;
+}
