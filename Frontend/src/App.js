@@ -31,12 +31,12 @@ function App() {
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/forgotpassword' element={<Forgotpassword />} />
         <Route exact path='/newPass' element={<NewPassword />} />
+        <Route exact path='/about' element={<About />} />
 
 
 
         <Route exact path="/private" element={<PrivateRoute />} >
         <Route exact path='logout' element={<Logout />} />
-        <Route exact path='about' element={<About />} />
           <Route exact path="user" element={<Userdashboard />} />
           <Route exact path='admin' element={<Admin setAdd={setAdd} />}/>
           <Route exact path='payment' element={<Payment />}/>
