@@ -18,6 +18,7 @@ export default function Payment() {
   const [src, setSrc] = useState(null);
   const [ass, setAsset] = useState('USDT');
   const [error, setError] = useState('');
+  const [id,setID] = useState(null)
 
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -26,6 +27,7 @@ export default function Payment() {
         if (ass === 'TRX') {
           const amount = amt * 1e6;
           Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
+          setID(Res.txid)
         }
         else if (ass === 'USDT') {
           
@@ -34,7 +36,7 @@ export default function Payment() {
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
-          console.log(Res)
+          setID(Res.txid)
         }
         else { //if asset type is usdc/usdd --> BCT
           const functionSelector = 'transfer(address,uint256)';
@@ -43,6 +45,7 @@ export default function Payment() {
           // const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('Contract_Address', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
+          setID(Res.txid)
         }
 
         if (Res.result) {
@@ -145,7 +148,9 @@ export default function Payment() {
             {error && <h5 className="error text-center mt-3 text-danger">{error}</h5>}
           </form>
           {src && (
+
             <>
+            {/* <input type="text" value={id}/> */}
               <div className="qr-code">
                 <img src={src} alt="qr-code" />
               </div>
@@ -160,7 +165,8 @@ export default function Payment() {
       </main>
 
       <style>
-        {`*{
+        {`
+        *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
