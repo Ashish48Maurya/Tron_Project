@@ -1,28 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
+import { useAuth } from '../store/auth';
 
 const History = () => {
 
-  let api = "http://localhost:8000/payment_history_serviceProvider";
+  const { token } = useAuth();
 
   const [transactions, setTransactions] = useState([]);
 
-  const getHistory = async (url) => {
+  const getHistory = async () => {
     try {
-      const res = await fetch(url);
-      const data = await res.json();
-      console.log("API Data:", data.Payments);
-      setTransactions(data.Payments);
+      const url = "http://localhost:8000/history_serviceProvider";
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 200) {
+        const data = await res.json();
+        console.log("API Data:", data.Payments);
+        setTransactions(data.Payments);
+      } else {
+        console.error('Failed to fetch payment history:', res.status);
+      }
     } catch (error) {
-      console.log(error);
+      console.log('Error fetching payment history:', error);
     }
-  }
-
-
+  };
 
   useEffect(() => {
-    getHistory(api);
-  }, [api]);
+    getHistory();
+  }, []);
 
 
 
@@ -32,37 +43,35 @@ const History = () => {
       <div>
         <Navbar />
         <div>
-          <h2>Transaction History</h2>
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-             
-                  <th>From</th>
-                  <th>To</th>
-                  <th>Amount</th>
-                  <th>Asset</th>
-                  <th>Status</th>
-                  <th>Timestamp</th>
+        <h2>Transaction History</h2>
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+                <th>Asset</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(transactions) && transactions.map(transaction => (
+                <tr key={transaction._id}>
+                  <td>{transaction.from}</td>
+                  <td>{transaction.to}</td>
+                  <td>{transaction.amount} {transaction.asset}</td>
+                  <td>{transaction.asset}</td>
+                  <td>{transaction.status}</td>
+                  <td>{transaction.timestamps}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(transactions) && transactions.map(transaction => (
-                  <tr key={transaction.id}>
-               
-                    <td>{transaction.from}</td>
-                    <td>{transaction.to}</td>
-                    <td>{transaction.amount}</td>
-                    <td>{transaction.asset}</td>
-                    <td>{transaction.status}</td>
-                    <td>{transaction.timestamps}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
       <style>{`/* History.css */
 
 .table-container {

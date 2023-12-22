@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 import { useAuth } from '../store/auth';
 
 export default function Admin(props) {
-  const {address} = useAuth();
+  const {address,token} = useAuth();
   const [serviceProviderAddress, setServiceProviderAddress] = useState('');
   const [usdtAddress, setUsdtAddress] = useState('');
   const [usdcAddress, setUsdcAddress] = useState('');
@@ -14,10 +14,11 @@ export default function Admin(props) {
 
   const getPaymentsDetails = async () => {
     try {
-      const response = await fetch("http://localhost:8000/payment_history_serviceProvider", {
+      const response = await fetch("http://localhost:8000/history_serviceProvider", {
         method: "GET",
         headers: {
           Accept: "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 

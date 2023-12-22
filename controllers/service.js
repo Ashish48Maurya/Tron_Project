@@ -74,7 +74,13 @@ exports.userData = async (req, res) => {
 
 exports.getHistory = async (req, res) => {
   try {
-    const history = await Payment.find({ status: 'pending' });
+    const userId = req.userID;
+    const user = await User.findById(userId).populate('payments');
+
+    if (!user) {
+      return res.status(404).json({ "error": "User not found" });
+    }
+    const history = user.payments;
 
     if (!history) {
       return res.status(408).json({ "error": "Server Error" });
@@ -85,6 +91,22 @@ exports.getHistory = async (req, res) => {
     return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
   }
 };
+
+exports.history = async (req, res) => {
+  try {
+    const history = await Payment.find({});
+
+    if (history.length === 0) {
+      return res.status(408).json({ "error": "No payment history found" });
+    } else {
+      return res.status(200).json({ "Payments": history });
+    }
+  } catch (err) {
+    return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+  }
+};
+
+
 
 exports.sendMsg = async (req, res) => {
   const { username, address, message } = req.body;
