@@ -3,7 +3,6 @@ const Payment = require('../models/Payment');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const Msg = require('../models/Contact');
 
 
@@ -107,7 +106,7 @@ exports.history = async (req, res) => {
 };
 
 
-
+a
 exports.sendMsg = async (req, res) => {
   const { username, address, message } = req.body;
 

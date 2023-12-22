@@ -3,14 +3,15 @@ import Navbar from './Navbar'
 import { useAuth } from '../store/auth';
 
 export default function Admin(props) {
-  const {address,token} = useAuth();
+  const { address, token } = useAuth();
   const [serviceProviderAddress, setServiceProviderAddress] = useState('');
   const [usdtAddress, setUsdtAddress] = useState('');
   const [usdcAddress, setUsdcAddress] = useState('');
   const [selectedTransactions, setSelectedTransactions] = useState([]);
   const [list, setList] = useState([]);  // Add this line to define the 'list' state
   // const [selectedButton, setSelectedButton] = useState(null);
-  const [count,setCount] = useState(0);
+  const [count, setCount] = useState(0);
+  const [bal, setBal] = useState(0);
 
   const getPaymentsDetails = async () => {
     try {
@@ -47,6 +48,7 @@ export default function Admin(props) {
       });
 
       if (response.status === 200) {
+
         const data = await response.json();
         console.log(data);
         setCount(data.userCount);
@@ -138,17 +140,32 @@ export default function Admin(props) {
 
   // };
 
+  const balance = async (req, res) => {
+    try {
+      const balance = await window.tronWeb.trx.getAccount(address);
+      // console.log(balance)
+      const formattedBalance = balance.balance * 1e-6;
+
+      setBal(formattedBalance);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: `Internal Server Error -> ${err.message}` });
+    }
+  };
+
+
   useEffect(() => {
     console.log("useEffect is running");
     getPaymentsDetails();
     userCounts()
+    balance();
   }, []);
 
 
-    return (
-      <>
-        <Navbar />
-        <div className="container">
+  return (
+    <>
+      <Navbar />
+      <div className="container">
         <div className="input-group m-3">
           <input
             type="text"
@@ -206,9 +223,11 @@ export default function Admin(props) {
           </button>
         </div>
       </div>
-      <div className='m-3'>
+      <div className=' mt-5 d-flex justify-content-evenly align-items-center'>
         <h3>Users: {count}</h3>
-        <div>{address}</div>
+        <h3 style={{ color: bal > 15 ? "green" : "red" }}>
+          Balance: {bal} TRX
+        </h3>
       </div>
       <div className="table-responsive mt-5">
         <table className="table">
@@ -219,55 +238,55 @@ export default function Admin(props) {
               <th scope="col" className="text-center">Transaction_ID</th>
               <th scope="col" className="text-center">Date & Time</th>
               <th scope="col" className="text-center">Amount</th>
-              <th scope="col" className="text-center">Actions</th>
+              <th scope="col" className="text-center">Status</th>
             </tr>
           </thead>
-            <tbody>
-              {list.map((ele) => (
-                <tr key={ele._id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      id={`checkbox_${ele._id}`}
-                      name={`checkbox_${ele._id}`}
-                      value={ele.timestamps}
-                      checked={selectedTransactions.includes(ele._id)}
-                      onChange={() => handleCheckboxChange(ele._id)}
-                    />
-                  </td>
-                  <td>{ele._id}</td>
-                  <td>{ele.txID}</td>
-                  <td>{ele.timestamps}</td>
-                  <td>{ele.amount}{ele.asset}</td>
-                  <td>
-                    {ele.status}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tbody>
-              {list.map((ele) => (
-                <tr key={ele._id}>
-                  <td data-label="Select">
-                    <input
-                      type="checkbox"
-                      id={`checkbox_${ele._id}`}
-                      name={`checkbox_${ele._id}`}
-                      value={ele.timestamps}
-                      checked={selectedTransactions.includes(ele._id)}
-                      onChange={() => handleCheckboxChange(ele._id)}
-                    />
-                  </td>
-                  <td data-label="Date&Time">{ele.timestamps}</td>
-                  <td data-label="Transaction ID">{ele.txID}</td>
-                  <td data-label="User ID">{ele._id}</td>
-                  <td data-label="Transaction Status">{ele.status}</td>
-                </tr>
-              ))}
-            </tbody>
+          <tbody>
+            {list.map((ele) => (
+              <tr key={ele._id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    id={`checkbox_${ele._id}`}
+                    name={`checkbox_${ele._id}`}
+                    value={ele.timestamps}
+                    checked={selectedTransactions.includes(ele._id)}
+                    onChange={() => handleCheckboxChange(ele._id)}
+                  />
+                </td>
+                <td>{ele._id}</td>
+                <td>{ele.txID}</td>
+                <td>{ele.timestamps}</td>
+                <td>{ele.amount}{ele.asset}</td>
+                <td>
+                  {ele.status}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tbody>
+            {list.map((ele) => (
+              <tr key={ele._id}>
+                <td data-label="Select">
+                  <input
+                    type="checkbox"
+                    id={`checkbox_${ele._id}`}
+                    name={`checkbox_${ele._id}`}
+                    value={ele.timestamps}
+                    checked={selectedTransactions.includes(ele._id)}
+                    onChange={() => handleCheckboxChange(ele._id)}
+                  />
+                </td>
+                <td data-label="Date&Time">{ele.timestamps}</td>
+                <td data-label="Transaction ID">{ele.txID}</td>
+                <td data-label="User ID">{ele._id}</td>
+                <td data-label="Transaction Status">{ele.status}</td>
+              </tr>
+            ))}
+          </tbody>
 
-          </table>
-        </div>
+        </table>
+      </div>
       <style>
         {`
               .table {

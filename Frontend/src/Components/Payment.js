@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import qrCode from 'qrcode';
 import Navbar from './Navbar';
 import { toast } from 'react-toastify';
 import { useAuth } from '../store/auth';
 
 export default function Payment() {
-  const { token, setAddress } = useAuth();
+  const { token, address, usdtContractAddress, usddContractAddress } = useAuth();
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
-  const serviceProviderWalletAddress = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
-  setAddress(serviceProviderWalletAddress);
-  // const serviceProviderWalletAddress = props.Add
+  const serviceProviderWalletAddress = address
 
-  const navigate = useNavigate();
   const [amt, setAmt] = useState('');
   const [add, setAdd] = useState('');
   const [src, setSrc] = useState(null);
@@ -35,7 +32,7 @@ export default function Payment() {
 
           const functionSelector = 'transfer(address,uint256)';
           const parameter = [{ type: 'address', value: serviceProviderWalletAddress }, { type: 'uint256', value: amt * 1e6 }]
-          const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj', functionSelector, {}, parameter);
+          const tx = await window.tronWeb.transactionBuilder.triggerSmartContract(usdtContractAddress, functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
           setID(Res.txid)
@@ -43,7 +40,7 @@ export default function Payment() {
         else { //if asset type is usdc/usdd --> BCT
           const functionSelector = 'transfer(address,uint256)';
           const parameter = [{ type: 'address', value: serviceProviderWalletAddress }, { type: 'uint256', value: amt * 1e9 }]//amt*1e18
-          const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK', functionSelector, {}, parameter);
+          const tx = await window.tronWeb.transactionBuilder.triggerSmartContract(usddContractAddress, functionSelector, {}, parameter);
           // const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('Contract_Address', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
