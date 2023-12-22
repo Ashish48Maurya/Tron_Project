@@ -6,9 +6,9 @@ export const AuthProvider = ({ children }) => {
 
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [user, setUser] = useState("");
-    const [address, setServiceProviderAddress] = useState("TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd");
-    const [usdtContractAddress, setusdtContractAddress] = useState("TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj");
-    const [usddContractAddress, setusddContractAddress] = useState("TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK");
+    const [address, setServiceProviderAddress] = useState("");
+    const [usdtContractAddress, setusdtContractAddress] = useState("");
+    const [usddContractAddress, setusddContractAddress] = useState("");
     let isLoggedIn = !!token;
 
     const getAddresses = async () => {
@@ -24,14 +24,16 @@ export const AuthProvider = ({ children }) => {
 
             if (res.status === 200) {
                 const data = await res.json();
+                console.log("API data: ", data);
                 setServiceProviderAddress(data.Addresses.serviceProvider);
                 setusdtContractAddress(data.Addresses.usdt);
                 setusddContractAddress(data.Addresses.usdc);
+                console.log("API CHANGES: ", address, usdtContractAddress, usddContractAddress);
             } else {
-                console.error('Failed to fetch payment history:', res.status);
+                console.error('Failed to fetch addresses:', res.status);
             }
         } catch (error) {
-            console.log('Error fetching payment history:', error);
+            console.log('Error fetching addresses:', error);
         }
     }
 
