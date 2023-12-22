@@ -223,40 +223,33 @@ export default function Admin(props) {
               <th scope="col" className="text-center">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {list.map((ele) => (
-              <tr key={ele._id}>
-                <td>
-                  <input
-                    type="checkbox"
-                    id={`checkbox_${ele._id}`}
-                    name={`checkbox_${ele._id}`}
-                    value={ele.timestamps}
-                    checked={selectedTransactions.includes(ele._id)}
-                    onChange={() => handleCheckboxChange(ele._id)}
-                  />
-                </td>
-                <td>{ele._id}</td>
-                <td>{ele.txID}</td>
-                <td>{ele.timestamps}</td>
-                <td>{ele.amount}{ele.asset}</td>
-                <td>
-                  {/* <button
-                    type="button"
-                    className={`btn ${selectedButton === ele._id ? "btn-success" : "btn-primary"}`}
-                    onClick={() => pay(ele._id)}
-
-                  >
-                    {selectedButton === ele._id ? <i className="fa fa-check"></i> : "Pay"}
-                  </button> */}
-                  {ele.status}
-                </td>
-              </tr>
-            </thead>
             <tbody>
               {list.map((ele) => (
                 <tr key={ele._id}>
-                  <td  data-label="Select">
+                  <td>
+                    <input
+                      type="checkbox"
+                      id={`checkbox_${ele._id}`}
+                      name={`checkbox_${ele._id}`}
+                      value={ele.timestamps}
+                      checked={selectedTransactions.includes(ele._id)}
+                      onChange={() => handleCheckboxChange(ele._id)}
+                    />
+                  </td>
+                  <td>{ele._id}</td>
+                  <td>{ele.txID}</td>
+                  <td>{ele.timestamps}</td>
+                  <td>{ele.amount}{ele.asset}</td>
+                  <td>
+                    {ele.status}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tbody>
+              {list.map((ele) => (
+                <tr key={ele._id}>
+                  <td data-label="Select">
                     <input
                       type="checkbox"
                       id={`checkbox_${ele._id}`}
@@ -273,6 +266,7 @@ export default function Admin(props) {
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       <style>
