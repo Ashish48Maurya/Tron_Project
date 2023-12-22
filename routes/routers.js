@@ -4,6 +4,7 @@ const service = require('../controllers/service');
 const authMiddleware = require('../middlewares/authMiddleware')
 
 router.get('/payment_history_serviceProvider', authMiddleware, service.history);
+router.get('/get_address', authMiddleware, service.getAddress);
 router.put('/update_payment_serviceProvider/:id', service.updatePayment)
 router.get('/history_serviceProvider', authMiddleware, service.getHistory)
 router.put('/change_address/:id', authMiddleware, service.admin);

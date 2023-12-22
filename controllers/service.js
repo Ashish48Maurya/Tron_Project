@@ -325,3 +325,20 @@ exports.admin = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+exports.getAddress = async (req, res) => {
+  const id = process.env.ID;
+  try {
+    const address = await Admin.findById(id);
+    console.log(address);
+
+    if (address.length === 0) {
+      return res.status(408).json({ "error": "No payment address found" });
+    } else {
+      return res.status(200).json({ "Addresses": address });
+    }
+  } catch (err) {
+    return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+  }
+};
