@@ -15,7 +15,7 @@ export default function Admin(props) {
 
   const getPaymentsDetails = async () => {
     try {
-      const response = await fetch("http://localhost:8000/history_serviceProvider", {
+      const response = await fetch("http://localhost:8000/payment_history_serviceProvider", {
         method: "GET",
         headers: {
           Accept: "application/json",

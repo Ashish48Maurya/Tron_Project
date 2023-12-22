@@ -106,7 +106,6 @@ exports.history = async (req, res) => {
 };
 
 
-a
 exports.sendMsg = async (req, res) => {
   const { username, address, message } = req.body;
 
