@@ -205,8 +205,6 @@ export default function Admin(props) {
           </button>
         </div>
       </div>
-
-      {/* <h2 className="text-center m-2">Admin Panel</h2> */}
       <div className='m-3'>
         <h3>Users: {count}</h3>
         <div>{address}</div>
