@@ -122,161 +122,183 @@ export default function Admin(props) {
       <>
         <Navbar />
         <div className="container">
-        <div className="input-group m-3">
-          <input
-            type="text"
-            className="form-control"
-            value={serviceProviderAddress}
-            placeholder="Change Service Provider's Address..."
-            onChange={(e) => setServiceProviderAddress(e.target.value)}
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-          />
-          <button
-            className="bg-success btn btn-outline-success ms-2 fw-semibold"
-            onClick={() => setSelectedTransactions(['serviceProvider'])}
-            type="submit"
-          >
-            Change
-          </button>
+          <div className="input-group m-3">
+            <input
+              type="text"
+              className="form-control"
+              value={serviceProviderAddress}
+              placeholder="Change Service Provider's Address..."
+              onChange={(e) => setServiceProviderAddress(e.target.value)}
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+            />
+            <button
+              className="bg-success btn btn-outline-success ms-2 fw-semibold"
+              onClick={() => setSelectedTransactions(['serviceProvider'])}
+              type="submit"
+            >
+              Change
+            </button>
+          </div>
+
+          <div className="input-group m-3">
+            <input
+              type="text"
+              className="form-control"
+              value={usdtAddress}
+              placeholder="Change USDT Address..."
+              onChange={(e) => setUsdtAddress(e.target.value)}
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+            />
+            <button
+              className="bg-success btn btn-outline-success ms-2 fw-semibold"
+              onClick={() => setSelectedTransactions(['usdt'])}
+              type="submit"
+            >
+              Change
+            </button>
+          </div>
+
+          <div className="input-group m-3">
+            <input
+              type="text"
+              className="form-control"
+              value={usdcAddress}
+              placeholder="Change USDC Address..."
+              onChange={(e) => setUsdcAddress(e.target.value)}
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+            />
+            <button
+              className="bg-success btn btn-outline-success ms-2 fw-semibold"
+              onClick={() => setSelectedTransactions(['usdc'])}
+              type="submit"
+            >
+              Change
+            </button>
+          </div>
         </div>
-
-        <div className="input-group m-3">
-          <input
-            type="text"
-            className="form-control"
-            value={usdtAddress}
-            placeholder="Change USDT Address..."
-            onChange={(e) => setUsdtAddress(e.target.value)}
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-          />
-          <button
-            className="bg-success btn btn-outline-success ms-2 fw-semibold"
-            onClick={() => setSelectedTransactions(['usdt'])}
-            type="submit"
-          >
-            Change
-          </button>
-        </div>
-
-        <div className="input-group m-3">
-          <input
-            type="text"
-            className="form-control"
-            value={usdcAddress}
-            placeholder="Change USDC Address..."
-            onChange={(e) => setUsdcAddress(e.target.value)}
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-          />
-          <button
-            className="bg-success btn btn-outline-success ms-2 fw-semibold"
-            onClick={() => setSelectedTransactions(['usdc'])}
-            type="submit"
-          >
-            Change
-          </button>
-        </div>
-      </div>
-
-      <h2 className="text-center mt-2">Admin Panel</h2>
-      <div className="table-responsive mt-5">
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col" className="text-center">Select</th>
-              <th scope="col" className="text-center">From</th>
-              <th scope="col" className="text-center">To</th>
-              <th scope="col" className="text-center">Date & Time</th>
-              <th scope="col" className="text-center">Amount</th>
-              <th scope="col" className="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {list.map((ele) => (
-              <tr key={ele._id}>
-                <td>
-                  <input
-                    type="checkbox"
-                    id={`checkbox_${ele._id}`}
-                    name={`checkbox_${ele._id}`}
-                    value={ele.timestamps}
-                    checked={selectedTransactions.includes(ele._id)}
-                    onChange={() => handleCheckboxChange(ele._id)}
-                  />
-                </td>
-                <td>{ele.from}</td>
-                <td>{ele.to}</td>
-                <td>{ele.timestamps}</td>
-                <td>{ele.amount}{ele.asset}</td>
-                <td>
-                  <button
-                    type="button"
-                    className={`btn ${selectedButton === ele._id ? "btn-success" : "btn-primary"}`}
-                    onClick={() => pay(ele._id)}
-
-                  >
-                    {selectedButton === ele._id ? <i className="fa fa-check"></i> : "Pay"}
-                  </button>
-                </td>
+        <div className="table-container">
+          <h1 className="heading">Admin Page</h1>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Select</th>
+                <th>Date&Time</th>
+                <th>Transaction ID</th>
+                <th>User ID</th>
+                <th>Transaction Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {list.map((ele) => (
+                <tr key={ele._id}>
+                  <td  data-label="Select">
+                    <input
+                      type="checkbox"
+                      id={`checkbox_${ele._id}`}
+                      name={`checkbox_${ele._id}`}
+                      value={ele.timestamps}
+                      checked={selectedTransactions.includes(ele._id)}
+                      onChange={() => handleCheckboxChange(ele._id)}
+                    />
+                  </td>
+                  <td data-label="Date&Time">{ele.timestamps}</td>
+                  <td data-label="Transaction ID">{ele.txID}</td>
+                  <td data-label="User ID">{ele._id}</td>
+                  <td data-label="Transaction Status">{ele.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       <style>
         {`
-              .table {
-                border-collapse: collapse;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-              }
-      
-              .table th, .table td {
-                padding: 10px;
-                border: 1px solid #ddd;
-                text-align:center
-              }
-      
-              .table thead {
-                background-color: #f0f0f0;
-              }
-      
-              .table tbody tr:nth-child(even) {
-                background-color: #fafafa;
-              }
-      
-              .table tbody tr:hover {
-                background-color: #e0e0e0;
-                cursor: pointer;
-              }
-      
-              .btn {
-                padding: 5px 10px;
-                border: none;
-                border-radius: 5px;
-                color: white;
-              }
-      
-              .btn-primary {
-                background-color: #007bff;
-              }
-      
-              .btn-primary:hover {
-                background-color: #0069d9;
-              }
-      
-              .btn-success {
-                background-color: #28a745;
-              }
-      
-              .btn-success:hover {
-                background-color: #218838;
-              }
-      
-              .fa {
-                margin-right: 5px;
-              }
+         *{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        body{
+            font-family: sans-serif;
+        }
+        button[type="submit"]{
+          color:white;
+        }
+        .table-container{
+            padding: 0 10%;
+            margin:40px auto 0;
+        }
+        .heading{
+            font-size: 40px;
+            text-align:center;
+            margin-bottom: 40px;
+        }
+        .table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table thead{
+            color:black;
+            background-color:blue;
+        }
+        .table thead tr th{
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.35px;
+            // color: white;
+            opacity:1;
+            padding: 12px;
+            vertical-align: top;
+            border: 1px solid #dee2e685;
+        }
+        .table tbody tr td{
+            font-size:14px;
+            letter-spacing: 0.35px;
+            font-weight: normal;
+            color: #f1f1f1;
+            background-color: #3c3f44;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #dee2e685;
+        }
+        /* .table-text_Successful{
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.35px;
+            color: blue;
+        } */
+        @media (max-width: 768px) {
+            .table thread{
+                display:none;
+            }
+            .table, .table tbody, .table tr, .table td{
+                display: block;
+                width: 100%;
+
+            }
+            .table tr{
+                margin-bottom: 15px;
+
+            }
+            .table tbody tr td{
+                text-align: right;
+                padding-left: 50%;
+                position:relative;
+            }
+            .table td::before{
+                content:attr(data-label);
+                position:absolute;
+                left:0;
+                width: 50%;
+                padding-left: 15px;
+                font-weight: 600;
+                font-size:14px;
+                text-align:left;
+
+            }
+        }
             `}
       </style>
     </>

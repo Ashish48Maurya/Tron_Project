@@ -12,7 +12,9 @@ import Imagezaobao1Icon5 from "../Images/thebusinesstimes-1@2x.png";
 const Home = () => {
   return (
     <>
-      <Navbar />
+      <div className="nav-m">
+        <Navbar />
+      </div>
       <div className="landingPage">
         <div className="landingPageChild" />
         <div className="landingPageItem" />
@@ -344,6 +346,9 @@ const Home = () => {
   );
   width: 557.18px;
   height: 554.16px;
+}
+.nav-m{
+  z-index:1;
 }
 .landingPageChild,
 .landingPageInner,

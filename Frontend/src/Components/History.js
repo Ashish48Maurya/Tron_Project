@@ -14,7 +14,6 @@ const History = () => {
       const data = await res.json();
       console.log("API Data:", data.Payments);
       setTransactions(data.Payments);
-      console.log("Updated State:", transactions); 
     } catch (error) {
       console.log(error);
     }
