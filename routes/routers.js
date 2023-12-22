@@ -9,6 +9,7 @@ router.post('/register', service.signup)
 router.post('/signin', service.signin)
 router.post('/forgotpassword', service.forgotpassword)
 router.put('/verify/:id', service.verify)
+router.get('/count', service.countUsers)
 router.post('/contact',authMiddleware,service.sendMsg)
 router.post('/sender_to_serviceProvider',authMiddleware, service.sendFunds);
 router.get('/user',authMiddleware,service.user)

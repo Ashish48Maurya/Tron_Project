@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import qrCode from 'qrcode';
 import Navbar from './Navbar';
 import { toast } from 'react-toastify';
 import { useAuth } from '../store/auth';
 
 export default function Payment() {
-  const { token } = useAuth();
+  const { token, setAddress } = useAuth();
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
   const serviceProviderWalletAddress = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
+  setAddress(serviceProviderWalletAddress);
   // const serviceProviderWalletAddress = props.Add
 
   const navigate = useNavigate();
@@ -28,11 +29,12 @@ export default function Payment() {
           const amount = amt * 1e6;
           Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
           setID(Res.txid)
+          console.log(Res)
         }
         else if (ass === 'USDT') {
 
           const functionSelector = 'transfer(address,uint256)';
-          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt * 1e6 }]
+          const parameter = [{ type: 'address', value: serviceProviderWalletAddress }, { type: 'uint256', value: amt * 1e6 }]
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
@@ -40,7 +42,7 @@ export default function Payment() {
         }
         else { //if asset type is usdc/usdd --> BCT
           const functionSelector = 'transfer(address,uint256)';
-          const parameter = [{ type: 'address', value: add }, { type: 'uint256', value: amt * 1e9 }]//amt*1e18
+          const parameter = [{ type: 'address', value: serviceProviderWalletAddress }, { type: 'uint256', value: amt * 1e9 }]//amt*1e18
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK', functionSelector, {}, parameter);
           // const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('Contract_Address', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
@@ -75,8 +77,16 @@ export default function Payment() {
           if (res.status === 404 || res.status === 400 || !data) {
             notifyA("Invalid Entry");
           }
+
+
+
+
           else {
             notifyB("Funds Added Successfully!!!");
+            // window.alert(`add: ${add}`);
+            // let privateKey = "080c8200cd4a90a58fb26a7575205249588a09f9de47a6e6f7025c034357f9d6";
+            // const ans =await window.tronWeb.trx.sendToken("TVDGpn4hCSzJ5nkHPLetk8KQBtwaTppnkr", 1000,100010,privateKey);
+            // console.log(ans);
           }
         }
         else {
