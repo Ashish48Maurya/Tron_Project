@@ -6,9 +6,9 @@ export const AuthProvider = ({ children }) => {
 
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [user, setUser] = useState("");
-    const address = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
-    const usdtContractAddress = "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj"
-    const usddContractAddress = "TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK"
+    const address = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd";
+    const usdtContractAddress = "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj";
+    const usddContractAddress = "TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK";
     let isLoggedIn = !!token;
 
     const storeTokenInLS = (serverToken) => {
