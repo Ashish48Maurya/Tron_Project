@@ -48,7 +48,29 @@ exports.sendFunds = async (req, res) => {
 };
 
 
+exports.countUsers = async (req, res) => {
+  try {
+    const userCount = await User.countDocuments();
+    res.status(200).json({ "userCount": userCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ "error": "Internal server error" });
+  }
+};
 
+exports.userData = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId).populate('payments');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 
 exports.getHistory = async (req, res) => {
   try {

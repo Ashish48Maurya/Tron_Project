@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 
-
 const History = () => {
 
   let api = "http://localhost:8000/payment_history_serviceProvider";
@@ -38,7 +37,7 @@ const History = () => {
             <table>
               <thead>
                 <tr>
-                  <th>ID</th>
+             
                   <th>From</th>
                   <th>To</th>
                   <th>Amount</th>
@@ -50,7 +49,7 @@ const History = () => {
               <tbody>
                 {Array.isArray(transactions) && transactions.map(transaction => (
                   <tr key={transaction.id}>
-                    <td>{transaction._id}</td>
+               
                     <td>{transaction.from}</td>
                     <td>{transaction.to}</td>
                     <td>{transaction.amount}</td>
@@ -78,7 +77,7 @@ table {
 
 th, td {
   padding: 10px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #ddd;
 }
 

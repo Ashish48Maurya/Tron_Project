@@ -12,7 +12,7 @@ import NewPassword from "./Components/NewPassword";
 import Userdashboard from "./Components/Userdashboard";
 import PrivateRoute from "./user-routes/PrivateRoute";
 import Contact from "./Components/Contact";
-import Navbar from "./Components/Navbar";
+// import Navbar from "./Components/Navbar";
 import { useState } from "react";
 import About from "./Components/About";
 import History from "./Components/History";
@@ -25,8 +25,8 @@ function App() {
   return (
     <>
       <Routes>
-        
-        <Route exact path='/' element={<Home/>} />
+
+        <Route exact path='/' element={<Home />} />
         <Route exact path='/register' element={<Register />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/forgotpassword' element={<Forgotpassword />} />
@@ -35,13 +35,13 @@ function App() {
 
 
         <Route exact path="/private" element={<PrivateRoute />} >
-        <Route exact path='logout' element={<Logout />} />
+          <Route exact path='logout' element={<Logout />} />
           <Route exact path="user" element={<Userdashboard />} />
-          <Route exact path='admin' element={<Admin setAdd={setAdd} />}/>
-          <Route exact path='payment' element={<Payment />}/>
-          <Route exact path='history' element={<History />}/>
-          <Route exact path='qrCode' element={<QrCode Add={add} />}/>
-          <Route exact path='contact' element={<Contact />}/>
+          <Route exact path='admin' element={<Admin setAdd={setAdd} />} />
+          <Route exact path='payment' element={<Payment />} />
+          <Route exact path='history' element={<History />} />
+          <Route exact path='qrCode' element={<QrCode Add={add} />} />
+          <Route exact path='contact' element={<Contact />} />
         </Route>
       </Routes>
       <ToastContainer />
