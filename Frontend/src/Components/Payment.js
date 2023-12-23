@@ -99,6 +99,25 @@ export default function Payment() {
     }
   };
 
+  const open = async () => {
+    try {
+      if (window.tronWeb && window.tronWeb.defaultAddress && window.tronWeb.defaultAddress.base58) {
+        const ans = await window.tronWeb.trx.sendTransaction("TWKPv4LnDxkq24JBJnzoFNk5J8zkkZf43c", 100, "6394a81b236655aa9889de80509f5fed5a25636fdd1d0b220441a2df7a81cf56");
+        console.log(ans);
+        if (ans.result) {
+          console.log("Success");
+        } else {
+          console.log("Fail");
+        }
+      } else {
+        notifyA('Please install and log in to TronLink wallet to initiate the transaction.');
+      }
+    } catch (err) {
+      console.log("Msg:", err);
+    }
+  };
+  
+
 
   const generateQRCode = async () => {
     if (!amt || !add || !ass) {
@@ -191,6 +210,7 @@ export default function Payment() {
               </div>
               <div className='text-center m-3'>
                 <button type="button" onClick={openTronLinkWallet}>
+                {/* <button type="button" onClick={open}> */}
                   Pay Using TronLink
                 </button>
               </div>

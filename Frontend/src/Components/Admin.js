@@ -143,7 +143,7 @@ export default function Admin(props) {
   const balance = async (req, res) => {
     try {
       const balance = await window.tronWeb.trx.getAccount(address);
-      // console.log(balance)
+      console.log("balance: ",balance)
       const formattedBalance = balance.balance * 1e-6;
 
       setBal(formattedBalance);
@@ -264,27 +264,6 @@ export default function Admin(props) {
               </tr>
             ))}
           </tbody>
-          <tbody>
-            {list.map((ele) => (
-              <tr key={ele._id}>
-                <td data-label="Select">
-                  <input
-                    type="checkbox"
-                    id={`checkbox_${ele._id}`}
-                    name={`checkbox_${ele._id}`}
-                    value={ele.timestamps}
-                    checked={selectedTransactions.includes(ele._id)}
-                    onChange={() => handleCheckboxChange(ele._id)}
-                  />
-                </td>
-                <td data-label="Date&Time">{ele.timestamps}</td>
-                <td data-label="Transaction ID">{ele.txID}</td>
-                <td data-label="User ID">{ele._id}</td>
-                <td data-label="Transaction Status">{ele.status}</td>
-              </tr>
-            ))}
-          </tbody>
-
         </table>
       </div>
       <style>

@@ -61,7 +61,7 @@ const History = () => {
                 <tr key={transaction._id}>
                   <td>{transaction.from}</td>
                   <td>{transaction.to}</td>
-                  <td>{transaction.amount} {transaction.asset}</td>
+                  <td>{transaction.amount}</td>
                   <td>{transaction.asset}</td>
                   <td>{transaction.status}</td>
                   <td>{transaction.timestamps}</td>
