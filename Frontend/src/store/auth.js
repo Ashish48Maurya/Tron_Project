@@ -6,10 +6,36 @@ export const AuthProvider = ({ children }) => {
 
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [user, setUser] = useState("");
-    const address = "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
-    const usdtContractAddress = "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj"
-    const usddContractAddress = "TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK"
+    const [address, setServiceProviderAddress] = useState("");
+    const [usdtContractAddress, setusdtContractAddress] = useState("");
+    const [usddContractAddress, setusddContractAddress] = useState("");
     let isLoggedIn = !!token;
+
+    const getAddresses = async () => {
+        try {
+            const url = "http://localhost:8000/get_address";
+            const res = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (res.status === 200) {
+                const data = await res.json();
+                console.log("API data: ", data);
+                setServiceProviderAddress(data.Addresses.serviceProvider);
+                setusdtContractAddress(data.Addresses.usdt);
+                setusddContractAddress(data.Addresses.usdc);
+                console.log("API CHANGES: ", address, usdtContractAddress, usddContractAddress);
+            } else {
+                console.error('Failed to fetch addresses:', res.status);
+            }
+        } catch (error) {
+            console.log('Error fetching addresses:', error);
+        }
+    }
 
     const storeTokenInLS = (serverToken) => {
         setToken(serverToken);
@@ -50,6 +76,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         userAuthentication();
+        getAddresses();
     }, [])
 
 

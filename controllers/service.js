@@ -4,6 +4,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Msg = require('../models/Contact');
+const Admin = require('../models/Admin');
 
 
 
@@ -80,6 +81,7 @@ exports.getHistory = async (req, res) => {
       return res.status(404).json({ "error": "User not found" });
     }
     const history = user.payments;
+    console.log(history);
 
     if (!history) {
       return res.status(408).json({ "error": "Server Error" });
@@ -104,7 +106,6 @@ exports.history = async (req, res) => {
     return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
   }
 };
-
 
 exports.sendMsg = async (req, res) => {
   const { username, address, message } = req.body;
@@ -281,3 +282,63 @@ exports.verify = async (req, res) => {
   }
 };
 
+exports.admin = async (req, res) => {
+  const { serviceProvider, usdc, usdt } = req.body;
+  const id = process.env.ID;
+
+  console.log("Received ID:", id);
+
+  try {
+    const existingAdmin = await Admin.findById(id);
+
+    if (!existingAdmin) {
+      return res.status(404).send("Admin not found");
+    }
+
+    const updateFields = {};
+    if (serviceProvider && serviceProvider !== existingAdmin.serviceProvider) {
+      updateFields.serviceProvider = serviceProvider;
+    }
+
+    if (usdt && usdt !== existingAdmin.usdt) {
+      updateFields.usdt = usdt;
+    }
+
+    if (usdc && usdc !== existingAdmin.usdc) {
+      updateFields.usdc = usdc;
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+      
+      return res.status(200).json({ message: "No changes made" });
+    }
+
+    const updatedAdmin = await Admin.findByIdAndUpdate(id, updateFields, { new: true });
+
+    if (!updatedAdmin) {
+      return res.status(404).send("Updation Failed");
+    }
+
+    return res.status(200).json({ message: "Address Changed Successfully!!!", address: updatedAdmin });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+exports.getAddress = async (req, res) => {
+  const id = process.env.ID;
+  try {
+    const address = await Admin.findById(id);
+    console.log(address);
+
+    if (address.length === 0) {
+      return res.status(408).json({ "error": "No payment address found" });
+    } else {
+      return res.status(200).json({ "Addresses": address });
+    }
+  } catch (err) {
+    return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+  }
+};
