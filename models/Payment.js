@@ -31,5 +31,4 @@ const paymentSchema = new mongoose.Schema({
         enum: ['pending', 'completed'],
     },
 });
-
 module.exports = mongoose.model('payment', paymentSchema);

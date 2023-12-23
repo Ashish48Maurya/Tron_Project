@@ -80,10 +80,7 @@ export default function Payment() {
 
           else {
             notifyB("Funds Added Successfully!!!");
-            // window.alert(`add: ${add}`);
-            // let privateKey = "080c8200cd4a90a58fb26a7575205249588a09f9de47a6e6f7025c034357f9d6";
-            // const ans =await window.tronWeb.trx.sendToken("TVDGpn4hCSzJ5nkHPLetk8KQBtwaTppnkr", 1000,100010,privateKey);
-            // console.log(ans);
+           
           }
         }
         else {
@@ -99,10 +96,20 @@ export default function Payment() {
     }
   };
 
+
+
+
+
+
+  
+
+
+
+  //Error
   const open = async () => {
     try {
-      if (window.tronWeb && window.tronWeb.defaultAddress && window.tronWeb.defaultAddress.base58) {
-        const ans = await window.tronWeb.trx.sendTransaction("TWKPv4LnDxkq24JBJnzoFNk5J8zkkZf43c", 100, "6394a81b236655aa9889de80509f5fed5a25636fdd1d0b220441a2df7a81cf56");
+      if (window.tronWeb) {
+        const ans = await window.tronWeb.trx.sendTransaction("TWKPv4LnDxkq24JBJnzoFNk5J8zkkZf43c", 1000,100010, "6394a81b236655aa9889de80509f5fed5a25636fdd1d0b220441a2df7a81cf56");
         console.log(ans);
         if (ans.result) {
           console.log("Success");
@@ -117,6 +124,16 @@ export default function Payment() {
     }
   };
   
+
+
+
+
+
+
+
+
+
+
 
 
   const generateQRCode = async () => {
@@ -209,8 +226,8 @@ export default function Payment() {
                 <img src={src} alt="qr-code" />
               </div>
               <div className='text-center m-3'>
-                <button type="button" onClick={openTronLinkWallet}>
-                {/* <button type="button" onClick={open}> */}
+                {/* <button type="button" onClick={openTronLinkWallet}> */}
+                <button type="button" onClick={open}>
                   Pay Using TronLink
                 </button>
               </div>
