@@ -9,7 +9,7 @@ export default function Payment() {
   const { token, address, usdtContractAddress, usddContractAddress } = useAuth();
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
-  const serviceProviderWalletAddress = address
+  
 
   const [amt, setAmt] = useState('');
   const [add, setAdd] = useState('');
@@ -24,22 +24,22 @@ export default function Payment() {
         let Res;
         if (ass === 'TRX') {
           const amount = amt * 1e6;
-          Res = await window.tronWeb.trx.sendTransaction(serviceProviderWalletAddress, amount);
+          Res = await window.tronWeb.trx.sendTransaction(address, amount);
           setID(Res.txid)
           console.log(Res)
         }
         else if (ass === 'USDT') {
 
           const functionSelector = 'transfer(address,uint256)';
-          const parameter = [{ type: 'address', value: serviceProviderWalletAddress }, { type: 'uint256', value: amt * 1e6 }]
+          const parameter = [{ type: 'address', value: address }, { type: 'uint256', value: amt * 1e6 }]
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract(usdtContractAddress, functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
           setID(Res.txid)
         }
-        else { //if asset type is usdc/usdd --> BCT
+        else { //if asset type is usdc/usdd
           const functionSelector = 'transfer(address,uint256)';
-          const parameter = [{ type: 'address', value: serviceProviderWalletAddress }, { type: 'uint256', value: amt * 1e9 }]//amt*1e18
+          const parameter = [{ type: 'address', value: address }, { type: 'uint256', value: amt * 1e9 }]//amt*1e18
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract(usddContractAddress, functionSelector, {}, parameter);
           // const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('Contract_Address', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
@@ -89,6 +89,7 @@ export default function Payment() {
       }
 
       catch (error) {
+        console.log(address)
         notifyA(`Error sending transaction: ${error}`);
       }
     } else {
@@ -226,7 +227,7 @@ export default function Payment() {
                 <img src={src} alt="qr-code" />
               </div>
               <div className='text-center m-3'>
-                {/* <button type="button" onClick={openTronLinkWallet}> */}
+                 {/* <button type="button" onClick={openTronLinkWallet}> */}
                 <button type="button" onClick={open}>
                   Pay Using TronLink
                 </button>

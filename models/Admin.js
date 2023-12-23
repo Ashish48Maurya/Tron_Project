@@ -9,12 +9,12 @@ const adminSchema = new mongoose.Schema({
     usdt: {
         equired: true,
         type: String,
-        default: "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
+        default: "TGQVLckg1gDZS5wUwPTrPgRG4U8MKC4jcP"
     },
     usdc: {
         equired: true,
         type: String,
-        default: "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd"
+        default: "TMaasBDjFc6sSBK38mb6eqNosYkgwAHqKe"
     },
 });
 
