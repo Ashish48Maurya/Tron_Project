@@ -4,18 +4,56 @@ import { useAuth } from '../store/auth';
 import { toast } from 'react-toastify';
 
   export default function Admin(props) {
-    const { address, token } = useAuth();
+    
+    const { address, usdtContractAddress, usddContractAddress,enum1,enum2, token} = useAuth();
     const [serviceProviderAddress, setServiceProviderAddress] = useState('');
     const [usdtAddress, setUsdtAddress] = useState('');
     const [usdcAddress, setUsdcAddress] = useState('');
     const [selectedTransactions, setSelectedTransactions] = useState([]);
-    const [list, setList] = useState([]);  // Add this line to define the 'list' state
+    const [list, setList] = useState([]);
     // const [selectedButton, setSelectedButton] = useState(null);
     const [count, setCount] = useState(0);
     const [bal, setBal] = useState(0);
+    const [bal1, setBal1] = useState(0);
+    const [bal2, setBal2] = useState(0);
+    
+    const balance = async (req, res) => {
+      try {
+        // window.alert(`from Balance: ${address}`)
+        const balance = await window.tronWeb.trx.getAccount(address);
+
+        const balance1 = await window.tronWeb.trx.getAccount(enum1);
+        const balance2 = await window.tronWeb.trx.getAccount(enum2);
+        console.log("Balance is: ", balance);
+        console.log("Addresses are: ", address, usdtContractAddress, usddContractAddress, enum1, enum2);
+        
+        const formattedBalance = balance.balance * 1e-6;
+        const formattedBalance1 = balance1.balance * 1e-6;
+        const formattedBalance2 = balance2.balance * 1e-6;
+        
+        setBal(formattedBalance);
+        setBal1(formattedBalance1);
+        setBal2(formattedBalance2);
+    
+        res.status(200).json({
+          balance: formattedBalance,
+          balance1: formattedBalance1,
+          balance2: formattedBalance2,
+        });
+      } catch (err) {
+        // notifyA(err);
+        if (res) {
+          res.status(500).json({ error: `Internal Server Error -> ${err.message}` });
+        } else {
+          console.error("Response object is undefined");
+        }
+      }
+    };
+    balance();
 
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
+    
 
     const updatePaymentServiceProvider = async () => {
       console.log("Addresses: ", serviceProviderAddress, usdtAddress, usdcAddress);
@@ -174,26 +212,16 @@ import { toast } from 'react-toastify';
 
     // };
 
-    const balance = async (req, res) => {
-      try {
-        const balance = await window.tronWeb.trx.getAccount("TYMtJusoFFevR2ft4DPLkuWD38NHpar6nH");
-        console.log("Balance is: ", window.tronWeb.trx.getAccount("TYMtJusoFFevR2ft4DPLkuWD38NHpar6nH"));
-        const formattedBalance = balance.balance * 1e-6;
-
-        setBal(formattedBalance);
-      } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: `Internal Server Error -> ${err.message}` });
-      }
-    };
+    
+    
 
 
     useEffect(() => {
-      console.log("useEffect is running");
-      getPaymentsDetails();
-      userCounts()
-      balance();
+        getPaymentsDetails();
+        userCounts();
+        // balance();
     }, []);
+    
 
 
     return (
@@ -259,9 +287,17 @@ import { toast } from 'react-toastify';
         </div>
         <div className=' mt-5 d-flex justify-content-evenly align-items-center'>
           <h3>Users: {count}</h3>
-          <h3 style={{ color: bal > 15 ? "green" : "red" }}>
+          <div>
+          <h5 style={{ color: bal > 15 ? "green" : "red" }}>
             Balance: {bal} TRX
-          </h3>
+          </h5>
+          <h5 style={{ color: bal1 > 15 ? "green" : "red" }}>
+            Balance: {bal1} TRX
+          </h5>
+          <h5 style={{ color: bal2 > 15 ? "green" : "red" }}>
+            Balance: {bal2} TRX
+          </h5>
+          </div>
         </div>
         <div className="table-responsive mt-5">
           <table className="table">

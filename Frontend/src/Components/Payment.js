@@ -74,10 +74,6 @@ export default function Payment() {
           if (res.status === 404 || res.status === 400 || !data) {
             notifyA("Invalid Entry");
           }
-
-
-
-
           else {
             notifyB("Funds Added Successfully!!!");
            
@@ -227,8 +223,8 @@ export default function Payment() {
                 <img src={src} alt="qr-code" />
               </div>
               <div className='text-center m-3'>
-                 {/* <button type="button" onClick={openTronLinkWallet}> */}
-                <button type="button" onClick={open}>
+                 <button type="button" onClick={openTronLinkWallet}>
+                {/* <button type="button" onClick={open}> */}
                   Pay Using TronLink
                 </button>
               </div>

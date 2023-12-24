@@ -9,6 +9,8 @@ export const AuthProvider = ({ children }) => {
     const [address, setServiceProviderAddress] = useState("");
     const [usdtContractAddress, setusdtContractAddress] = useState("");
     const [usddContractAddress, setusddContractAddress] = useState("");
+    const [enum1, setEnum1] = useState("");
+    const [enum2, setEnum2] = useState("");
     let isLoggedIn = !!token;
 
     const getAddresses = async () => {
@@ -25,9 +27,11 @@ export const AuthProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = await res.json();
                 console.log("API data: ", data);
-                setServiceProviderAddress(data.Addresses.serviceProvider);
-                setusdtContractAddress(data.Addresses.usdt);
-                setusddContractAddress(data.Addresses.usdc);
+                setServiceProviderAddress(data.addresses.serviceProvider);
+                setusdtContractAddress(data.addresses.usdt);
+                setusddContractAddress(data.addresses.usdc);
+                setEnum1(data.addresses.enum1);
+                setEnum2(data.addresses.enum2);
                 console.log("API CHANGES: ", address, usdtContractAddress, usddContractAddress);
             } else {
                 console.error('Failed to fetch addresses:', res.status);
@@ -62,6 +66,7 @@ export const AuthProvider = ({ children }) => {
                 if (data.msg) {
                     setUser(data.msg);
                     
+                    
                 } else {
                     console.error("Unexpected API response format:", data);
                 }
@@ -75,13 +80,13 @@ export const AuthProvider = ({ children }) => {
     
 
     useEffect(() => {
-        userAuthentication();
         getAddresses();
+        userAuthentication();
     }, [])
 
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, user, token,address, usdtContractAddress, usddContractAddress}}>
+        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, user, token,address, usdtContractAddress, usddContractAddress,enum1,enum2}}>
             {children}
         </AuthContext.Provider>
     );

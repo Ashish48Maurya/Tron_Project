@@ -326,19 +326,42 @@ exports.admin = async (req, res) => {
   }
 };
 
-
 exports.getAddress = async (req, res) => {
   const id = process.env.ID;
-  try {
-    const address = await Admin.findById(id);
-    console.log(address);
 
-    if (address.length === 0) {
-      return res.status(408).json({ "error": "No payment address found" });
-    } else {
-      return res.status(200).json({ "Addresses": address });
+  try {
+    const admin = await Admin.findById(id);
+
+    if (!admin) {
+      return res.status(404).json({ "error": "Admin not found" });
     }
+
+    const { serviceProvider, usdt, usdc } = admin;
+
+    const serviceProviderEnum = [
+      "TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd",
+      "TNpz9dM1xScWzkeTSA9WrC9QHNuonX542s",
+      "TWKPv4LnDxkq24JBJnzoFNk5J8zkkZf43c",
+    ];
+
+    const filteredServiceProviderEnum = serviceProviderEnum.filter(
+      (addr) => addr !== serviceProvider
+    );
+
+    const ServiceProviderEnum = filteredServiceProviderEnum
+      .reduce((acc, addr, index) => ({ ...acc, [`enum${index + 1}`]: addr }), {});
+
+    return res.status(200).json({
+      "addresses": {
+        "serviceProvider": serviceProvider,
+        "usdt": usdt,
+        "usdc": usdc,
+        ...ServiceProviderEnum,
+      }
+    });
   } catch (err) {
     return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
   }
 };
+
+
