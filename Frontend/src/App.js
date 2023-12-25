@@ -17,6 +17,7 @@ import { useState } from "react";
 import About from "./Components/About";
 import History from "./Components/History";
 import Home from "./Components/Home";
+import AdminLogin from "./Components/AdminLogin";
 
 
 function App() {
@@ -37,7 +38,9 @@ function App() {
         <Route exact path="/private" element={<PrivateRoute />} >
           <Route exact path='logout' element={<Logout />} />
           <Route exact path="user" element={<Userdashboard />} />
-          <Route exact path='admin' element={<Admin setAdd={setAdd} />} />
+          <Route exact path="adminlogin" element={<AdminLogin />}>
+            <Route exact path='admin' element={<Admin setAdd={setAdd} />} />
+          </Route>
           <Route exact path='payment' element={<Payment />} />
           <Route exact path='history' element={<History />} />
           <Route exact path='qrCode' element={<QrCode Add={add} />} />
