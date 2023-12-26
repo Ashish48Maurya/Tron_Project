@@ -19,6 +19,7 @@ import History from "./Components/History";
 import Home from "./Components/Home";
 import AdminLogin from "./Components/AdminLogin";
 import { useAuth } from "./store/auth";
+import Error from "./Components/Error";
 
 function App() {
   const {user} = useAuth();
@@ -39,7 +40,7 @@ function App() {
         <Route exact path="/private" element={<PrivateRoute />} >
           <Route exact path='logout' element={<Logout />} />
           <Route exact path="user" element={<Userdashboard />} />
-          {user.isAdmin ? <Route exact path='admin' element={<Admin  />} />: <Route exact path='contact' element={<Contact />} />}
+          {user.isAdmin ? <Route exact path='admin' element={<Admin  />} />: <Route exact path='*' element={<Error />} />}
           <Route exact path='payment' element={<Payment />} />
           <Route exact path='history' element={<History />} />
           <Route exact path='qrCode' element={<QrCode />} />
