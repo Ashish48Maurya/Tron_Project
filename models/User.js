@@ -16,6 +16,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    isAdmin:{
+        type: Boolean,
+        default: false,
+    },
     messages: [{
         type: Schema.Types.ObjectId,
         ref: 'Msg',

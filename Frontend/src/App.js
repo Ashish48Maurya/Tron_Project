@@ -17,10 +17,10 @@ import { useState } from "react";
 import About from "./Components/About";
 import History from "./Components/History";
 import Home from "./Components/Home";
-
+import { useAuth } from "./store/auth";
 
 function App() {
-
+  const {user} = useAuth();
   const [add, setAdd] = useState('TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd')
   return (
     <>
@@ -37,10 +37,10 @@ function App() {
         <Route exact path="/private" element={<PrivateRoute />} >
           <Route exact path='logout' element={<Logout />} />
           <Route exact path="user" element={<Userdashboard />} />
-          <Route exact path='admin' element={<Admin setAdd={setAdd} />} />
+          {user.isAdmin ? <Route exact path='admin' element={<Admin  />} />: <Route exact path='contact' element={<Contact />} />}
           <Route exact path='payment' element={<Payment />} />
           <Route exact path='history' element={<History />} />
-          <Route exact path='qrCode' element={<QrCode Add={add} />} />
+          <Route exact path='qrCode' element={<QrCode />} />
           <Route exact path='contact' element={<Contact />} />
         </Route>
       </Routes>
