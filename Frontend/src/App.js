@@ -17,6 +17,7 @@ import { useState } from "react";
 import About from "./Components/About";
 import History from "./Components/History";
 import Home from "./Components/Home";
+import AdminLogin from "./Components/AdminLogin";
 import { useAuth } from "./store/auth";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
       <Routes>
 
         <Route exact path='/' element={<Home />} />
+        <Route exact path='/admin' element={<AdminLogin />} />
         <Route exact path='/register' element={<Register />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/forgotpassword' element={<Forgotpassword />} />
