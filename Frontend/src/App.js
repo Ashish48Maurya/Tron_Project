@@ -40,7 +40,8 @@ function App() {
         <Route exact path="/private" element={<PrivateRoute />} >
           <Route exact path='logout' element={<Logout />} />
           <Route exact path="user" element={<Userdashboard />} />
-          {user.isAdmin ? <Route exact path='admin' element={<Admin  />} />: <Route exact path='*' element={<Error />} />}
+          {/* {user.isAdmin ? <Route exact path='admin' element={<Admin  />} />: <Route exact path='*' element={<Error />} />} */}
+          <Route exact path='admin' element={<Admin />} />
           <Route exact path='payment' element={<Payment />} />
           <Route exact path='history' element={<History />} />
           <Route exact path='qrCode' element={<QrCode />} />
