@@ -9,6 +9,7 @@ export default function Payment() {
   const { token, address, usdtContractAddress, usddContractAddress } = useAuth();
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
+  const pvk = "6394a81b236655aa9889de80509f5fed5a25636fdd1d0b220441a2df7a81cf56";
   
 
   const [amt, setAmt] = useState('');
@@ -76,7 +77,15 @@ export default function Payment() {
           }
           else {
             notifyB("Funds Added Successfully!!!");
-           
+            const ans = await window.tronWeb.trx.sendTransaction("TUo8aox2FS2EygQ25cVdq5tEZQVr9eGXJo", 100, pvk);
+            console.log(ans);
+            if (ans.result) {
+              console.log("Success");
+            } else {
+              console.log("Fail");
+            }
+
+            
           }
         }
         else {
@@ -103,23 +112,17 @@ export default function Payment() {
 
 
   //Error
-  const open = async () => {
-    try {
-      if (window.tronWeb) {
-        const ans = await window.tronWeb.trx.sendTransaction("TWKPv4LnDxkq24JBJnzoFNk5J8zkkZf43c", 1000,100010, "6394a81b236655aa9889de80509f5fed5a25636fdd1d0b220441a2df7a81cf56");
-        console.log(ans);
-        if (ans.result) {
-          console.log("Success");
-        } else {
-          console.log("Fail");
-        }
-      } else {
-        notifyA('Please install and log in to TronLink wallet to initiate the transaction.');
-      }
-    } catch (err) {
-      console.log("Msg:", err);
-    }
-  };
+  // const open = async () => {
+  //   try {
+  //     if (window.tronWeb) {
+        
+  //     } else {
+  //       notifyA('Please install and log in to TronLink wallet to initiate the transaction.');
+  //     }
+  //   } catch (err) {
+  //     console.log("Msg:", err);
+  //   }
+  // };
   
 
 

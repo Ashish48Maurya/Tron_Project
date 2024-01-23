@@ -13,23 +13,28 @@ import Userdashboard from "./Components/Userdashboard";
 import PrivateRoute from "./user-routes/PrivateRoute";
 import Contact from "./Components/Contact";
 // import Navbar from "./Components/Navbar";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import About from "./Components/About";
 import History from "./Components/History";
 import Home from "./Components/Home";
-import AdminLogin from "./Components/AdminLogin";
 import { useAuth } from "./store/auth";
 import Error from "./Components/Error";
+import Test from "./Components/Test";
 
 function App() {
-  const {user} = useAuth();
-  const [add, setAdd] = useState('TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd')
+  const {user,isLoggedIn} = useAuth();
+  useEffect(() => {
+
+    return () => {
+      console.log('Component is unmounted or isLoggedIn is changing...');
+    };
+  }, [isLoggedIn]);
   return (
     <>
       <Routes>
 
         <Route exact path='/' element={<Home />} />
-        <Route exact path='/admin' element={<AdminLogin />} />
+        {/* <Route exact path='/admin' element={<AdminLogin />} /> */}
         <Route exact path='/register' element={<Register />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/forgotpassword' element={<Forgotpassword />} />
@@ -40,6 +45,7 @@ function App() {
         <Route exact path="/private" element={<PrivateRoute />} >
           <Route exact path='logout' element={<Logout />} />
           <Route exact path="user" element={<Userdashboard />} />
+          <Route exact path="test" element={<Test />} />
           {user.isAdmin ? <Route exact path='admin' element={<Admin  />} />: <Route exact path='*' element={<Error />} />}
           <Route exact path='payment' element={<Payment />} />
           <Route exact path='history' element={<History />} />
