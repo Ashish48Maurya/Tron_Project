@@ -7,6 +7,7 @@ const { generateUsername } = require("unique-username-generator");
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const pvk = process.env.PRIVATE_KEY
 
 
 app.use(cors());
@@ -24,17 +25,39 @@ const privateKey = '6394a81b236655aa9889de80509f5fed5a25636fdd1d0b220441a2df7a81
 
 const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
 
-app.get('/token', async (req, res) => {
+app.get('/sendtxn', async (req, res) => {
   try {
-    // for usdt,usdc put issuer wallet address
-    const ans = await tronWeb.trx.getTokensIssuedByAddress("TJM1BE5wq1VdHh3gwjUeyaVkvZp9DVYCfC");
-    // const ans = await tronWeb.trx.getTokensIssuedByAddress("TNpz9dM1xScWzkeTSA9WrC9QHNuonX542s");
-    console.log("response: ", ans);
+    const { recipientAddress, asset, amount,usdt,usdc } = req.query;
+    
+    // const ans = await tronWeb.trx.sendTransaction("TM38MG7N9rs9i6CM8DTFQJ6TypG6ECeFGd", 1000, pvk);
+    let Res;
+        if (asset === 'TRX') {
+          const amt = amount * 1e6 - (amount * 1e6)*0.01;
+          Res = await tronWeb.trx.sendTransaction(recipientAddress, amt,pvk);
+        }
+        else if (asset === 'USDT') {
+          const functionSelector = 'transfer(address,uint256)';
+          const parameter = [{ type: 'address', value: recipientAddress }, { type: 'uint256', value: amount * 1e6 - (amount * 1e6)*0.01 }]
+          const tx = await tronWeb.transactionBuilder.triggerSmartContract(usdt, functionSelector, {}, parameter);
+          const signedTx = await tronWeb.trx.sign(tx.transaction);
+          Res = await tronWeb.trx.sendRawTransaction(signedTx);
+        }
+        else { //if asset type is usdc/usdd
+          const functionSelector = 'transfer(address,uint256)';
+          const parameter = [{ type: 'address', value: recipientAddress }, { type: 'uint256', value: amount * 1e9 - (amount * 1e9)*0.01 }]//amt*1e18
+          const tx = await tronWeb.transactionBuilder.triggerSmartContract(usdc, functionSelector, {}, parameter);
+          const signedTx = await tronWeb.trx.sign(tx.transaction);
+          Res = await tronWeb.trx.sendRawTransaction(signedTx);
+        }
+    
+    console.log("Transaction response:", Res);
+    return res.status(200).json({ msg: Res });
   } catch (error) {
-    console.error(error);
+    console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 app.get('/username', (req, res) => {
   const username = generateUsername();

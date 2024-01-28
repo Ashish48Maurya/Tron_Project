@@ -63,9 +63,9 @@ export default function Login() {
             })
             if (response.status === 200) {
                 const res_data = await response.json();
-                console.log("response from server ", res_data);
+                // console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
-                console.log(isLoggedIn);
+                // console.log(isLoggedIn);
                 notifyB("Login Successfull");
                 navigate('/');
             }

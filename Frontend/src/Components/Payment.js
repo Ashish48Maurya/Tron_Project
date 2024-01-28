@@ -9,8 +9,7 @@ export default function Payment() {
   const { token, address, usdtContractAddress, usddContractAddress } = useAuth();
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
-  const pvk = "6394a81b236655aa9889de80509f5fed5a25636fdd1d0b220441a2df7a81cf56";
-  
+
 
   const [amt, setAmt] = useState('');
   const [add, setAdd] = useState('');
@@ -19,6 +18,25 @@ export default function Payment() {
   const [error, setError] = useState('');
   const [id, setID] = useState(null)
 
+  // router.put('/update_payment_serviceProvider/:id', service.updatePayment)
+  const updatePayment = async (id) => {
+    const ans = await fetch(`http://localhost:8000/update_payment_serviceProvider/${id}?status=completed`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    if (ans.ok) {
+      const data = await ans.json();
+      console.log("Response:", data);
+      notifyB("Funds Added Successfully!!!");
+    } else {
+      console.error('Error:', ans.statusText);
+    }
+  }
+
+
+
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
       try {
@@ -26,8 +44,6 @@ export default function Payment() {
         if (ass === 'TRX') {
           const amount = amt * 1e6;
           Res = await window.tronWeb.trx.sendTransaction(address, amount);
-          setID(Res.txid)
-          console.log(Res)
         }
         else if (ass === 'USDT') {
 
@@ -36,7 +52,6 @@ export default function Payment() {
           const tx = await window.tronWeb.transactionBuilder.triggerSmartContract(usdtContractAddress, functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
-          setID(Res.txid)
         }
         else { //if asset type is usdc/usdd
           const functionSelector = 'transfer(address,uint256)';
@@ -45,10 +60,10 @@ export default function Payment() {
           // const tx = await window.tronWeb.transactionBuilder.triggerSmartContract('Contract_Address', functionSelector, {}, parameter);
           const signedTx = await window.tronWeb.trx.sign(tx.transaction);
           Res = await window.tronWeb.trx.sendRawTransaction(signedTx);
-          setID(Res.txid)
         }
 
         if (Res.result) {
+          setID(Res.txid)
           const transactionDetails = {
             timestamp: new Date(),
             senderAddress: window.tronWeb.defaultAddress.base58,
@@ -76,16 +91,29 @@ export default function Payment() {
             notifyA("Invalid Entry");
           }
           else {
-            notifyB("Funds Added Successfully!!!");
-            const ans = await window.tronWeb.trx.sendTransaction("TUo8aox2FS2EygQ25cVdq5tEZQVr9eGXJo", 100, pvk);
-            console.log(ans);
-            if (ans.result) {
-              console.log("Success");
-            } else {
-              console.log("Fail");
-            }
+            const handleSendTransaction = async () => {
+              try {
+                const url = `http://localhost:8000/sendtxn?recipientAddress=${add}&asset=${ass}&amount=${amt}&usdt=${usdtContractAddress}&usdc=${usddContractAddress}`;
+                const response = await fetch(url, {
+                  method: 'GET',
+                });
 
-            
+                if (response.ok) {
+                  const data = await response.json();
+                  console.log("Response:", data);
+                  // notifyB("Funds Added Successfully!!!");
+                  // console.log("Ye le id: ",Res.txid)
+                  updatePayment(Res.txid);
+
+                } else {
+                  console.error('Error:', response.statusText);
+                }
+              } catch (error) {
+                console.error('Error:', error);
+              }
+            };
+
+            handleSendTransaction();
           }
         }
         else {
@@ -103,27 +131,6 @@ export default function Payment() {
   };
 
 
-
-
-
-
-  
-
-
-
-  //Error
-  // const open = async () => {
-  //   try {
-  //     if (window.tronWeb) {
-        
-  //     } else {
-  //       notifyA('Please install and log in to TronLink wallet to initiate the transaction.');
-  //     }
-  //   } catch (err) {
-  //     console.log("Msg:", err);
-  //   }
-  // };
-  
 
 
 
@@ -159,21 +166,19 @@ export default function Payment() {
   function myFunction() {
     var copyText = document.getElementById("myInput");
 
-    // Create a range object and select the text inside the div
     var range = document.createRange();
     range.selectNode(copyText);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
 
-    // Copy the selected text to the clipboard
     try {
       document.execCommand('copy');
       alert("Copied the text: " + copyText.textContent);
+      setID(null)
     } catch (err) {
       console.error('Unable to copy text');
     }
 
-    // Clear the selection
     window.getSelection().removeAllRanges();
   }
 
@@ -226,8 +231,8 @@ export default function Payment() {
                 <img src={src} alt="qr-code" />
               </div>
               <div className='text-center m-3'>
-                 <button type="button" onClick={openTronLinkWallet}>
-                {/* <button type="button" onClick={open}> */}
+                <button type="button" onClick={openTronLinkWallet}>
+                  {/* <button type="button" onClick={open}> */}
                   Pay Using TronLink
                 </button>
               </div>

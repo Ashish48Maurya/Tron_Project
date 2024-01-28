@@ -43,8 +43,8 @@ const History = () => {
     <>
       <div>
         <Navbar />
-        <div>
-        <h2>Transaction History</h2>
+        <div className='mt-3'>
+        <h2 className='text-center text-success'>Transaction History</h2>
         <div className="table-container">
           <table>
             <thead>

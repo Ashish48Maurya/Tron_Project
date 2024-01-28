@@ -146,13 +146,13 @@ exports.user = async (req, res) => {
 
 exports.updatePayment = async (req, res) => {
   const { id } = req.params;
+  const { status } = req.query;
   try {
     const updatedPayment = await Payment.findOneAndUpdate(
-      { _id: id },
-      { $set: { status: req.body.status } },
+      { txID: id },
+      { $set: { status: status } },
       { useFindAndModify: false, new: true }
     );
-
     if (!updatedPayment) {
       return res.status(404).json({ "error": "Payment not found" });
     }

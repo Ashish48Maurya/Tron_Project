@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./Navbar";
 import ImagemanWorkingOnNftBlockchain1 from "../Images/man-working-on-nft-blockchain--1281x1191@2x.png"
 import ImagenftWallet1280x1067 from "../Images/nft-wallet--1280x1067@2x.png";
@@ -7,6 +7,7 @@ import Imagezaobao1Icon2 from "../Images/pitstoptyres-1@2x.png";
 import Imagezaobao1Icon3 from "../Images/mandalaclub-1@2x.png";
 import Imagezaobao1Icon4 from "../Images/forbes-1@2x.png";
 import Imagezaobao1Icon5 from "../Images/thebusinesstimes-1@2x.png";
+
 
 
 const Home = () => {
