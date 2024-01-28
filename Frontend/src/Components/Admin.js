@@ -222,7 +222,11 @@ export default function Admin(props) {
     userCounts();
     // balance();
   }, []);
-
+ 
+  function formatTimestamp(timestampString) {
+    const date = new Date(timestampString);
+    return date.toLocaleString(); 
+  }
 
 
   return (
@@ -309,7 +313,6 @@ export default function Admin(props) {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col" className="text-center">Select</th>
               <th scope="col" className="text-center">User_ID</th>
               <th scope="col" className="text-center">Transaction_ID</th>
               <th scope="col" className="text-center">Date & Time</th>
@@ -320,19 +323,9 @@ export default function Admin(props) {
           <tbody>
             {list.map((ele) => (
               <tr key={ele._id}>
-                <td>
-                  <input
-                    type="checkbox"
-                    id={`checkbox_${ele._id}`}
-                    name={`checkbox_${ele._id}`}
-                    value={ele.timestamps}
-                    checked={selectedTransactions.includes(ele._id)}
-                    onChange={() => handleCheckboxChange(ele._id)}
-                  />
-                </td>
                 <td>{ele._id}</td>
                 <td>{ele.txID}</td>
-                <td>{ele.timestamps}</td>
+                <td>{formatTimestamp(ele.timestamps)}</td>
                 <td>{ele.amount}{ele.asset}</td>
                 <td>
                   {ele.status}

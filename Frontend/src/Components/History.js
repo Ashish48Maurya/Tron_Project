@@ -37,7 +37,10 @@ const History = () => {
   }, []);
 
 
-
+  function formatTimestamp(timestampString) {
+    const date = new Date(timestampString);
+    return date.toLocaleString();
+  }
 
   return (
     <>
@@ -65,7 +68,7 @@ const History = () => {
                   <td>{transaction.amount}</td>
                   <td>{transaction.asset}</td>
                   <td>{transaction.status}</td>
-                  <td>{transaction.timestamps}</td>
+                  <td>{formatTimestamp(transaction.timestamps)}</td>
                 </tr>
               ))}
             </tbody>
