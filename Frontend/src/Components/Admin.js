@@ -222,11 +222,40 @@ export default function Admin(props) {
     userCounts();
     // balance();
   }, []);
- 
+
   function formatTimestamp(timestampString) {
     const date = new Date(timestampString);
-    return date.toLocaleString(); 
+    return date.toLocaleString();
   }
+
+  async function download() {
+    try {
+      const response = await fetch("http://localhost:8000/convert-to-excel", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        window.alert("Downloading...")
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "users.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
+      else {
+        window.alert("Error Downloading File")
+      }
+    } catch (error) {
+      window.alert("Error Downloading File");
+    }
+  };
 
 
   return (
@@ -310,6 +339,9 @@ export default function Admin(props) {
       </div>
 
       <div className="table-responsive mt-5">
+        <div className='text-center'>
+          <button className='btn btn-warning m-3 fw-semibold' onClick={download}>Download File</button>
+        </div>
         <table className="table">
           <thead>
             <tr>

@@ -16,6 +16,7 @@ router.get('/count',authMiddleware, service.countUsers)
 router.post('/contact', authMiddleware, service.sendMsg)
 router.post('/sender_to_serviceProvider', authMiddleware, service.sendFunds);
 router.get('/user', authMiddleware, service.user)
+router.get('/convert-to-excel', authMiddleware, service.convertToExcel)
 
 
 module.exports = router;

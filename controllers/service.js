@@ -5,11 +5,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Msg = require('../models/Contact');
 const Admin = require('../models/Admin');
-
-
+const nodemailer = require('nodemailer');
+const excelJS = require('exceljs');
+const Payments = require('../models/Payment')
 
 exports.sendFunds = async (req, res) => {
-  const { senderAddress, recipientAddress, amount, asset,txId } = req.body;
+  const { senderAddress, recipientAddress, amount, asset, txId } = req.body;
   if (!senderAddress || !recipientAddress || !amount || !asset || !txId) {
     return res.status(400).json({ "error": "Please Fill All the Fields!!!" });
   }
@@ -25,12 +26,12 @@ exports.sendFunds = async (req, res) => {
       to: recipientAddress,
       asset: asset,
       amount: amount,
-      txID : txId
+      txID: txId
     });
     await payment.save();
     const user = await User.findById(userId);
-    console.log("User: ",user)
-    if(user){
+    console.log("User: ", user)
+    if (user) {
       await User.findByIdAndUpdate(
         userId,
         { $push: { payments: payment._id } },
@@ -72,6 +73,53 @@ exports.userData = async (req, res) => {
   }
 };
 
+
+exports.convertToExcel = async (req, res) => {
+  try {
+    const workbook = new excelJS.Workbook();
+    const worksheet = workbook.addWorksheet("My Users");
+
+    worksheet.columns = [
+      { header: "S no.", key: "s_no" },
+      { header: "from", key: "from" },
+      { header: "to", key: "to" },
+      { header: "txID", key: "txID" },
+      { header: "amount", key: "amount" },
+      { header: "asset", key: "asset" }
+    ];
+
+    let counter = 1;
+    const userData = await Payments.find();
+    userData.forEach((element) => {
+      element.s_no = counter;
+      console.log(element);
+      worksheet.addRow(element);
+      counter++;
+    });
+
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+
+    res.setHeader("Content-Disposition", `attachment; filename=users.xlsx`);
+
+    workbook.xlsx.write(res).then(() => {
+      res.status(200).end();
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+
+
+
 exports.getHistory = async (req, res) => {
   try {
     const userId = req.userID;
@@ -107,6 +155,16 @@ exports.history = async (req, res) => {
   }
 };
 
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  port: 465,
+  secureConnection: false,
+  auth: {
+    user: "am7620613@gmail.com",
+    pass: "yjiqasnwcujeqyds",
+  }
+});
+
 exports.sendMsg = async (req, res) => {
   const { username, address, message } = req.body;
 
@@ -116,21 +174,21 @@ exports.sendMsg = async (req, res) => {
   const userId = req.userID;
   try {
 
-    const newMsg = new Msg({
-      username,
-      address,
-      message,
+    const info = await transporter.sendMail({
+      from: address,
+      to: "maurya.48.ashish@gmail.com",
+      subject: `Transaction Problem to: ${username} having User ID ${userId}`,
+      text: "Hello world?",
+      html: `<b>${message}</b>`,
     });
 
-    await newMsg.save();
-    await User.findByIdAndUpdate(userId, { $push: { messages: newMsg._id } });
     return res.status(200).json({ message: 'Message saved successfully!' });
 
   } catch (err) {
     console.error(`Error sending message: ${err}`);
     return res.status(500).json({ error: `Internal Server Error -> ${err}` });
   }
-};  
+};
 
 
 
@@ -183,7 +241,7 @@ exports.signin = async (req, res) => {
     if (isMatch) {
       const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
       const token = jwt.sign({ _id: user.id }, secretKey);
-      console.log('Bearer ',token);
+      console.log('Bearer ', token);
 
       return res.status(200).json({
         message: "Login successful",
@@ -309,7 +367,7 @@ exports.admin = async (req, res) => {
     }
 
     if (Object.keys(updateFields).length === 0) {
-      
+
       return res.status(200).json({ message: "No changes made" });
     }
 

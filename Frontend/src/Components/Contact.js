@@ -11,7 +11,7 @@ function Contact() {
   const notifyB = (msg) => toast.success(msg);
 
   const [name, setName] = useState('');
-  const [wallet, setWallet] = useState('')
+  const [mail, setMail] = useState('')
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function Contact() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!name || !wallet || !msg) {
+    if (!name || !mail || !msg) {
       return notifyA("All Fields Are Required!!!");
     }
     try {
@@ -34,7 +34,7 @@ function Contact() {
 
           JSON.stringify({
             username: name,
-            address: wallet,
+            address: mail,
             message: msg,
           }),
       });
@@ -42,7 +42,7 @@ function Contact() {
       if (response.status === 200) {
         const ans = await response.json();
         notifyB("Message Sent Successfully !!!");
-        setWallet('')
+        setMail('')
         setMsg('')
         navigate("/private/contact");
       } else {
@@ -63,10 +63,10 @@ function Contact() {
             <div class="content">
               <h2 className='text-center'>Contact Us</h2>
               <form action="#" method="post">
-                <input type="text" name="name" placeholder="Username..." value={name} />
+                <input type="text" name="name" placeholder="Username..." value={name} onChange={(e) => { setName(e.target.value) }}/>
 
-                <input type="email" name="wallet" placeholder="Transaction Id..." value={wallet} onChange={(e) => { setWallet(e.target.value) }} />
-                <textarea name="msg" placeholder="Your Message..." value={msg} onChange={(e) => { setMsg(e.target.value) }}></textarea>
+                <input type="email" name="wallet" placeholder="Your MailID..." value={mail} onChange={(e) => { setMail(e.target.value) }} />
+                <textarea name="msg" placeholder="Your Message...Transaction ID..." value={msg} onChange={(e) => { setMsg(e.target.value) }}></textarea>
                 <button type="submit" class="btn bg-primary" onClick={submit}>Send <i class="fas fa-paper-plane"></i></button>
               </form>
             </div>

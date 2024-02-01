@@ -37,6 +37,9 @@ export default function Payment() {
 
 
 
+
+
+
   const openTronLinkWallet = async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
       try {
@@ -101,8 +104,28 @@ export default function Payment() {
                 if (response.ok) {
                   const data = await response.json();
                   console.log("Response:", data);
-                  // notifyB("Funds Added Successfully!!!");
-                  // console.log("Ye le id: ",Res.txid)
+
+
+
+
+
+                  // const checkTransactionStatus = async () => {
+                  //   const ans = await window.tronWeb.trx.getConfirmedTransaction(Res.txid);
+                  //   console.log("ANS: ", ans);
+
+                  //   if (ans.ret[0].contractRet === "[SUCCESS]") {
+                  //     clearInterval(intervalId);
+                  //     updatePayment(Res.txid);
+                  //   }
+                  // };
+
+                  // const intervalId = setInterval(checkTransactionStatus, 10000);
+
+
+
+
+                  
+
                   updatePayment(Res.txid);
 
                 } else {
