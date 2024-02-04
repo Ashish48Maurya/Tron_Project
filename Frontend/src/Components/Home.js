@@ -2,13 +2,41 @@ import React, { useEffect } from "react";
 import Navbar from "./Navbar";
 import ImagemanWorkingOnNftBlockchain1 from "../Images/man-working-on-nft-blockchain--1281x1191@2x.png"
 import ImagenftWallet1280x1067 from "../Images/nft-wallet--1280x1067@2x.png";
-import Imagezaobao1Icon from "../Images/zaobao-1@2x.png";
-import Imagezaobao1Icon2 from "../Images/pitstoptyres-1@2x.png";
-import Imagezaobao1Icon3 from "../Images/mandalaclub-1@2x.png";
-import Imagezaobao1Icon4 from "../Images/forbes-1@2x.png";
-import Imagezaobao1Icon5 from "../Images/thebusinesstimes-1@2x.png";
-
-
+import a1 from "../Images/a1.png"
+import a2 from "../Images/a2.png"
+import a3 from "../Images/a3.png"
+import a4 from "../Images/a4.png"
+import a5 from "../Images/a5.png"
+import a6 from "../Images/a6.png"
+import a7 from "../Images/a7.png"
+import a8 from "../Images/a8.png"
+import a9 from "../Images/a9.png"
+import a10 from "../Images/a10.png"
+import a11 from "../Images/a11.png"
+import b1 from "../Images/b1.png"
+import b2 from "../Images/b2.png"
+import b3 from "../Images/b3.png"
+import b4 from "../Images/b4.png"
+import b5 from "../Images/b5.png"
+import b6 from "../Images/b6.png"
+import b7 from "../Images/b7.png"
+import b8 from "../Images/b8.png"
+import b9 from "../Images/b9.png"
+import b10 from "../Images/b10.png"
+import i1 from "../Images/i1.png"
+import i2 from "../Images/i2.png"
+import gj1 from "../Images/gj1.png"
+import gj2 from "../Images/gj2.png"
+import gj3 from "../Images/gj3.png"
+import fb from "../Images/fb.png"
+import insta from "../Images/insta.png"
+import twitter from "../Images/twitter.png"
+import yt from "../Images/yt.png"
+// import Imagezaobao1Icon from "../Images/a1.png";
+// import Imagezaobao1Icon2 from "../Images/a2.png";
+// import Imagezaobao1Icon3 from "../Images/a3.png";
+// import Imagezaobao1Icon4 from "../Images/a4.png";
+// import Imagezaobao1Icon5 from "../Images/a5.png";
 
 const Home = () => {
   return (
@@ -26,7 +54,6 @@ const Home = () => {
         <div className="landingPageChild2" />
         <div className="landingPageChild3" />
         <div className="landingPageChild4" />
-
         <div className="manWorkingOnNftBlockchain" />
         <div className="home1Rect">
           <div className="home1RectChild" />
@@ -101,58 +128,57 @@ const Home = () => {
           <div className="whatWeDo">What we do</div>
         </div>
         <div className="asSeenOn">As seen on</div>
-        <div className="wrapperZaobao1Parent">
+        {/* <div className="wrapperZaobao1Parent">
           <marquee width="60%" direction="right" scrollamount="12">
-            <div className="marquee-container">
-          <div className="wrapperZaobao1">
-            <img className="zaobao1Icon" alt="" src={Imagezaobao1Icon} />
-          </div>
-          <div className="wrapperPitstopTyres1">
-            <img className="zaobao1Icon" alt="" src={Imagezaobao1Icon2} />
-          </div>
-          <div className="wrapperMandalaClub1">
-            <img className="zaobao1Icon" alt="" src={Imagezaobao1Icon3} />
-          </div>
-          <div className="wrapperForbes1">
-            <img className="zaobao1Icon" alt="" src={Imagezaobao1Icon4} />
-          </div>
-          <div className="wrapperTheBusinessTimes1">
-            <img
-              className="zaobao1Icon"
-              alt=""
-              src={Imagezaobao1Icon5}
-            />
-              </div>
+            <div>
+            <img src={a1} />
+            <img src={a2} />
+            <img src={a3} />
+            <img src={a4} />
+            <img src={a5} />
+            <img src={a6} />
+            <img src={a7} />
+            <img src={a8} />
+            <img src={a9} />
+            <img src={a10} />
+            <img src={a11} />
             </div>
           </marquee>
 
-          <div className="wrapperMoneyFm1">
-            <img className="zaobao1Icon" alt="" src="../Images/money-fm-1@2x.png" />
-          </div>
-          <div className="wrapperLumin2">
-            <img className="zaobao1Icon" alt="" src="../Images/money-fm-1@2x.png" />
-          </div>
-          <div className="wrapperFrame221">
-            <img className="zaobao1Icon" alt="" src="../Images/money-fm-1@2x.png" />
-          </div>
-          <div className="wrapperImgV22c7674ff188b4">
-            <img className="zaobao1Icon" alt="" src="../Images/money-fm-1@2x.png" />
-          </div>
+        </div> */}
+        <div className="wrapperZaobao2Parent">
+          <marquee width="60%" direction="right" scrollamount="12">
+            <div>
+            <img src={a1} />
+            <img src={a2} />
+            <img src={a3} />
+            <img src={a4} />
+            <img src={a5} />
+            <img src={a6} />
+            <img src={a7} />
+            <img src={a8} />
+            <img src={a9} />
+            <img src={a10} />
+            <img src={a11} />
+            </div>
+          </marquee>
+
         </div>
         <div className="rectangleParent">
           <div className="frameChild" />
+{/* social media icons */}
           <div className="socialmedia">
             <div className="item">
-              <img className="vectorIcon" alt="" src="../Images/vector@2x.png" />
+              <img className="vectorIcon" alt="" src={fb} />
             </div>
             <div className="item">
-              <img className="vectorIcon" alt="" src="../Images/vector@2x.png" />
+              <img className="vectorIcon" alt="" src={insta} />
             </div>
             <div className="item2">
-              <img className="vectorIcon2" alt="" src="../Images/vector@2x.png" />
+              <img className="vectorIcon2" alt="" src={yt} />
             </div>
             <div className="item3">
-              <img className="itemChild" alt="" src="../Images/group-32933@2x.png" />
+              <img className="itemChild" alt="" src={twitter} />
             </div>
           </div>
           <div className="frameParent">
@@ -228,6 +254,7 @@ const Home = () => {
               </div>
             </div>
           </div>
+{/* 3 gradient icons */}
           <div className="groupParent">
             <div className="rectangleGroup">
               <div className="groupChild" />
@@ -239,14 +266,14 @@ const Home = () => {
               <img
                 className="averagePrice12Icon"
                 alt=""
-                src="../Images/averageprice1-2@2x.png"
+                src={gj3}
               />
             </div>
             <div className="rectangleGroup">
               <div className="groupChild" />
               <div className="seamlessSecure">{`Seamless & Secure`}</div>
               <div className="transparentPricingAnd">{`We allow you to accept, transfer crypto and flexibility to withdraw to your wallets seamlessly and securely. `}</div>
-              <img className="wallet2Icon" alt="" src="/wallet-2@2x.png" />
+              <img className="wallet2Icon" alt="" src={gj1} />
             </div>
             <div className="groupDiv">
               <div className="groupInner" />
@@ -258,7 +285,7 @@ const Home = () => {
               <img
                 className="wallet2Icon"
                 alt=""
-                src="../Images/energywindow-1@2x.png"
+                src={gj2}
               />
             </div>
           </div>
@@ -283,10 +310,16 @@ const Home = () => {
         <img
           className="dOnlinePaymentWithQrCodeIcon"
           alt=""
-          src="/1989528853donlinepaymentwithqrcodeconcept-1@2x.png"
+          src={i1}
+        />
+                <img
+          className="rocket"
+          alt=""
+          src={i2}
         />
         <div className="wrapperScoots1Parent">
-          <div className="wrapperScoots1">
+
+          {/* <div className="wrapperScoots1">
             <img className="zaobao1Icon" alt="" src="/scoots-1@2x.png" />
           </div>
           <div className="wrapperScoots1">
@@ -322,7 +355,22 @@ const Home = () => {
           <div className="wrapperScoots1">
             <img className="zaobao1Icon" alt="" src="/money-fm-1@2x.png" />
           </div>
-          <div className="wrapperScoots1">
+          <div className="wrapperScoots1"> */}
+          <marquee width="60%" direction="right" scrollamount="12">
+            <div>
+            <img src={b1} />
+            <img src={b2} />
+            <img src={b3} />
+            <img src={b4} />
+            <img src={b5} />
+            <img src={b6} />
+            <img src={b7} />
+            <img src={b8} />
+            <img src={b9} />
+            <img src={b10} />
+            </div>
+
+</marquee>
             <img className="zaobao1Icon" alt="" src="/money-fm-1@2x.png" />
           </div>
           <div className="wrapperTheGallery1">
@@ -335,7 +383,7 @@ const Home = () => {
             <img className="zaobao1Icon" alt="" src="/money-fm-1@2x.png" />
           </div>
         </div>
-      </div>
+
       <style>
         {`.landingPageChild {
   top: -413px;
@@ -639,7 +687,7 @@ const Home = () => {
 .swiftSimpleSecure,
 .weHelpBusinesses {
   position: absolute;
-  top: 352px;
+  top: 372px;
   left: 55px;
   line-height: 100%;
   display: inline-block;
@@ -648,7 +696,7 @@ const Home = () => {
 }
 .growYourRevenue,
 .swiftSimpleSecure {
-  top: 173px;
+  top: 153px;
   left: 52px;
   font-size: var(--font-size-42xl);
   width: 761px;
@@ -659,7 +707,7 @@ const Home = () => {
   left: 55px;
   font-size: var(--font-size-18xl);
   font-weight: 500;
-  width: 334px;
+  width: 734px;
   height: 37px;
 }
 .experienceItChild {
@@ -671,7 +719,7 @@ const Home = () => {
   box-shadow: 4px 4px 0.6px rgba(0, 0, 0, 0.5),
     4px 4px 11.4px rgba(255, 252, 252, 0.5) inset;
   filter: blur(0.7px);
-  width: 236.75px;
+  width:270px;
   height: 76.92px;
   opacity: 0.75;
 }
@@ -682,7 +730,7 @@ const Home = () => {
   line-height: 100%;
   font-weight: 500;
   display: inline-block;
-  width: 156.83px;
+  width: 556.83px;
   height: 27.63px;
 }
 .experienceIt {
@@ -778,7 +826,7 @@ const Home = () => {
 }
 .convertYourFlat {
   position: absolute;
-  top: 350px;
+  top: 370px;
   left: 631px;
   line-height: 100%;
   display: inline-block;
@@ -791,7 +839,7 @@ const Home = () => {
 .multiCurrencySwapWithContainer,
 .swiftEasy {
   position: absolute;
-  top: 173px;
+  top: 153px;
   left: 631px;
   font-size: var(--font-size-42xl);
   line-height: 100%;
@@ -822,17 +870,17 @@ const Home = () => {
 .exploreMore {
   position: absolute;
   top: 25px;
-  left: 39px;
+  left: 30px;
   line-height: 100%;
   font-weight: 500;
   display: inline-block;
-  width: 160px;
+  width: 556px;
   height: 27px;
 }
 .experienceIt2 {
   position: absolute;
   top: 566px;
-  left: 630px;
+  left: 620px;
   width: 237px;
   height: 76.92px;
   font-size: 26.89px;
@@ -862,7 +910,7 @@ const Home = () => {
   line-height: 100%;
   font-weight: 500;
   display: inline-block;
-  width: 489px;
+  width: 989px;
   height: 39px;
 }
 .span {
@@ -909,7 +957,7 @@ const Home = () => {
   font-size: var(--font-size-5xl);
   line-height: 100%;
   display: inline-block;
-  width: 127px;
+  width: 227px;
   height: 25px;
 }
 .zaobao1Icon {
@@ -981,7 +1029,19 @@ const Home = () => {
 .wrapperImgV22c7674ff188b4 {
   z-index: 0;
 }
-.wrapperZaobao1Parent {
+{/* .wrapperZaobao1Parent {
+  position: absolute;
+  top: 1384px;
+  left: -46px;
+  width: 3954px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 42px;
+} */}
+.wrapperZaobao2Parent {
   position: absolute;
   top: 2384px;
   left: -46px;
@@ -1072,7 +1132,7 @@ const Home = () => {
   position: relative;
   line-height: 100%;
   display: inline-block;
-  width: 184px;
+  width: 214px;
   height: 29px;
   flex-shrink: 0;
 }
@@ -1119,7 +1179,7 @@ const Home = () => {
   height: 29px;
 }
 .multiCurrencySwap1 {
-  width: 219px;
+  width: 269px;
 }
 .checkout,
 .multiCurrencySwap1,
@@ -1306,7 +1366,7 @@ const Home = () => {
 }
 .weOfferDigital {
   position: absolute;
-  top: 233px;
+  top: 223px;
   left: 5px;
   line-height: 100%;
   display: inline-block;
@@ -1325,7 +1385,7 @@ const Home = () => {
   top: 70px;
   left: 5px;
   font-size: 57px;
-  width: 630px;
+  width: 930px;
   height: 130px;
   color: #01b1e9;
 }
@@ -1342,7 +1402,7 @@ const Home = () => {
   font-size: 40px;
   font-weight: 500;
   color: var(--color-royalblue);
-  width: 293px;
+  width: 493px;
   height: 37px;
 }
 .growYourRevenue1 {
@@ -1385,7 +1445,7 @@ const Home = () => {
   font-family: var(--font-inter);
 }
 .dOnlinePaymentWithQrCodeIcon,
-.marketPopularityOfNftStart {
+.rocket {
   position: absolute;
   top: 2554px;
   left: 967px;
@@ -1400,7 +1460,14 @@ const Home = () => {
   width: 450px;
   height: 300px;
 }
-.wrapperScoots1,
+.rocket{
+  top: 2606px;
+  left: 945px;
+  border-radius: var(--br-xl) var(--br-xl) 92px var(--br-xl);
+  width: 450px;
+  height: 300px;
+}
+{/* .wrapperScoots1,
 .wrapperTheGallery1 {
   position: relative;
   width: 298px;
@@ -1412,7 +1479,7 @@ const Home = () => {
 }
 .wrapperTheGallery1 {
   width: 297px;
-}
+} */}
 .wrapperScoots1Parent {
   position: absolute;
   top: 1668px;
