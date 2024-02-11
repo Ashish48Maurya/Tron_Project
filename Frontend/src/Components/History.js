@@ -23,7 +23,7 @@ const History = () => {
         const data = await res.json();
         console.log("API Data:", data.Payments);
         setTransactions(data.Payments);
-        console.log(user);
+        // console.log(user);
       } else {
         console.error('Failed to fetch payment history:', res.status);
       }

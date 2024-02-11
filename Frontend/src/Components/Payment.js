@@ -4,19 +4,21 @@ import qrCode from 'qrcode';
 import Navbar from './Navbar';
 import { toast } from 'react-toastify';
 import { useAuth } from '../store/auth';
+import { useNavigate } from 'react-router-dom';
 
 export default function Payment() {
   const { token, address, usdtContractAddress, usddContractAddress } = useAuth();
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
 
-
+  const navigate = useNavigate();
   const [amt, setAmt] = useState('');
   const [add, setAdd] = useState('');
   const [src, setSrc] = useState(null);
   const [ass, setAsset] = useState('USDT');
   const [error, setError] = useState('');
   const [id, setID] = useState(null)
+  const [loading, setLoading] = useState(false);
 
   // router.put('/update_payment_serviceProvider/:id', service.updatePayment)
   const updatePayment = async (id) => {
@@ -29,7 +31,7 @@ export default function Payment() {
     if (ans.ok) {
       const data = await ans.json();
       console.log("Response:", data);
-      notifyB("Funds Added Successfully!!!");
+      // notifyB("Funds Added Successfully!!!");
     } else {
       console.error('Error:', ans.statusText);
     }
@@ -109,24 +111,27 @@ export default function Payment() {
 
 
 
-                  // const checkTransactionStatus = async () => {
-                  //   const ans = await window.tronWeb.trx.getConfirmedTransaction(Res.txid);
-                  //   console.log("ANS: ", ans);
+                  const checkTransactionStatus = async () => {
+                    const ans = await window.tronWeb.trx.getConfirmedTransaction(Res.txid);
+                    // // console.log("ANS: ", ans.ret[0].contractRet);
+                    // console.log("ANS: ", ans);
+                    let value = ans.ret[0].contractRet
 
-                  //   if (ans.ret[0].contractRet === "[SUCCESS]") {
-                  //     clearInterval(intervalId);
-                  //     updatePayment(Res.txid);
-                  //   }
-                  // };
+                    if (value === "SUCCESS") {
+                      clearInterval(intervalId);
+                      updatePayment(Res.txid);
+                      setLoading(false);
+                      notifyB("Funds Added Successfully!!!");
+                      navigate('/private/history')
+                    }
+                  };
 
-                  // const intervalId = setInterval(checkTransactionStatus, 10000);
+                  const intervalId = setInterval(checkTransactionStatus, 60000);
 
 
 
 
-                  
-
-                  updatePayment(Res.txid);
+                  // updatePayment(Res.txid);
 
                 } else {
                   console.error('Error:', response.statusText);
@@ -135,9 +140,10 @@ export default function Payment() {
                 console.error('Error:', error);
               }
             };
-
+            setLoading(true);
             handleSendTransaction();
           }
+
         }
         else {
           notifyA("Transaction Fail: ", Res.result.message);
@@ -152,18 +158,6 @@ export default function Payment() {
       notifyA('Please install and log in to TronLink wallet to initiate the transaction.');
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   const generateQRCode = async () => {
@@ -214,6 +208,13 @@ export default function Payment() {
           <button className=" btn btn-outline-success ms-2 fw-semibold" onClick={myFunction} type="submit">Copy</button>
         </div></div>
       </> : ''}
+
+      {
+        loading ? <><div className='text-center'><div class="spinner-border" role="status">
+        <span class="sr-only"></span>
+      </div><span>Processing Transaction, Please Wait</span></div></> : ""
+      }
+
       <main>
         <div className="wrapper">
           <header>

@@ -32,11 +32,6 @@ import fb from "../Images/fb.png"
 import insta from "../Images/insta.png"
 import twitter from "../Images/twitter.png"
 import yt from "../Images/yt.png"
-// import Imagezaobao1Icon from "../Images/a1.png";
-// import Imagezaobao1Icon2 from "../Images/a2.png";
-// import Imagezaobao1Icon3 from "../Images/a3.png";
-// import Imagezaobao1Icon4 from "../Images/a4.png";
-// import Imagezaobao1Icon5 from "../Images/a5.png";
 
 const Home = () => {
   return (

@@ -3,7 +3,6 @@ const Payment = require('../models/Payment');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Msg = require('../models/Contact');
 const Admin = require('../models/Admin');
 const nodemailer = require('nodemailer');
 const excelJS = require('exceljs');
@@ -241,7 +240,6 @@ exports.signin = async (req, res) => {
     if (isMatch) {
       const secretKey = process.env.JWT_SECRET_KEY || 'yourDefaultSecretKey';
       const token = jwt.sign({ _id: user.id }, secretKey);
-      console.log('Bearer ', token);
 
       return res.status(200).json({
         message: "Login successful",
